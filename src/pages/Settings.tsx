@@ -5,6 +5,7 @@ import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 import { 
   User, 
   Bell, 
@@ -40,11 +41,43 @@ const Settings = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState({
-    firstName: 'Rafiqur',
-    lastName: 'Rahman',
-    email: 'rafiqur31is.jla.com',
-    phone: '+1 (555) 123-4567'
+    firstName: 'Sanjok',
+    lastName: 'Personal',
+    email: 'sanjok@krishak.ai',
+    phone: '+977 980-0000000'
   });
+  const [activeWorkspace, setActiveWorkspace] = useState('personal');
+
+  const accountOverview = {
+    workspaceName: 'Sanjok Personal',
+    owner: 'Sanjok Tandukar',
+    email: 'sanjok@krishak.ai',
+    currentPlan: 'Commercial Farmer',
+    planStatus: 'Active',
+    renewalDate: 'March 28, 2025',
+    seatUsage: { used: 12, total: 20 },
+    storageUsage: '65 GB / 120 GB',
+    storageUsagePercent: 54,
+    profileCompletion: 82,
+    lastLogin: 'Today at 10:42 AM',
+    lastDevice: 'Chrome on Windows 11',
+  };
+  const seatUsagePercent = Math.round(
+    (accountOverview.seatUsage.used / accountOverview.seatUsage.total) * 100
+  );
+
+  const quickActions = [
+    { label: 'Manage subscription', onClick: () => setActiveSection('applications') },
+    { label: 'Invite member', onClick: () => setActiveSection('members') },
+    { label: 'Update billing info', onClick: () => setActiveSection('workspace-settings') },
+    { label: 'Security review', onClick: () => setActiveSection('general') },
+  ];
+
+  const workspaceOptions = [
+    { value: 'personal', label: 'Sanjok Personal' },
+    { value: 'team', label: 'Krishak AI Workspace' },
+    { value: 'lab', label: 'Research Sandbox' },
+  ];
 
   // Handle tab change with loading effect
   useEffect(() => {
@@ -934,40 +967,147 @@ const Settings = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="border-b border-border/50 bg-card">
-        <div className="flex items-center gap-4 p-4">
-          <div className="flex items-center gap-3">
-            <Avatar className="w-8 h-8">
-              <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback className="bg-primary text-primary-foreground text-sm">R</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="font-medium text-sm">Rafiqur...</p>
-              <p className="text-xs text-muted-foreground">rafiqur31is.jla.com</p>
+        <div className="p-6 space-y-6">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center gap-4">
+              <Avatar className="w-14 h-14">
+                <AvatarImage src="/placeholder.svg" />
+                <AvatarFallback className="bg-primary text-primary-foreground text-lg">S</AvatarFallback>
+              </Avatar>
+              <div className="space-y-1">
+                <div className="flex flex-wrap items-center gap-3">
+                  <Select value={activeWorkspace} onValueChange={setActiveWorkspace}>
+                    <SelectTrigger className="w-[220px] text-left">
+                      <SelectValue placeholder="Select workspace" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {workspaceOptions.map((workspace) => (
+                        <SelectItem key={workspace.value} value={workspace.value}>
+                          {workspace.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Badge variant="outline" className="text-xs">
+                    {accountOverview.currentPlan} plan
+                  </Badge>
+                  <span className="text-xs text-muted-foreground">
+                    {accountOverview.planStatus} · Renews {accountOverview.renewalDate}
+                  </span>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  {accountOverview.owner} · {accountOverview.email}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Last login {accountOverview.lastLogin} — {accountOverview.lastDevice}
+                </p>
+              </div>
             </div>
-          </div>
-          
-          <div className="flex-1 max-w-md mx-auto">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search item"
-                className="w-full pl-4 pr-8 py-2 text-sm border border-border/50 rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/20"
-              />
-              <div className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
-                ⌘ K
+
+            <div className="flex flex-1 flex-wrap items-center gap-4 justify-end">
+              <div className="flex-1 min-w-[220px] max-w-md">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Search settings, members, or billing"
+                    className="w-full pl-4 pr-8 py-2 text-sm border border-border/50 rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  />
+                  <div className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                    ⌘ K
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={() => setActiveSection('profile')}>
+                  View profile
+                </Button>
+                <Button variant="ghost" size="sm" className="relative">
+                  <Bell className="w-4 h-4" />
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+                </Button>
+                <Avatar className="w-9 h-9">
+                  <AvatarImage src="/placeholder.svg" />
+                  <AvatarFallback className="bg-primary text-primary-foreground text-sm">S</AvatarFallback>
+                </Avatar>
               </div>
             </div>
           </div>
-          
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" className="relative">
-              <Bell className="w-4 h-4" />
-              <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
-            </Button>
-            <Avatar className="w-8 h-8">
-              <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback className="bg-primary text-primary-foreground text-sm">R</AvatarFallback>
-            </Avatar>
+
+          <div className="flex flex-wrap gap-3">
+            {quickActions.map((action) => (
+              <Button
+                key={action.label}
+                size="sm"
+                variant="outline"
+                className="border-dashed"
+                onClick={action.onClick}
+              >
+                {action.label}
+              </Button>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <Card>
+              <CardContent className="p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">Current Plan</p>
+                    <p className="text-lg font-semibold">{accountOverview.currentPlan}</p>
+                  </div>
+                  <Badge variant="secondary">{accountOverview.planStatus}</Badge>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Next billing on {accountOverview.renewalDate}
+                </p>
+                <div className="flex gap-2">
+                  <Button size="sm" variant="outline" className="flex-1" onClick={() => setActiveSection('applications')}>
+                    Manage subscription
+                  </Button>
+                  <Button size="sm" className="flex-1" onClick={() => setActiveSection('workspace-settings')}>
+                    Upgrade plan
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-4 space-y-3">
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">Profile completion</p>
+                <div className="flex items-center justify-between">
+                  <p className="text-2xl font-semibold">{accountOverview.profileCompletion}%</p>
+                  <span className="text-xs text-muted-foreground">Complete your profile for better insights</span>
+                </div>
+                <Progress value={accountOverview.profileCompletion} className="h-3" />
+                <div className="text-xs text-muted-foreground">
+                  Keep your account secure — 2FA is {notifications.twoFactor ? 'enabled' : 'disabled'}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-4 space-y-4">
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">Usage</p>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span>Seats</span>
+                    <span className="font-medium">
+                      {accountOverview.seatUsage.used}/{accountOverview.seatUsage.total}
+                    </span>
+                  </div>
+                  <Progress value={seatUsagePercent} className="h-2" />
+                  <p className="text-xs text-muted-foreground">{seatUsagePercent}% of seats in use</p>
+                </div>
+                <div className="space-y-1 text-sm">
+                  <div className="flex items-center justify-between">
+                    <span>Storage</span>
+                    <span className="font-medium">{accountOverview.storageUsage}</span>
+                  </div>
+                  <Progress value={accountOverview.storageUsagePercent} className="h-2" />
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

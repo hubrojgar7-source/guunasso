@@ -1,25 +1,25 @@
 import React from 'react';
-import { 
-  CloudRain, 
-  Wheat, 
-  BarChart2, 
-  ShoppingCart, 
-  LineChart 
+import {
+  CloudRain,
+  Wheat,
+  BarChart2,
+  ShoppingCart,
+  LineChart
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 // Create a custom soil icon since it's not available in lucide-react
 const SoilIcon = (props) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    width="24" 
-    height="24" 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     {...props}
   >
     <path d="M2 19h20" />
@@ -30,14 +30,6 @@ const SoilIcon = (props) => (
     <path d="M18 11c1.5 0 3 .5 3 2-2 0-3 .5-3 2" />
   </svg>
 );
-
-// Define pattern styles
-const patternStyles = `
-  .bg-pattern {
-    background-color: #f9fafb;
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e5e7eb' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  }
-`;
 
 const DifferenceSection = () => {
   const features = [
@@ -74,22 +66,14 @@ const DifferenceSection = () => {
   ];
 
   return (
-    <section className="py-20 px-8 bg-pattern relative">
-      {/* Add pattern styles */}
-      <style dangerouslySetInnerHTML={{ __html: patternStyles }} />
-      
-      {/* Diagonal color band */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -left-1/4 -right-1/4 h-full bg-gradient-to-r from-blue-50 via-blue-100 to-blue-50 transform -rotate-6"></div>
-      </div>
-      
+    <section className="py-20 px-8 bg-blue-50 relative">
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
             Why Choose Krishak AI?
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Krishak AI combines cutting-edge technology with deep agricultural expertise to help Nepali 
+            Krishak AI combines cutting-edge technology with deep agricultural expertise to help Nepali
             farmers increase yields, reduce costs, and farm more sustainably.
           </p>
         </div>
@@ -111,8 +95,8 @@ const DifferenceSection = () => {
             </Card>
           ))}
         </div>
-      </div>
-    </section>
+      </div >
+    </section >
   );
 };
 

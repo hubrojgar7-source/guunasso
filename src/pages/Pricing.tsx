@@ -73,7 +73,7 @@ const Pricing = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="max-w-6xl mx-auto px-4 py-16">
+      <div className="max-w-7xl mx-auto px-4 pt-24 pb-16">
         {/* Header Section */}
         <div className="text-center mb-16">
           <div className="text-sm text-blue-600 font-medium mb-4">Pricing</div>
