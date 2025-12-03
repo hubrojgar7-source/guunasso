@@ -1,73 +1,93 @@
-# Welcome to your Lovable project
+# Krishak AI - Agriculture Solutions Platform
 
-## Project info
+A comprehensive platform designed for Nepalese farmers, providing tools for crop monitoring, weather alerts, market prices, and agricultural management.
 
-**URL**: https://lovable.dev/projects/eb8feda9-14af-4f63-8c43-aeea2892210d
+## Project Overview
 
-## How can I edit this code?
+Krishak AI is an all-in-one platform that helps farmers manage their agricultural operations efficiently. The platform offers features including:
 
-There are several ways of editing your application.
+- Crop monitoring and health tracking
+- Weather forecasting and alerts
+- Market price updates
+- Pest & disease detection
+- Soil analysis reports
+- Community forum access
+- Marketplace for agricultural products
 
-**Use Lovable**
+## Getting Started
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/eb8feda9-14af-4f63-8c43-aeea2892210d) and start prompting.
+### Prerequisites
 
-Changes made via Lovable will be committed automatically to this repo.
+- Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Step 1: Clone the repository
+git clone https://github.com/ggg436/Krishak-Ai.git
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Step 2: Navigate to the project directory
+cd Krishak-Ai
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Step 3: Install the necessary dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Step 4: Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The application will be available at `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
+## Technologies Used
 
 This project is built with:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- **Vite** - Build tool and development server
+- **TypeScript** - Type-safe JavaScript
+- **React** - UI library
+- **shadcn-ui** - UI component library
+- **Tailwind CSS** - Utility-first CSS framework
+- **Firebase** - Backend services (authentication, Firestore)
 
-## How can I deploy this project?
+## Project Structure
 
-Simply open [Lovable](https://lovable.dev/projects/eb8feda9-14af-4f63-8c43-aeea2892210d) and click on Share -> Publish.
+```
+src/
+├── components/     # Reusable UI components
+├── pages/         # Page components
+├── hooks/         # Custom React hooks
+├── lib/           # Utility functions and services
+├── locales/       # Internationalization files
+└── services/      # API and service integrations
+```
 
-## Can I connect a custom domain to my Lovable project?
+## Features
 
-Yes, you can!
+### Pricing Plans
+- Beginner Farmer (NPR 2,000/month)
+- Growing Farmer (NPR 4,000/month)
+- Commercial Farmer (NPR 7,000/month)
+- Enterprise (NPR 12,000/month)
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Account Management
+- Profile management
+- Workspace settings
+- Team member management
+- Subscription management
+- Security settings
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## Deployment
+
+The project is configured for deployment on Vercel. Simply push to the main branch and the changes will be automatically deployed.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is proprietary software for Krishak AI.
+
+## Contact
+
+For questions or support, please contact the Krishak AI team.
