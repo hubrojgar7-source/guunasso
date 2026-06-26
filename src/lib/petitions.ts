@@ -40,6 +40,7 @@ export interface Petition {
   status: PetitionStatus;
   createdAt: Date;
   updatedAt: Date;
+  mediaUrls?: string[];
 }
 
 export interface Signature {
@@ -54,6 +55,7 @@ export interface CreatePetitionData {
   description: string;
   category: PetitionCategory;
   targetSignatures: number;
+  mediaUrls?: string[];
 }
 
 const toDate = (val: unknown): Date => {
@@ -71,7 +73,7 @@ export const createPetition = async (data: CreatePetitionData): Promise<string> 
   if (!user) throw new Error('Authentication required');
 
   const petitionRef = doc(collection(db, 'petitions'));
-  await setDoc(petitionRef, {
+  const petitionData: Record<string, any> = {
     title: data.title,
     description: data.description,
     category: data.category,
@@ -82,7 +84,11 @@ export const createPetition = async (data: CreatePetitionData): Promise<string> 
     status: 'active',
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
-  });
+  };
+  if (data.mediaUrls && data.mediaUrls.length > 0) {
+    petitionData.mediaUrls = data.mediaUrls;
+  }
+  await setDoc(petitionRef, petitionData);
 
   return petitionRef.id;
 };
@@ -118,6 +124,7 @@ export const getPetitions = async (filters?: {
         status: data.status || 'active',
         createdAt: toDate(data.createdAt),
         updatedAt: toDate(data.updatedAt),
+        mediaUrls: data.mediaUrls,
       });
     }
 
@@ -251,9 +258,10 @@ export const getMyPetitions = async (): Promise<Petition[]> => {
       createdByName: data.createdByName,
       status: data.status || 'active',
       createdAt: toDate(data.createdAt),
-      updatedAt: toDate(data.updatedAt),
-    });
-  }
+        updatedAt: toDate(data.updatedAt),
+        mediaUrls: data.mediaUrls,
+      };
+    }
 
   petitions.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   return petitions;

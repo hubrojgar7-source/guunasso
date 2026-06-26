@@ -8,9 +8,10 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ScrollText, Plus, Users, Clock, CheckCircle, AlertCircle, Loader2, Pen, Eraser, Trash2 } from 'lucide-react';
+import { ScrollText, Plus, Users, Clock, CheckCircle, AlertCircle, Loader2, Pen, Eraser, Trash2, Image } from 'lucide-react';
 import { getPetitions, createPetition, signPetition, getUserSignature, deletePetition, Petition as PetitionType, PetitionCategory } from '@/lib/petitions';
 import { useAuth } from '@/hooks/useAuth';
+import { fileToBase64 } from '@/lib/storage';
 
 const Petition = () => {
   const { toast } = useToast();
@@ -26,6 +27,7 @@ const Petition = () => {
   const [formData, setFormData] = useState({ title: '', description: '', category: '' as PetitionCategory, targetSignatures: 100 });
   const [selectedPetition, setSelectedPetition] = useState<PetitionType | null>(null);
   const [showSignaturePad, setShowSignaturePad] = useState(false);
+  const [newImages, setNewImages] = useState<File[]>([]);
 
   // Signature pad state
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -155,9 +157,14 @@ const Petition = () => {
   const handleCreate = async () => {
     if (!formData.title || !formData.description || !formData.category) return;
     try {
-      const id = await createPetition(formData);
+      const mediaUrls: string[] = [];
+      for (const file of newImages) {
+        mediaUrls.push(await fileToBase64(file));
+      }
+      await createPetition({ ...formData, mediaUrls: mediaUrls.length > 0 ? mediaUrls : undefined });
       setIsDialogOpen(false);
       setFormData({ title: '', description: '', category: '' as PetitionCategory, targetSignatures: 100 });
+      setNewImages([]);
       toast({ title: 'मागपत्र सिर्जना गरियो / Petition Created!', description: 'तपाईंको मागपत्र सफलतापूर्वक सिर्जना गरियो।' });
       fetchPetitions();
     } catch (err: any) {
@@ -245,6 +252,24 @@ const Petition = () => {
                 <Label>विवरण / Description</Label>
                 <Textarea value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} className="min-h-[120px]" placeholder="मागपत्रको विस्तृत विवरण" />
               </div>
+              <div className="space-y-2">
+                <Label>तस्बिर / Images</Label>
+                <label className="flex items-center justify-center gap-2 h-12 px-4 rounded-xl border-2 border-dashed border-muted-foreground/30 cursor-pointer hover:border-primary/50 transition-colors bg-muted/30">
+                  <Image className="w-5 h-5 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">{newImages.length > 0 ? `${newImages.length} तस्बिर(हरू) चयन / ${newImages.length} image(s) selected` : 'तस्बिर चयन गर्नुहोस् / Choose Images'}</span>
+                  <input type="file" accept="image/*" multiple className="hidden" onChange={e => { const files = e.target.files; if (files) setNewImages(Array.from(files)); }} />
+                </label>
+                {newImages.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {Array.from(newImages).map((file, i) => (
+                      <div key={i} className="text-xs bg-muted px-2 py-1 rounded flex items-center gap-1">
+                        {file.name}
+                        <button onClick={() => setNewImages(prev => prev.filter((_, j) => j !== i))} className="text-destructive hover:text-destructive/80 ml-1">&times;</button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
               <Button onClick={handleCreate} className="w-full h-12">सिर्जना गर्नुहोस् / Create</Button>
             </div>
           </DialogContent>
@@ -294,6 +319,17 @@ const Petition = () => {
                 </CardHeader>
                 <CardContent className="px-6 pb-6">
                   <p className="text-sm text-muted-foreground mb-5 leading-relaxed line-clamp-3">{petition.description}</p>
+
+                  {petition.mediaUrls && petition.mediaUrls.length > 0 && (
+                    <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
+                      {petition.mediaUrls.slice(0, 3).map((url, i) => (
+                        <img key={i} src={url} alt="" className="w-20 h-20 object-cover rounded-lg border shrink-0" />
+                      ))}
+                      {petition.mediaUrls.length > 3 && (
+                        <div className="w-20 h-20 rounded-lg border bg-muted flex items-center justify-center text-xs text-muted-foreground shrink-0">+{petition.mediaUrls.length - 3}</div>
+                      )}
+                    </div>
+                  )}
 
                   <div className="space-y-3 mb-5">
                     <div className="flex justify-between text-sm">
@@ -347,10 +383,21 @@ const Petition = () => {
 
               <div className="space-y-5 py-4">
                 {/* Full description */}
-                <div className="bg-muted rounded-lg p-5 border">
-                  <h4 className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">विवरण / Description</h4>
-                  <p className="text-foreground text-sm leading-relaxed whitespace-pre-wrap">{selectedPetition.description}</p>
-                </div>
+                  <div className="bg-muted rounded-lg p-5 border">
+                    <h4 className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">विवरण / Description</h4>
+                    <p className="text-foreground text-sm leading-relaxed whitespace-pre-wrap">{selectedPetition.description}</p>
+                  </div>
+
+                  {selectedPetition.mediaUrls && selectedPetition.mediaUrls.length > 0 && (
+                    <div>
+                      <h4 className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">तस्बिर / Images</h4>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {selectedPetition.mediaUrls.map((url, i) => (
+                          <img key={i} src={url} alt="" className="w-full h-32 object-cover rounded-lg border" />
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                 {/* Signature progress */}
                 <div className="space-y-3">
