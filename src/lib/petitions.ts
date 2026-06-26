@@ -154,6 +154,7 @@ export const getPetitionById = async (petitionId: string): Promise<Petition | nu
       status: data.status || 'active',
       createdAt: toDate(data.createdAt),
       updatedAt: toDate(data.updatedAt),
+      mediaUrls: data.mediaUrls,
     };
   } catch (error) {
     console.error('Error fetching petition:', error);
@@ -241,28 +242,33 @@ export const getMyPetitions = async (): Promise<Petition[]> => {
   const user = auth.currentUser;
   if (!user) throw new Error('Authentication required');
 
-  const q = query(collection(db, 'petitions'), where('createdBy', '==', user.uid));
-  const snap = await getDocs(q);
-  const petitions: Petition[] = [];
+  try {
+    const q = query(collection(db, 'petitions'), where('createdBy', '==', user.uid));
+    const snap = await getDocs(q);
+    const petitions: Petition[] = [];
 
-  for (const docSnap of snap.docs) {
-    const data = docSnap.data();
-    petitions.push({
-      id: docSnap.id,
-      title: data.title,
-      description: data.description,
-      category: data.category,
-      targetSignatures: data.targetSignatures || 100,
-      totalSignatures: data.totalSignatures || 0,
-      createdBy: data.createdBy,
-      createdByName: data.createdByName,
-      status: data.status || 'active',
-      createdAt: toDate(data.createdAt),
+    for (const docSnap of snap.docs) {
+      const data = docSnap.data();
+      petitions.push({
+        id: docSnap.id,
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        targetSignatures: data.targetSignatures || 100,
+        totalSignatures: data.totalSignatures || 0,
+        createdBy: data.createdBy,
+        createdByName: data.createdByName,
+        status: data.status || 'active',
+        createdAt: toDate(data.createdAt),
         updatedAt: toDate(data.updatedAt),
         mediaUrls: data.mediaUrls,
-      };
+      });
     }
 
-  petitions.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-  return petitions;
+    petitions.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    return petitions;
+  } catch (error) {
+    console.error('Error fetching my petitions:', error);
+    throw error;
+  }
 };
