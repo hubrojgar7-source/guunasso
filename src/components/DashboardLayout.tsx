@@ -20,8 +20,7 @@ const DashboardLayout = () => {
         className={`flex-1 flex flex-col ${isCollapsed ? 'ml-[110px]' : 'ml-[280px]'} transition-[margin] duration-200`}
         style={{ width: 'calc(100% - ' + (isCollapsed ? '110px' : '280px') + ')' }}
       >
-        {/* Only show the header when NOT on polls page */}
-        {!isPolls && <DashboardHeader />}
+        <DashboardHeader />
         <main className={`flex-1 relative ${
           isPolls
             ? 'scale-100 origin-top-left w-full'

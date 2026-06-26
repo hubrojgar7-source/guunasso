@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -8,6 +8,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 const Blog = () => {
+  const [searchQuery, setSearchQuery] = useState('');
   const blogPosts = [
     {
       id: 1,
@@ -127,6 +128,14 @@ const Blog = () => {
     }
   ];
 
+  const filteredPosts = searchQuery
+    ? blogPosts.filter(p =>
+        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.tags?.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()))
+      )
+    : blogPosts;
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -150,9 +159,11 @@ const Blog = () => {
               <Input
                 placeholder="Search agricultural topics"
                 className="pl-10 rounded-xl border-gray-200"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <Button className="px-6 py-2 rounded-xl">
+            <Button className="px-6 py-2 rounded-xl" onClick={() => setSearchQuery(searchQuery)}>
               Find Now
             </Button>
           </div>
@@ -170,7 +181,12 @@ const Blog = () => {
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {blogPosts.map((post) => (
+                {filteredPosts.length === 0 ? (
+                  <div className="col-span-full text-center py-12">
+                    <p className="text-gray-500">No posts found matching your search.</p>
+                  </div>
+                ) : (
+                  filteredPosts.map((post) => (
                   <Card key={post.id} className="overflow-hidden rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
                     <div className="aspect-[4/3] overflow-hidden">
                       <img
@@ -197,7 +213,7 @@ const Blog = () => {
                       </Link>
                     </CardContent>
                   </Card>
-                ))}
+                )))}
               </div>
             </div>
 

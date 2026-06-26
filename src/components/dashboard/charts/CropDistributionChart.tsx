@@ -2,40 +2,37 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts';
 import { useTranslation } from 'react-i18next';
-import { getSpecificChartData, getDefaultCropDistributionData, CropDistributionData } from '@/lib/chartData';
+import { getSpecificChartData, getDefaultComplaintCategoryData, ComplaintCategoryData } from '@/lib/chartData';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export const CropDistributionChart = () => {
   const { t } = useTranslation();
-  const [cropDistributionData, setCropDistributionData] = useState<CropDistributionData[]>([]);
+  const [chartData, setChartData] = useState<ComplaintCategoryData[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const loadChartData = async () => {
-      try {
-        // Try to get user-specific data from Firestore
-        const userData = await getSpecificChartData<CropDistributionData>('cropDistributionData');
-        
-        if (userData && userData.length > 0) {
-          setCropDistributionData(userData);
-        } else {
-          // Fall back to default data if no user data exists
-          setCropDistributionData(getDefaultCropDistributionData());
-        }
-      } catch (error) {
-        console.error('Error loading crop distribution data:', error);
-        // Fall back to default data on error
-        setCropDistributionData(getDefaultCropDistributionData());
-      } finally {
-        setLoading(false);
+  const loadChartData = async () => {
+    try {
+      const userData = await getSpecificChartData<ComplaintCategoryData>('complaintCategoryData');
+      if (userData && userData.length > 0) {
+        setChartData(userData);
+      } else {
+        setChartData(getDefaultComplaintCategoryData());
       }
-    };
-    
+    } catch (error) {
+      console.error('Error loading complaint category data:', error);
+      setChartData(getDefaultComplaintCategoryData());
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     loadChartData();
+    window.addEventListener('chart-data-updated', loadChartData);
+    return () => window.removeEventListener('chart-data-updated', loadChartData);
   }, []);
 
-  // Translate crop names
-  const translatedData = cropDistributionData.map(item => ({
+  const translatedData = chartData.map(item => ({
     ...item,
     name: t(item.nameKey)
   }));
@@ -68,7 +65,7 @@ export const CropDistributionChart = () => {
     <Card className="bg-white border border-gray-200/50 rounded-2xl overflow-hidden shadow-sm h-full flex flex-col">
       <CardHeader className="pb-2 px-4 pt-4">
         <div className="flex items-center justify-between flex-wrap gap-2">
-          <CardTitle className="text-lg font-semibold text-zinc-900">{t('chart.cropDistribution')}</CardTitle>
+          <CardTitle className="text-lg font-semibold text-zinc-900">{t('chart.complaintCategories')}</CardTitle>
           <select 
             value={filter}
             onChange={(e) => setFilter(e.target.value as 'week' | 'month' | 'year')}
@@ -130,7 +127,7 @@ export const CropDistributionChart = () => {
           <div className="flex items-center justify-center h-full flex-col">
             <div className="text-gray-400 text-lg mb-2">{t('chart.noDataAvailable')}</div>
             <p className="text-gray-500 text-sm text-center max-w-md">
-              {t('chart.noDataMessage', 'Please add crop distribution data to see the chart')}
+              {t('chart.noDataMessage', 'Please add complaint category data to see the chart')}
             </p>
           </div>
         )}

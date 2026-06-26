@@ -7,29 +7,29 @@ import { formatCurrency, formatNumber, formatPercent } from '@/lib/formatters';
 
 const statsData = [
   {
-    titleKey: "stats.todaysYield",
-    value: 12426,
-    change: 36,
+    titleKey: "stats.totalComplaints",
+    value: 15682,
+    change: 12,
     isPositive: true,
     isCurrency: false
   },
   {
-    titleKey: "stats.totalRevenue",
-    value: 238485,
-    change: -14,
-    isPositive: false,
-    isCurrency: true
-  },
-  {
-    titleKey: "stats.totalOrders",
-    value: 84382,
-    change: 36,
+    titleKey: "stats.resolvedComplaints",
+    value: 12453,
+    change: 8,
     isPositive: true,
     isCurrency: false
   },
   {
-    titleKey: "stats.totalFarmers",
-    value: 33493,
+    titleKey: "stats.activePetitions",
+    value: 342,
+    change: 24,
+    isPositive: true,
+    isCurrency: false
+  },
+  {
+    titleKey: "stats.totalSignatures",
+    value: 28491,
     change: 36,
     isPositive: true,
     isCurrency: false

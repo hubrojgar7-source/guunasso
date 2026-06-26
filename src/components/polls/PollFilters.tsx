@@ -44,16 +44,16 @@ export const PollFilters: React.FC<PollFiltersProps> = ({
   setLocationFilter,
 }) => {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex flex-col md:flex-row md:items-center gap-4">
-      <div className="flex gap-1 bg-gray-100 p-1 rounded-lg flex-shrink-0">
+    <div className="flex items-center gap-3 flex-wrap">
+      <div className="flex gap-1 bg-muted p-1 rounded-lg">
         {STATUS_TABS.map(({ label, value }) => (
           <button
             key={value}
             onClick={() => setStatusFilter(value as any)}
-            className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all ${
+            className={`px-4 py-2 text-sm font-semibold rounded-md transition-all ${
               statusFilter === value
-                ? 'bg-[#10B981] text-white shadow-sm'
-                : 'text-gray-500 hover:text-[#10B981]'
+                ? 'bg-background text-foreground shadow-sm'
+                : 'text-muted-foreground hover:text-foreground'
             }`}
           >
             {label}
@@ -61,47 +61,45 @@ export const PollFilters: React.FC<PollFiltersProps> = ({
         ))}
       </div>
 
-      <div className="flex-1 flex flex-col sm:flex-row gap-3">
-        <div className="relative flex-1">
-          <Layers className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#10B981]" />
-          <select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value as PollCategory | 'all')}
-            className="w-full pl-10 pr-4 py-2.5 text-sm text-gray-700 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#10B981]/30 appearance-none cursor-pointer font-medium"
-          >
-            {CATEGORIES.map(({ label, value }) => (
-              <option key={value} value={value}>{label}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="relative flex-1">
-          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#10B981]" />
-          <select
-            value={locationFilter}
-            onChange={(e) => setLocationFilter(e.target.value as LocationScope | 'all')}
-            className="w-full pl-10 pr-4 py-2.5 text-sm text-gray-700 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#10B981]/30 appearance-none cursor-pointer font-medium"
-          >
-            {LOCATIONS.map(({ label, value }) => (
-              <option key={value} value={value}>{label}</option>
-            ))}
-          </select>
-        </div>
-
-        {(statusFilter !== 'all' || categoryFilter !== 'all' || locationFilter !== 'all') && (
-          <button
-            onClick={() => {
-              setStatusFilter('all');
-              setCategoryFilter('all');
-              setLocationFilter('all');
-            }}
-            className="flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-[#10B981] bg-[#10B981]/10 rounded-lg hover:bg-[#10B981]/20 transition-colors flex-shrink-0"
-          >
-            <Filter className="w-4 h-4" />
-            Reset
-          </button>
-        )}
+      <div className="relative flex-1 min-w-[160px] max-w-[200px]">
+        <Layers className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <select
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value as PollCategory | 'all')}
+          className="w-full pl-9 pr-3 h-10 text-sm bg-muted border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-ring appearance-none cursor-pointer"
+        >
+          {CATEGORIES.map(({ label, value }) => (
+            <option key={value} value={value}>{label}</option>
+          ))}
+        </select>
       </div>
+
+      <div className="relative flex-1 min-w-[160px] max-w-[200px]">
+        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <select
+          value={locationFilter}
+          onChange={(e) => setLocationFilter(e.target.value as LocationScope | 'all')}
+          className="w-full pl-9 pr-3 h-10 text-sm bg-muted border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-ring appearance-none cursor-pointer"
+        >
+          {LOCATIONS.map(({ label, value }) => (
+            <option key={value} value={value}>{label}</option>
+          ))}
+        </select>
+      </div>
+
+      {(statusFilter !== 'all' || categoryFilter !== 'all' || locationFilter !== 'all') && (
+        <button
+          onClick={() => {
+            setStatusFilter('all');
+            setCategoryFilter('all');
+            setLocationFilter('all');
+          }}
+          className="flex items-center gap-2 h-10 px-4 text-sm font-semibold text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"
+        >
+          <Filter className="w-4 h-4" />
+          Reset
+        </button>
+      )}
     </div>
   );
 };

@@ -1,8 +1,7 @@
 
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Search, ChevronDown, Bell } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import { ChevronDown, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuthContext } from '@/lib/AuthProvider';
@@ -34,8 +33,14 @@ const DashboardHeader: React.FC = () => {
     if (path.includes('/dr-summarizer')) return 'Dr Summarizer';
     if (path.includes('/data')) return 'Market Data';
     if (path.includes('/pricing')) return 'Pricing';
-    if (path.includes('/help')) return 'Help';
+    if (path.includes('/help')) return 'Help Center';
     if (path.includes('/complaints')) return 'Complaints';
+    if (path.includes('/petition')) return 'Petition / मागपत्र';
+    if (path.includes('/bus-fare')) return 'Bus Fare';
+    if (path.includes('/polls')) return 'Polls / मतदान';
+    if (path.includes('/messaging')) return 'Messaging';
+    if (path.includes('/weather')) return 'Weather';
+    if (path.includes('/transactions')) return 'Transactions';
     return 'Dashboard';
   };
 
@@ -45,16 +50,7 @@ const DashboardHeader: React.FC = () => {
         <h1 className="text-2xl font-bold text-gray-900 tracking-tight">{getPageTitle()}</h1>
       </div>
 
-      <div className="flex-1 max-w-xl mx-4">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#10B981]" size={18} />
-          <Input
-            type="text"
-            placeholder="Search complaints, petitions..."
-            className="w-full pl-10 pr-4 h-10 text-sm bg-gray-50 border-gray-200 rounded-lg focus-visible:ring-[#10B981] placeholder:text-gray-400"
-          />
-        </div>
-      </div>
+      <div className="flex-1" />
 
       <div className="flex items-center gap-4">
         <Button variant="ghost" className="relative p-2 hover:bg-gray-50">

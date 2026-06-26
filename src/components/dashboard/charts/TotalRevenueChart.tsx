@@ -12,28 +12,26 @@ export const TotalRevenueChart = () => {
   const [revenueData, setRevenueData] = useState<RevenueData[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const loadChartData = async () => {
-      try {
-        // Try to get user-specific data from Firestore
-        const userData = await getSpecificChartData<RevenueData>('revenueData');
-
-        if (userData && userData.length > 0) {
-          setRevenueData(userData);
-        } else {
-          // Fall back to default data if no user data exists
-          setRevenueData(getDefaultRevenueData());
-        }
-      } catch (error) {
-        console.error('Error loading revenue data:', error);
-        // Fall back to default data on error
+  const loadChartData = async () => {
+    try {
+      const userData = await getSpecificChartData<RevenueData>('revenueData');
+      if (userData && userData.length > 0) {
+        setRevenueData(userData);
+      } else {
         setRevenueData(getDefaultRevenueData());
-      } finally {
-        setLoading(false);
       }
-    };
+    } catch (error) {
+      console.error('Error loading revenue data:', error);
+      setRevenueData(getDefaultRevenueData());
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     loadChartData();
+    window.addEventListener('chart-data-updated', loadChartData);
+    return () => window.removeEventListener('chart-data-updated', loadChartData);
   }, []);
 
   // Translate days for chart

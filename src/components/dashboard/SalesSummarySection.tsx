@@ -11,8 +11,8 @@ export const SalesSummarySection = () => {
   
   const salesData = [
     {
-      title: 'Revenue',
-      value: 24323,
+      title: 'Complaints Today',
+      value: 243,
       isCurrency: false,
       change: 5,
       icon: Wallet,
@@ -21,18 +21,18 @@ export const SalesSummarySection = () => {
       circleBg: "bg-pink-400"
     },
     {
-      title: 'Grants',
-      value: 6937,
+      title: 'Resolved Today',
+      value: 189,
       isCurrency: false,
-      change: 2,
+      change: 12,
       icon: Landmark,
       bgColor: "bg-orange-100",
       iconColor: "text-white",
       circleBg: "bg-orange-300"
     },
     {
-      title: 'Other Receipts',
-      value: 120,
+      title: 'Active Petitions',
+      value: 342,
       isCurrency: false,
       change: 8,
       icon: Receipt,
@@ -41,10 +41,10 @@ export const SalesSummarySection = () => {
       circleBg: "bg-green-400"
     },
     {
-      title: 'Treasury Exp.',
-      value: 39600,
+      title: 'Total Signatures',
+      value: 28491,
       isCurrency: false,
-      change: 1,
+      change: 18,
       icon: CreditCard,
       bgColor: "bg-purple-100",
       iconColor: "text-white",
@@ -54,16 +54,16 @@ export const SalesSummarySection = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
-      {/* Today's Sales */}
+      {/* Today's Overview */}
       <Card className="bg-white border border-gray-200/50 rounded-lg overflow-hidden shadow-sm h-full w-full relative">
         <CardHeader className="pb-0 px-3 pt-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg font-bold text-zinc-900">Today's Financials</CardTitle>
+            <CardTitle className="text-lg font-bold text-zinc-900">Today's Overview</CardTitle>
             <button className="text-xs text-gray-600 border border-gray-100 rounded-md px-2 py-0.5 bg-gray-50 hover:bg-gray-100">
-              Export Report
+              View Report
             </button>
           </div>
-          <p className="text-xs text-gray-600 mb-2">Summary of daily revenue and expenditure</p>
+          <p className="text-xs text-gray-600 mb-2">Summary of today's platform activity</p>
         </CardHeader>
         <CardContent className="absolute bottom-6 left-0 right-0 px-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">

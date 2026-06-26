@@ -43,7 +43,7 @@ export const CropYieldChart = () => {
       <CardHeader className="pb-3 px-4 pt-4">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-lg font-semibold text-zinc-900">{t('chart.cropYield')}</CardTitle>
+            <CardTitle className="text-lg font-semibold text-zinc-900">{t('chart.petitionGrowth')}</CardTitle>
             <select 
               value={filter}
               onChange={(e) => setFilter(e.target.value as 'week' | 'month' | 'year')}

@@ -30,6 +30,7 @@ import { useToast } from '@/hooks/use-toast';
 const Settings = () => {
   const { toast } = useToast();
   const [activeSection, setActiveSection] = useState('general');
+  const [settingsSearch, setSettingsSearch] = useState('');
   const [notifications, setNotifications] = useState({
     dailyUpdate: true,
     newEvent: true,
@@ -1011,6 +1012,8 @@ const Settings = () => {
                     type="text"
                     placeholder="Search settings, members, or billing"
                     className="w-full pl-4 pr-8 py-2 text-sm border border-border/50 rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    value={settingsSearch}
+                    onChange={(e) => setSettingsSearch(e.target.value)}
                   />
                   <div className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
                     ⌘ K
@@ -1116,13 +1119,20 @@ const Settings = () => {
         {/* Sidebar */}
         <div className="w-64 min-h-screen bg-card border-r border-border/50 p-4">
           <div className="space-y-6">
-            {sidebarItems.map((section) => (
+            {sidebarItems.flatMap(section => {
+              const items = settingsSearch
+                ? section.items.filter(item =>
+                    item.label.toLowerCase().includes(settingsSearch.toLowerCase())
+                  )
+                : section.items;
+              if (items.length === 0) return [];
+              return (
               <div key={section.category} className="space-y-2">
                 <p className="text-xs font-medium text-muted-foreground tracking-wider">
                   {section.category}
                 </p>
                 <div className="space-y-1">
-                  {section.items.map((item) => (
+                  {items.map((item) => (
                     <button
                       key={item.id}
                       onClick={() => setActiveSection(item.id)}
@@ -1137,8 +1147,8 @@ const Settings = () => {
                     </button>
                   ))}
                 </div>
-              </div>
-            ))}
+              </div>);
+            })}
           </div>
 
           {/* Bottom section */}

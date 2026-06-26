@@ -17,6 +17,7 @@ import Settings from "./pages/Settings";
 import Help from "./pages/Help";
 import Complaints from "./pages/Complaints";
 import BusFare from "./pages/BusFare";
+import Petition from "./pages/Petition";
 import Team from "./pages/Team";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
@@ -83,6 +84,7 @@ const App = () => (
               <Route path="help" element={<Help />} />
               <Route path="complaints" element={<Complaints />} />
               <Route path="bus-fare" element={<BusFare />} />
+              <Route path="petition" element={<Petition />} />
             </Route>
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

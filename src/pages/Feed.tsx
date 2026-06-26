@@ -619,13 +619,23 @@ const Feed = () => {
             <div className="flex justify-center py-10">
               <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
             </div>
-          ) : posts.length === 0 ? (
-            <div className="text-center py-10">
-              <p className="text-gray-500">No posts found</p>
-            </div>
-          ) : (
+          ) : (() => {
+            const displayPosts = searchQuery
+              ? posts.filter(p => 
+                  p.title?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                  p.content?.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+              : posts;
+            if (displayPosts.length === 0) {
+              return (
+                <div className="text-center py-10">
+                  <p className="text-gray-500">No posts found</p>
+                </div>
+              );
+            }
+            return (
             <div className="space-y-6">
-              {posts.map((post) => (
+              {displayPosts.map((post) => (
                 <Card key={post.id} className="rounded-3xl border-gray-200 overflow-hidden">
                   <CardHeader className="bg-white p-6">
                     <div className="flex justify-between items-start">
@@ -748,7 +758,8 @@ const Feed = () => {
                 </Card>
               ))}
             </div>
-          )}
+          );
+        })()}
         </div>
 
         {/* Right Sidebar */}

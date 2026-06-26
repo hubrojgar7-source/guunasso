@@ -13,6 +13,7 @@ import {
   HelpCircle,
   ShieldAlert,
   Bus,
+  ScrollText,
 } from 'lucide-react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -77,6 +78,12 @@ export const AppSidebar = () => {
         showFor: ['farmer', 'user', 'admin'],
       },
       {
+        title: 'Petition',
+        url: '/dashboard/petition',
+        icon: ScrollText,
+        showFor: ['farmer', 'user', 'admin'],
+      },
+      {
         title: t('common.help'),
         url: '/dashboard/help',
         icon: HelpCircle,
@@ -107,8 +114,8 @@ export const AppSidebar = () => {
     }
   };
 
-  const handleGetPro = () => {
-    navigate('/dashboard/pricing');
+  const handleContactUs = () => {
+    navigate('/dashboard/help');
   };
 
   return (
@@ -177,17 +184,19 @@ export const AppSidebar = () => {
           <div className={`p-4 mt-4 ${isCollapsed ? 'hidden' : 'block'}`}>
             <div className="bg-[#10B981] rounded-xl p-5 text-white">
               <div className="flex items-center gap-2 mb-3">
-                <Star className="w-5 h-5 text-yellow-300" />
+                <HelpCircle className="w-5 h-5 text-white/90" />
                 <span className="text-sm font-semibold">
-                  गुनासो.com {t('common.pro')}
+                  सहयोग / Support
                 </span>
               </div>
-              <p className="text-sm text-white/80 mb-4 leading-relaxed">{t('common.access')}</p>
+              <p className="text-sm text-white/80 mb-4 leading-relaxed">
+                सार्वजनिक गुनासो सुनुवाई र सुशासनको लागि हाम्रो अभियानलाई समर्थन गर्नुहोस्।
+              </p>
               <Button
                 className="w-full bg-white text-[#10B981] hover:bg-gray-50 rounded-lg text-sm font-semibold h-10 border-0 shadow-none"
-                onClick={handleGetPro}
+                onClick={handleContactUs}
               >
-                {t('common.get')} {t('common.pro')}
+                हामीलाई सम्पर्क गर्नुहोस्
               </Button>
             </div>
           </div>

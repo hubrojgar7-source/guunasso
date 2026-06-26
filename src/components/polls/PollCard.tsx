@@ -13,11 +13,11 @@ interface PollCardProps {
 }
 
 const BAR_COLORS = [
-  'bg-gradient-to-r from-[#10B981] to-[#34d399]',
-  'bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8]',
-  'bg-gradient-to-r from-[#6366f1] to-[#818cf8]',
-  'bg-gradient-to-r from-[#f59e0b] to-[#fbbf24]',
-  'bg-gradient-to-r from-[#14b8a6] to-[#5eead4]',
+  'bg-primary',
+  'bg-blue-500',
+  'bg-violet-500',
+  'bg-amber-500',
+  'bg-teal-500',
 ];
 
 export const PollCard: React.FC<PollCardProps> = ({ poll, onClick, onDeleted }) => {
@@ -47,32 +47,32 @@ export const PollCard: React.FC<PollCardProps> = ({ poll, onClick, onDeleted }) 
 
   return (
     <div
-      className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 cursor-pointer hover:shadow-md hover:border-gray-200 transition-all duration-200 group relative"
+      className="bg-card rounded-xl border p-6 flex flex-col gap-4 cursor-pointer hover:shadow-md hover:border-foreground/20 transition-all duration-200 group relative"
       onClick={() => onClick(poll.id)}
     >
       {showConfirm && (
         <div
-          className="absolute inset-0 bg-white/95 backdrop-blur-sm rounded-xl z-10 flex flex-col items-center justify-center gap-4 p-6"
+          className="absolute inset-0 bg-background/95 backdrop-blur-sm rounded-xl z-10 flex flex-col items-center justify-center gap-4 p-6"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-            <Trash2 className="w-6 h-6 text-red-500" />
+          <div className="w-12 h-12 bg-destructive/10 rounded-full flex items-center justify-center">
+            <Trash2 className="w-6 h-6 text-destructive" />
           </div>
           <div className="text-center">
-            <p className="font-bold text-gray-800 text-base">Delete this poll?</p>
-            <p className="text-sm text-gray-500 mt-1">This action cannot be undone.</p>
+            <p className="font-bold text-foreground text-base">Delete this poll?</p>
+            <p className="text-sm text-muted-foreground mt-1">This action cannot be undone.</p>
           </div>
           <div className="flex gap-3 w-full">
             <button
               onClick={(e) => { e.stopPropagation(); setShowConfirm(false); }}
-              className="flex-1 px-4 py-2 rounded-lg text-sm font-semibold border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors"
+              className="flex-1 px-4 py-2 rounded-lg text-sm font-semibold border text-muted-foreground hover:bg-muted transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={handleDelete}
               disabled={isDeleting}
-              className="flex-1 px-4 py-2 rounded-lg text-sm font-bold bg-red-500 hover:bg-red-600 text-white transition-colors disabled:opacity-50"
+              className="flex-1 px-4 py-2 rounded-lg text-sm font-semibold bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-colors disabled:opacity-50"
             >
               {isDeleting ? 'Deleting…' : 'Yes, Delete'}
             </button>
@@ -82,11 +82,11 @@ export const PollCard: React.FC<PollCardProps> = ({ poll, onClick, onDeleted }) 
 
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap gap-2">
-          <span className="flex items-center gap-1 text-xs font-semibold bg-[#10B981]/10 text-[#10B981] px-3 py-1 rounded-full capitalize">
+          <span className="flex items-center gap-1 text-xs font-semibold bg-muted text-muted-foreground px-3 py-1 rounded-full capitalize">
             <Building2 className="w-3.5 h-3.5" />
             {poll.category}
           </span>
-          <span className="flex items-center gap-1 text-xs font-semibold bg-gray-100 text-gray-500 px-3 py-1 rounded-full capitalize">
+          <span className="flex items-center gap-1 text-xs font-semibold bg-muted text-muted-foreground px-3 py-1 rounded-full capitalize">
             <MapPin className="w-3.5 h-3.5" />
             {poll.locationScope}
           </span>
@@ -102,7 +102,7 @@ export const PollCard: React.FC<PollCardProps> = ({ poll, onClick, onDeleted }) 
         )}
       </div>
 
-      <h3 className="text-[15px] font-bold text-gray-800 leading-snug line-clamp-2 group-hover:text-[#10B981] transition-colors">
+      <h3 className="text-[15px] font-bold text-foreground leading-snug line-clamp-2 group-hover:text-foreground transition-colors">
         {poll.title}
       </h3>
 
@@ -114,10 +114,10 @@ export const PollCard: React.FC<PollCardProps> = ({ poll, onClick, onDeleted }) 
           return (
             <div key={option.id} className="flex flex-col gap-1.5">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-700 font-medium truncate max-w-[70%]">{option.text}</span>
-                <span className="text-gray-400 text-xs">{option.voteCount} votes</span>
+                <span className="text-foreground font-medium truncate max-w-[70%]">{option.text}</span>
+                <span className="text-muted-foreground text-xs">{option.voteCount} votes</span>
               </div>
-              <div className="w-full bg-gray-100 rounded-full h-6 overflow-hidden">
+              <div className="w-full bg-muted rounded-full h-6 overflow-hidden">
                 {pct > 0 ? (
                   <div
                     className={`${barColor} h-6 rounded-full flex items-center pl-2.5 transition-all duration-500`}
@@ -134,14 +134,14 @@ export const PollCard: React.FC<PollCardProps> = ({ poll, onClick, onDeleted }) 
         })}
       </div>
 
-      <div className="flex items-center justify-between pt-3 border-t border-gray-100 mt-auto gap-2 flex-wrap">
-        <div className="flex items-center gap-4 text-sm text-gray-400">
+      <div className="flex items-center justify-between pt-3 border-t mt-auto gap-2 flex-wrap">
+        <div className="flex items-center gap-4 text-sm text-muted-foreground">
           <span className="flex items-center gap-1.5">
-            <Users className="w-4 h-4 text-[#10B981]" />
-            <span className="font-semibold text-gray-600">{total.toLocaleString()}</span> votes
+            <Users className="w-4 h-4 text-muted-foreground" />
+            <span className="font-semibold text-foreground">{total.toLocaleString()}</span> votes
           </span>
           <span className="flex items-center gap-1.5">
-            <CalendarDays className="w-4 h-4 text-[#10B981]" />
+            <CalendarDays className="w-4 h-4 text-muted-foreground" />
             <span className="text-xs">
               {isEnded
                 ? `Ended ${formatDistanceToNow(poll.endDate, { addSuffix: true })}`
@@ -151,14 +151,14 @@ export const PollCard: React.FC<PollCardProps> = ({ poll, onClick, onDeleted }) 
         </div>
         <div className="flex items-center gap-2">
           {isEnded && (
-            <span className="text-xs text-red-500 font-semibold">Poll ended</span>
+            <span className="text-xs text-muted-foreground font-semibold">Poll ended</span>
           )}
           <button
             onClick={(e) => { e.stopPropagation(); onClick(poll.id); }}
-            className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all shadow-none ${
+            className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-all ${
               isEnded
-                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                : 'bg-[#10B981] hover:bg-[#059669] text-white'
+                ? 'bg-muted text-muted-foreground cursor-not-allowed'
+                : 'bg-primary text-primary-foreground hover:bg-primary/90'
             }`}
           >
             {isEnded ? 'View Results' : 'Vote Now'}

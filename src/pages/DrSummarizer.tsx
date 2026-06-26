@@ -128,159 +128,140 @@ const DrSummarizer = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="py-20 px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <div className="p-4 bg-[#10B981]/10 rounded-2xl">
-                <FileText className="w-10 h-10 text-[#10B981]" />
+    <div className="p-6">
+      <div className="mb-6">
+        <p className="text-sm text-muted-foreground">
+          Upload PDFs, Word Docs, Text files, or Images in any language. Our AI will automatically translate and extract the most important bullet points for you.
+        </p>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card className="bg-card">
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center gap-3 text-lg">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Upload className="w-5 h-5 text-primary" />
               </div>
-              <div>
-                <h1 className="text-4xl font-bold text-gray-900">Dr. Summarizer</h1>
-                <p className="text-gray-500">AI-Powered Multi-Format Document Insights</p>
-              </div>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Extract Key Insights <span className="text-[#10B981]">Instantly</span>
-            </h2>
-            <p className="text-gray-500 text-base lg:text-lg max-w-3xl mx-auto leading-relaxed">
-              Upload PDFs, Word Docs, Text files, or Images in any language. Our AI will automatically translate and extract the most important bullet points for you.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <Card className="border border-gray-100 shadow-sm rounded-xl overflow-hidden">
-              <CardHeader className="pb-6 border-b border-gray-100 bg-gray-50/50">
-                <CardTitle className="flex items-center gap-3 text-xl">
-                  <div className="p-2 bg-[#10B981]/10 rounded-lg">
-                    <Upload className="w-5 h-5 text-[#10B981]" />
-                  </div>
-                  Upload Document or Image
-                </CardTitle>
-                <CardDescription className="text-base">
-                  Supported formats: PDF, DOCX, TXT, JPG, PNG (Max 20MB)
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6 p-8">
-                <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center bg-gray-50 transition-all duration-300">
-                  {selectedFile ? (
-                    <div className="space-y-6">
-                      {fileType === 'image' && filePreview ? (
-                        <img 
-                          src={filePreview} 
-                          alt="Uploaded preview" 
-                          className="max-w-full h-48 object-contain mx-auto rounded-xl shadow-sm border border-gray-100"
-                        />
-                      ) : (
-                        <div className="flex flex-col items-center justify-center h-48">
-                          {fileType === 'pdf' && <FileText className="w-20 h-20 text-red-500 mb-4" />}
-                          {fileType === 'docx' && <File className="w-20 h-20 text-[#10B981] mb-4" />}
-                          {fileType === 'text' && <FileText className="w-20 h-20 text-gray-600 mb-4" />}
-                          <p className="text-lg font-medium text-gray-800 break-all px-4">{selectedFile.name}</p>
-                          <p className="text-sm text-gray-500 mt-1">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
-                        </div>
-                      )}
-                      
-                      <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <Button 
-                          onClick={processFileAndSummarize}
-                          disabled={isAnalyzing}
-                          className="bg-[#10B981] hover:bg-[#059669] text-white rounded-lg px-8 py-6 text-lg font-semibold shadow-none flex-1 sm:flex-none"
-                        >
-                          {isAnalyzing ? (
-                            <>
-                              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                              Extracting...
-                            </>
-                          ) : (
-                            <>
-                              <Sparkles className="w-5 h-5 mr-3" />
-                              Summarize Now
-                            </>
-                          )}
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          onClick={resetState}
-                          disabled={isAnalyzing}
-                          className="rounded-lg px-6 py-6 text-lg border-gray-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 flex-1 sm:flex-none"
-                        >
-                          <Trash2 className="w-5 h-5 mr-2" />
-                          Remove
-                        </Button>
-                      </div>
-                    </div>
+              Upload Document or Image
+            </CardTitle>
+            <CardDescription>
+              Supported formats: PDF, DOCX, TXT, JPG, PNG (Max 20MB)
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="border-2 border-dashed rounded-xl p-8 text-center bg-muted/50">
+              {selectedFile ? (
+                <div className="space-y-6">
+                  {fileType === 'image' && filePreview ? (
+                    <img 
+                      src={filePreview} 
+                      alt="Uploaded preview" 
+                      className="max-w-full h-48 object-contain mx-auto rounded-xl border"
+                    />
                   ) : (
-                    <div className="space-y-6 py-8">
-                      <div className="flex justify-center gap-4 text-gray-400">
-                        <FileText className="w-10 h-10" />
-                        <FileImage className="w-10 h-10" />
-                        <File className="w-10 h-10" />
-                      </div>
-                      <div>
-                        <p className="text-xl font-medium text-gray-900">Drag & drop or click to upload</p>
-                        <p className="text-gray-500 mt-2 text-sm">We'll automatically detect the language and extract the text.</p>
-                      </div>
-                      <input
-                        type="file"
-                        accept="image/*,.pdf,.doc,.docx,.txt,.md,.csv"
-                        onChange={handleFileUpload}
-                        className="hidden"
-                        id="doc-upload"
-                      />
-                      <label htmlFor="doc-upload">
-                        <Button className="cursor-pointer bg-white text-gray-900 border-2 border-gray-200 hover:bg-gray-50 rounded-lg px-8 py-6 text-base font-medium shadow-none" asChild>
-                          <span>Browse Files</span>
-                        </Button>
-                      </label>
+                    <div className="flex flex-col items-center justify-center h-48">
+                      {fileType === 'pdf' && <FileText className="w-20 h-20 text-red-500 mb-4" />}
+                      {fileType === 'docx' && <File className="w-20 h-20 text-primary mb-4" />}
+                      {fileType === 'text' && <FileText className="w-20 h-20 text-muted-foreground mb-4" />}
+                      <p className="text-lg font-semibold text-foreground break-all px-4">{selectedFile.name}</p>
+                      <p className="text-sm text-muted-foreground mt-1">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
                     </div>
                   )}
+                  
+                  <div className="flex gap-3 justify-center">
+                    <Button 
+                      onClick={processFileAndSummarize}
+                      disabled={isAnalyzing}
+                      className="h-12 px-8 flex-1 sm:flex-none"
+                    >
+                      {isAnalyzing ? (
+                        <>
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 mr-3"></div>
+                          Extracting...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-5 h-5 mr-2" />
+                          Summarize Now
+                        </>
+                      )}
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      onClick={resetState}
+                      disabled={isAnalyzing}
+                      className="h-12 px-6 flex-1 sm:flex-none"
+                    >
+                      <Trash2 className="w-5 h-5 mr-2" />
+                      Remove
+                    </Button>
+                  </div>
                 </div>
+              ) : (
+                <div className="space-y-6 py-6">
+                  <div className="flex justify-center gap-4 text-muted-foreground">
+                    <FileText className="w-10 h-10" />
+                    <FileImage className="w-10 h-10" />
+                    <File className="w-10 h-10" />
+                  </div>
+                  <div>
+                    <p className="text-xl font-semibold text-foreground">Drag & drop or click to upload</p>
+                    <p className="text-muted-foreground mt-2 text-sm">We'll automatically detect the language and extract the text.</p>
+                  </div>
+                  <input
+                    type="file"
+                    accept="image/*,.pdf,.doc,.docx,.txt,.md,.csv"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                    id="doc-upload"
+                  />
+                  <label htmlFor="doc-upload">
+                    <Button className="cursor-pointer h-12 px-8" variant="outline" asChild>
+                      <span>Browse Files</span>
+                    </Button>
+                  </label>
+                </div>
+              )}
+            </div>
 
-                {error && (
-                  <Alert className="bg-red-50 border-red-200 rounded-xl">
-                    <Info className="h-5 w-5 text-red-600" />
-                    <AlertDescription className="text-red-800 ml-2">
-                      {error}
-                    </AlertDescription>
-                  </Alert>
-                )}
-              </CardContent>
-            </Card>
+            {error && (
+              <Alert variant="destructive">
+                <Info className="h-5 w-5" />
+                <AlertDescription className="ml-2">
+                  {error}
+                </AlertDescription>
+              </Alert>
+            )}
+          </CardContent>
+        </Card>
 
-            <Card className="border border-gray-100 shadow-sm rounded-xl overflow-hidden h-full flex flex-col">
-              <CardHeader className="pb-6 border-b border-gray-100 bg-gray-50/50">
-                <CardTitle className="flex items-center gap-3 text-xl">
-                  <div className="p-2 bg-[#10B981]/10 rounded-lg">
-                    <Sparkles className="w-5 h-5 text-[#10B981]" />
-                  </div>
-                  Key Insights & Summary
-                </CardTitle>
-                <CardDescription className="text-base">
-                  AI-generated bullet points
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex-1 p-8 overflow-y-auto max-h-[600px]">
-                {!summary ? (
-                  <div className="text-center py-16 text-gray-500 h-full flex flex-col justify-center">
-                    <div className="p-4 bg-gray-50 border border-gray-100 rounded-full w-20 h-20 mx-auto flex items-center justify-center mb-6">
-                      <CheckCircle2 className="w-8 h-8 text-gray-300" />
-                    </div>
-                    <p className="text-lg font-medium text-gray-800">Ready to summarize</p>
-                    <p className="text-sm mt-2 text-gray-500 max-w-xs mx-auto">Upload a document and click Summarize to see the extracted bullet points here.</p>
-                  </div>
-                ) : (
-                  <div className="prose prose-blue max-w-none">
-                    <div className="text-gray-800 leading-relaxed text-lg whitespace-pre-wrap">
-                      {summary}
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+        <Card className="bg-card h-full flex flex-col">
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center gap-3 text-lg">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Sparkles className="w-5 h-5 text-primary" />
+              </div>
+              Key Insights & Summary
+            </CardTitle>
+            <CardDescription>
+              AI-generated bullet points
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex-1 overflow-y-auto max-h-[600px]">
+            {!summary ? (
+              <div className="text-center py-16 text-muted-foreground h-full flex flex-col justify-center">
+                <div className="p-4 bg-muted rounded-full w-20 h-20 mx-auto flex items-center justify-center mb-6">
+                  <CheckCircle2 className="w-8 h-8 text-muted-foreground/40" />
+                </div>
+                <p className="text-lg font-semibold text-foreground">Ready to summarize</p>
+                <p className="text-sm mt-2 text-muted-foreground max-w-xs mx-auto">Upload a document and click Summarize to see the extracted bullet points here.</p>
+              </div>
+            ) : (
+              <div className="text-foreground leading-relaxed text-base whitespace-pre-wrap">
+                {summary}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

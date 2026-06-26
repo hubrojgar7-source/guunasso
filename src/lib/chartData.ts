@@ -39,15 +39,15 @@ export interface RevenueData {
   nonTaxRevenue: number;
 }
 
-export interface CropDistributionData {
+export interface ComplaintCategoryData {
   nameKey: string;
   value: number;
   color: string;
 }
 
-export interface CropYieldData {
+export interface PetitionGrowthData {
   month: string;
-  yield: number;
+  count: number;
 }
 
 export interface CustomerSatisfactionData {
@@ -68,21 +68,21 @@ export interface TrafficSourceData {
   color: string;
 }
 
-export interface TopProductData {
+export interface PopularRouteData {
   name: string;
-  sales: number;
+  bookings: number;
 }
 
 // Interface for all chart data
 export interface UserChartData {
   userId: string;
   revenueData?: RevenueData[];
-  cropDistributionData?: CropDistributionData[];
-  cropYieldData?: CropYieldData[];
+  complaintCategoryData?: ComplaintCategoryData[];
+  petitionGrowthData?: PetitionGrowthData[];
   customerSatisfactionData?: CustomerSatisfactionData[];
   targetVsRealityData?: TargetVsRealityData[];
   trafficSourceData?: TrafficSourceData[];
-  topProductData?: TopProductData[];
+  popularRouteData?: PopularRouteData[];
   lastUpdated?: Timestamp | Date;
 }
 
@@ -227,12 +227,12 @@ const checkOfflineData = (userId: string): UserChartData | null => {
   try {
     const chartTypes = [
       'revenueData',
-      'cropDistributionData',
-      'cropYieldData',
+      'complaintCategoryData',
+      'petitionGrowthData',
       'customerSatisfactionData',
       'targetVsRealityData',
       'trafficSourceData',
-      'topProductData'
+      'popularRouteData'
     ];
 
     let hasOfflineData = false;
@@ -268,21 +268,21 @@ export const getDefaultRevenueData = (): RevenueData[] => [
   { day: 'Sunday',    taxRevenue: 35, nonTaxRevenue: 14 }
 ];
 
-export const getDefaultCropDistributionData = (): CropDistributionData[] => [
-  { nameKey: 'crops.wheat', value: 35, color: '#8884d8' },
-  { nameKey: 'crops.corn', value: 25, color: '#82ca9d' },
-  { nameKey: 'crops.rice', value: 20, color: '#ffc658' },
-  { nameKey: 'crops.barley', value: 15, color: '#ff7300' },
-  { nameKey: 'crops.others', value: 5, color: '#8dd1e1' }
+export const getDefaultComplaintCategoryData = (): ComplaintCategoryData[] => [
+  { nameKey: 'complaintCategories.infrastructure', value: 35, color: '#8884d8' },
+  { nameKey: 'complaintCategories.health', value: 25, color: '#82ca9d' },
+  { nameKey: 'complaintCategories.education', value: 20, color: '#ffc658' },
+  { nameKey: 'complaintCategories.governance', value: 15, color: '#ff7300' },
+  { nameKey: 'complaintCategories.other', value: 5, color: '#8dd1e1' }
 ];
 
-export const getDefaultCropYieldData = (): CropYieldData[] => [
-  { month: 'months.jan', yield: 0 },
-  { month: 'months.feb', yield: 0 },
-  { month: 'months.mar', yield: 0 },
-  { month: 'months.apr', yield: 0 },
-  { month: 'months.may', yield: 0 },
-  { month: 'months.jun', yield: 0 }
+export const getDefaultPetitionGrowthData = (): PetitionGrowthData[] => [
+  { month: 'months.jan', count: 0 },
+  { month: 'months.feb', count: 0 },
+  { month: 'months.mar', count: 0 },
+  { month: 'months.apr', count: 0 },
+  { month: 'months.may', count: 0 },
+  { month: 'months.jun', count: 0 }
 ];
 
 export const getDefaultCustomerSatisfactionData = (): CustomerSatisfactionData[] => [
@@ -313,10 +313,10 @@ export const getDefaultTrafficSourceData = (): TrafficSourceData[] => [
   { source: 'trafficSource.referral', value: 0, color: '#8dd1e1' }
 ];
 
-export const getDefaultTopProductData = (): TopProductData[] => [
-  { name: 'Product A', sales: 0 },
-  { name: 'Product B', sales: 0 },
-  { name: 'Product C', sales: 0 },
-  { name: 'Product D', sales: 0 },
-  { name: 'Product E', sales: 0 }
+export const getDefaultPopularRouteData = (): PopularRouteData[] => [
+  { name: 'Kathmandu-Pokhara', bookings: 0 },
+  { name: 'Kathmandu-Bharatpur', bookings: 0 },
+  { name: 'Pokhara-Butwal', bookings: 0 },
+  { name: 'Kathmandu-Biratnagar', bookings: 0 },
+  { name: 'Kathmandu-Nepalgunj', bookings: 0 }
 ]; 
