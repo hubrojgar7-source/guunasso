@@ -10,7 +10,7 @@ const resources = {
       'common.language': 'Language',
       'common.english': 'English',
       'common.nepali': 'Nepali',
-      'common.dashboard': 'Dashboard',
+      'common.dashboard': 'Budget',
       'common.feed': 'Feed',
       'common.drPlant': 'Dr Plant',
       'common.data': 'Data',
@@ -345,7 +345,7 @@ const resources = {
       'dashboard.totalSignatures': 'Total Signatures',
 
       // ─── Dashboard page titles ──────────────────────────────────────────
-      'pageTitle.dashboard': 'Dashboard',
+      'pageTitle.dashboard': 'Budget',
       'pageTitle.settings': 'Settings',
       'pageTitle.feed': 'Feed',
       'pageTitle.drSummarizer': 'Dr Summarizer',
