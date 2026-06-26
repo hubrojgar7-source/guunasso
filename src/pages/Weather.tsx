@@ -23,8 +23,7 @@ import {
 import { toast } from 'sonner';
 import { useAuthContext } from '@/lib/AuthProvider';
 
-// API key
-const API_KEY = '98ea5dd81e14e3fa312dbe7cf40c958b';
+const API_KEY = import.meta.env.VITE_OPENWEATHERMAP_API_KEY || '';
 
 // Weather data interfaces
 interface WeatherData {

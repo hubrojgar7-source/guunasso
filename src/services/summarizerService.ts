@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-// Reusing the same API key and Base URL from openRouterService
-const OPENROUTER_API_KEY = 'REPLACED';
+const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY || '';
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
 
 export interface SummarizationResult {

@@ -8,15 +8,13 @@ import { getStorage, connectStorageEmulator } from "firebase/storage";
 // Check if we should use Firebase emulators based on environment
 const useEmulators = false; // Set to true to use local emulators
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  projectId: "rock-perception-460403-b4",
-  appId: "1:623256116252:web:6d85681522391548f113d9",
-  storageBucket: "rock-perception-460403-b4.firebasestorage.app",
-  apiKey: "AIzaSyC-6sz4wgSP43lU4fmOKRAnDxEG1eSRFl8",
-  messagingSenderId: "623256116252",
-  authDomain: "rock-perception-460403-b4.firebaseapp.com"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase

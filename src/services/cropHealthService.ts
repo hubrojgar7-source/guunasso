@@ -2,7 +2,7 @@
 import { generateTreatmentRecommendations } from './openRouterService';
 
 // Kindwise API configuration - Use PlantNet API instead
-const API_KEY = '2b10LrFCUQXDxIkjXNnvOvFxYP';
+const API_KEY = import.meta.env.VITE_PLANTNET_API_KEY || '';
 const API_URL = 'https://my-api.plantnet.org/v2/identify/all';
 
 // Types
