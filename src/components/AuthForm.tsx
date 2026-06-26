@@ -130,7 +130,7 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                   id="email"
                   type="email"
                   placeholder="your@email.com"
-                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 rounded-lg"
+                  className="h-12 border-gray-200 focus:border-green-500 focus:ring-green-500 rounded-lg"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -145,7 +145,7 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                   id="password"
                   type="password"
                   placeholder="••••••••"
-                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 rounded-lg"
+                  className="h-12 border-gray-200 focus:border-green-500 focus:ring-green-500 rounded-lg"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -161,7 +161,7 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                     id="confirmPassword"
                     type="password"
                     placeholder="••••••••"
-                    className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 rounded-lg"
+                    className="h-12 border-gray-200 focus:border-green-500 focus:ring-green-500 rounded-lg"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
@@ -180,7 +180,7 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                         type="radio"
                         id="userType-admin"
                         name="userType"
-                        className="w-4 h-4 text-blue-600"
+                        className="w-4 h-4 text-green-600"
                         checked={userType === 'admin'}
                         onChange={() => setUserType('admin')}
                       />
@@ -193,7 +193,7 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                         type="radio"
                         id="userType-user"
                         name="userType"
-                        className="w-4 h-4 text-blue-600"
+                        className="w-4 h-4 text-green-600"
                         checked={userType === 'user'}
                         onChange={() => setUserType('user')}
                       />
@@ -207,14 +207,14 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
 
               {!isSignUp && (
                 <div className="text-right">
-                  <Link to="/forgot-password" className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                  <Link to="/forgot-password" className="text-sm text-green-600 hover:text-green-700 font-medium">
                     Forgot Password
                   </Link>
                 </div>
               )}
 
               <Button
-                className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg"
+                className="w-full h-12 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg"
                 type="submit"
                 disabled={isLoading}
               >
@@ -293,7 +293,7 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
               <button
                 type="button"
                 onClick={() => setIsSignUp(!isSignUp)}
-                className="text-blue-600 hover:text-blue-700 font-medium underline-offset-4 hover:underline"
+                className="text-green-600 hover:text-green-700 font-medium underline-offset-4 hover:underline"
               >
                 {isSignUp ? "Sign In" : "Sign-up"}
               </button>
@@ -303,25 +303,25 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
       </div>
 
       {/* Right Side - Mobile Mockups */}
-      <div className="flex-1 bg-blue-600 hidden md:flex items-center justify-center p-8 relative">
+      <div className="flex-1 bg-green-600 hidden md:flex items-center justify-center p-8 relative">
         <div className="relative">
           {/* Decorative circles with dots */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="relative w-80 h-80">
               {/* Outer circle */}
-              <div className="absolute inset-0 border-2 border-blue-200 rounded-full"></div>
+              <div className="absolute inset-0 border-2 border-green-200 rounded-full"></div>
               {/* Inner circle */}
-              <div className="absolute inset-8 border-2 border-blue-300 rounded-full"></div>
+              <div className="absolute inset-8 border-2 border-green-300 rounded-full"></div>
 
               {/* Decorative dots around circles */}
-              <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-blue-400 rounded-full"></div>
-              <div className="absolute top-8 -right-2 w-3 h-3 bg-blue-400 rounded-full"></div>
-              <div className="absolute right-8 top-1/2 transform -translate-y-1/2 w-3 h-3 bg-blue-400 rounded-full"></div>
-              <div className="absolute bottom-8 -right-2 w-3 h-3 bg-blue-400 rounded-full"></div>
-              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-blue-400 rounded-full"></div>
-              <div className="absolute bottom-8 -left-2 w-3 h-3 bg-blue-400 rounded-full"></div>
-              <div className="absolute left-8 top-1/2 transform -translate-y-1/2 w-3 h-3 bg-blue-400 rounded-full"></div>
-              <div className="absolute top-8 -left-2 w-3 h-3 bg-blue-400 rounded-full"></div>
+              <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-green-400 rounded-full"></div>
+              <div className="absolute top-8 -right-2 w-3 h-3 bg-green-400 rounded-full"></div>
+              <div className="absolute right-8 top-1/2 transform -translate-y-1/2 w-3 h-3 bg-green-400 rounded-full"></div>
+              <div className="absolute bottom-8 -right-2 w-3 h-3 bg-green-400 rounded-full"></div>
+              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-green-400 rounded-full"></div>
+              <div className="absolute bottom-8 -left-2 w-3 h-3 bg-green-400 rounded-full"></div>
+              <div className="absolute left-8 top-1/2 transform -translate-y-1/2 w-3 h-3 bg-green-400 rounded-full"></div>
+              <div className="absolute top-8 -left-2 w-3 h-3 bg-green-400 rounded-full"></div>
             </div>
           </div>
 
@@ -373,10 +373,10 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                     </div>
 
                     <div className="text-right">
-                      <span className="text-xs text-blue-600">Forgot Password</span>
+                      <span className="text-xs text-green-600">Forgot Password</span>
                     </div>
 
-                    <button className="w-full h-10 bg-blue-600 text-white text-sm font-medium rounded-lg">
+                    <button className="w-full h-10 bg-green-600 text-white text-sm font-medium rounded-lg">
                       {isSignUp ? "Create Account" : "Sign In"}
                     </button>
 
@@ -406,7 +406,7 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
 
                     <div className="text-center text-xs text-gray-600">
                       {"Don't have an Account? "}
-                      <span className="text-blue-600">Sign-up</span>
+                      <span className="text-green-600">Sign-up</span>
                     </div>
                   </div>
                 </div>
