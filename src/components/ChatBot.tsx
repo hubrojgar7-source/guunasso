@@ -2,7 +2,7 @@
 import { MessageCircle, X, Send, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader } from '@/components/ui/card';
-import { getChatCompletion } from '@/services/geminiService';
+import { getChatCompletion } from '@/services/groqService';
 
 interface ChatMessage {
   role: 'user' | 'assistant' | 'system';

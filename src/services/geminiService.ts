@@ -2,6 +2,10 @@ import axios from 'axios';
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || '';
 
+function requireKey() {
+  if (!API_KEY) throw new Error('Gemini API key not set. Add VITE_GEMINI_API_KEY to .env or use Groq for the chatbot.');
+}
+
 export interface SummarizationResult {
   summary: string;
 }
