@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { useTranslation } from 'react-i18next';
 
 type FilterType = 'week' | 'month' | 'year';
 
@@ -49,6 +50,7 @@ const dataMap: Record<FilterType, typeof weekData> = {
 };
 
 export const CustomerSatisfactionChart = () => {
+  const { t } = useTranslation();
   const [filter, setFilter] = useState<FilterType>('year');
   const activeData = dataMap[filter];
 
@@ -56,7 +58,7 @@ export const CustomerSatisfactionChart = () => {
     <Card className="bg-white border border-gray-200/50 rounded-2xl overflow-hidden shadow-sm h-full flex flex-col">
       <CardHeader className="pb-2 px-4 pt-4">
         <div className="flex items-center justify-between flex-wrap gap-2">
-          <CardTitle className="text-lg font-semibold text-zinc-900">Revenue</CardTitle>
+          <CardTitle className="text-lg font-semibold text-zinc-900">{t('dashboard.revenue')}</CardTitle>
           <select 
             value={filter}
             onChange={(e) => setFilter(e.target.value as FilterType)}
@@ -120,7 +122,7 @@ export const CustomerSatisfactionChart = () => {
               fillOpacity={1}
               fill="url(#colorGrants)"
               dot={{ fill: '#3b82f6', strokeWidth: 2, r: 4 }}
-              name="Grants"
+              name={t('dashboard.grants')}
             />
             <Area
               type="monotone"
@@ -130,7 +132,7 @@ export const CustomerSatisfactionChart = () => {
               fillOpacity={1}
               fill="url(#colorOtherReceipts)"
               dot={{ fill: '#10b981', strokeWidth: 2, r: 4 }}
-              name="Other Receipts"
+              name={t('dashboard.otherReceipts')}
             />
             <Legend 
               wrapperStyle={{ paddingTop: '15px' }}

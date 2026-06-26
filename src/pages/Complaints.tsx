@@ -17,13 +17,17 @@ import {
   Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter
 } from '@/components/ui/dialog';
 import {
+  Tabs, TabsContent, TabsList, TabsTrigger,
+} from '@/components/ui/tabs';
+import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import {
   ShieldAlert, Plus, Clock, CheckCircle2, Loader2,
   MessageSquare, User, Calendar, MapPin, Send, Trash2,
-  ChevronUp, ChevronDown, Sparkles, AlertTriangle, AlertCircle, Info
+  ChevronUp, ChevronDown, Sparkles, AlertTriangle, AlertCircle, Info,
+  Building2, Landmark, Home
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { analyzeRisk, riskColors, riskBg, type RiskLevel } from '@/lib/riskDetection';
@@ -105,6 +109,7 @@ const Complaints = () => {
   const [replying, setReplying] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [votingId, setVotingId] = useState<string | null>(null);
+  const [showDetails, setShowDetails] = useState(false);
 
   const isAdmin = profile?.userType === 'admin';
 
@@ -332,29 +337,9 @@ const Complaints = () => {
     }
   };
 
-  const handleExportVoteData = () => {
-    const headers = ['ID', 'Title', 'Risk Level', 'Upvotes', 'Downvotes', 'Net Score', 'Status', 'Location', 'Date'];
-    const rows = complaints.map(c => [
-      c.id,
-      `"${c.title.replace(/"/g, '""')}"`,
-      c.riskLevel,
-      c.upvotes || 0,
-      c.downvotes || 0,
-      (c.upvotes || 0) - (c.downvotes || 0),
-      c.status,
-      `"${(c.location || '').replace(/"/g, '""')}"`,
-      formatDate(c.createdAt),
-    ]);
-    const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'complaint_votes.csv';
-    a.click();
-    URL.revokeObjectURL(url);
-    toast.success('Vote data downloaded');
-  };
+  const highRiskComplaints = complaints.filter(c => c.riskLevel === 'high');
+  const mediumRiskComplaints = complaints.filter(c => c.riskLevel === 'medium');
+  const lowRiskComplaints = complaints.filter(c => c.riskLevel === 'low');
 
   const stats = {
     total: complaints.length,
@@ -409,9 +394,9 @@ const Complaints = () => {
           ))}
         </div>
         <div className="flex gap-3">
-          <Button onClick={handleExportVoteData} variant="outline" className="h-11 px-4 flex-shrink-0">
-            <ChevronDown className="w-5 h-5 mr-1" />
-            Download Votes
+          <Button onClick={() => setShowDetails(true)} variant="outline" className="h-11 px-4 flex-shrink-0">
+            <Building2 className="w-5 h-5 mr-1" />
+            Details
           </Button>
           <Button onClick={() => setIsCreateOpen(true)} className="h-11 px-6 flex-shrink-0">
             <Plus className="w-5 h-5 mr-1" />
@@ -570,6 +555,130 @@ const Complaints = () => {
   })}
 </div>
       )}
+
+      {/* Details Dialog */}
+      <Dialog open={showDetails} onOpenChange={setShowDetails}>
+        <DialogContent className="max-w-4xl rounded-xl p-6 max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="pb-4 border-b">
+            <DialogTitle className="text-xl font-bold flex items-center gap-2">
+              <Building2 className="w-5 h-5 text-primary" />
+              Complaint Details by Government Level
+            </DialogTitle>
+            <DialogDescription>
+              Complaints categorized by the government body responsible for resolution.
+            </DialogDescription>
+          </DialogHeader>
+          <Tabs defaultValue="state" className="mt-4">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="state" className="flex items-center gap-2">
+                <Building2 className="w-4 h-4" />
+                State Government
+                <span className="ml-1 text-xs bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full">{highRiskComplaints.length}</span>
+              </TabsTrigger>
+              <TabsTrigger value="provincial" className="flex items-center gap-2">
+                <Landmark className="w-4 h-4" />
+                Provincial Gov
+                <span className="ml-1 text-xs bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full">{mediumRiskComplaints.length}</span>
+              </TabsTrigger>
+              <TabsTrigger value="ward" className="flex items-center gap-2">
+                <Home className="w-4 h-4" />
+                Ward Level
+                <span className="ml-1 text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full">{lowRiskComplaints.length}</span>
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="state" className="mt-4">
+              <h3 className="font-semibold text-red-700 mb-3 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4" />
+                State Government — High Risk Complaints
+              </h3>
+              {highRiskComplaints.length === 0 ? (
+                <p className="text-sm text-muted-foreground py-8 text-center">No high risk complaints.</p>
+              ) : (
+                <div className="space-y-3">
+                  {highRiskComplaints.map(c => (
+                    <div key={c.id} className="border rounded-lg p-4 bg-red-50/50">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <p className="font-semibold text-sm">{c.title}</p>
+                          <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{c.description}</p>
+                          <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{c.location}</span>
+                            <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{formatDate(c.createdAt)}</span>
+                            <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${riskColors[c.riskLevel]}`}>{c.riskLevel}</span>
+                          </div>
+                        </div>
+                        <Badge variant="outline" className={`text-xs ${c.status === 'resolved' ? 'text-green-600 border-green-200' : c.status === 'in_progress' ? 'text-blue-600 border-blue-200' : 'text-amber-600 border-amber-200'}`}>
+                          {c.status}
+                        </Badge>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+            <TabsContent value="provincial" className="mt-4">
+              <h3 className="font-semibold text-amber-700 mb-3 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4" />
+                Provincial Gov — Medium Risk Complaints
+              </h3>
+              {mediumRiskComplaints.length === 0 ? (
+                <p className="text-sm text-muted-foreground py-8 text-center">No medium risk complaints.</p>
+              ) : (
+                <div className="space-y-3">
+                  {mediumRiskComplaints.map(c => (
+                    <div key={c.id} className="border rounded-lg p-4 bg-amber-50/50">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <p className="font-semibold text-sm">{c.title}</p>
+                          <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{c.description}</p>
+                          <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{c.location}</span>
+                            <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{formatDate(c.createdAt)}</span>
+                            <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${riskColors[c.riskLevel]}`}>{c.riskLevel}</span>
+                          </div>
+                        </div>
+                        <Badge variant="outline" className={`text-xs ${c.status === 'resolved' ? 'text-green-600 border-green-200' : c.status === 'in_progress' ? 'text-blue-600 border-blue-200' : 'text-amber-600 border-amber-200'}`}>
+                          {c.status}
+                        </Badge>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+            <TabsContent value="ward" className="mt-4">
+              <h3 className="font-semibold text-green-700 mb-3 flex items-center gap-2">
+                <Info className="w-4 h-4" />
+                Ward Level — Low Risk Complaints
+              </h3>
+              {lowRiskComplaints.length === 0 ? (
+                <p className="text-sm text-muted-foreground py-8 text-center">No low risk complaints.</p>
+              ) : (
+                <div className="space-y-3">
+                  {lowRiskComplaints.map(c => (
+                    <div key={c.id} className="border rounded-lg p-4 bg-green-50/50">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <p className="font-semibold text-sm">{c.title}</p>
+                          <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{c.description}</p>
+                          <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{c.location}</span>
+                            <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{formatDate(c.createdAt)}</span>
+                            <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${riskColors[c.riskLevel]}`}>{c.riskLevel}</span>
+                          </div>
+                        </div>
+                        <Badge variant="outline" className={`text-xs ${c.status === 'resolved' ? 'text-green-600 border-green-200' : c.status === 'in_progress' ? 'text-blue-600 border-blue-200' : 'text-amber-600 border-amber-200'}`}>
+                          {c.status}
+                        </Badge>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+          </Tabs>
+        </DialogContent>
+      </Dialog>
 
       {/* Create Dialog */}
       <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>

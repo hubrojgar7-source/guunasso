@@ -3,36 +3,37 @@ import { Button } from '@/components/ui/button';
 import { Megaphone } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 const heroImages = [
   {
     src: '/hero/nepal-school-boys.jpg',
-    alt: 'Nepali school children in a classroom',
+    alt: 'hero.alt.schoolBoys',
     className: 'col-start-1 row-start-1 h-28 sm:h-32',
   },
   {
     src: '/hero/nepal-village-children.jpg',
-    alt: 'Nepali children in a rural village',
+    alt: 'hero.alt.villageChildren',
     className: 'col-start-2 row-start-1 row-span-2 h-full min-h-[180px]',
   },
   {
     src: '/hero/nepal-mountain-children.jpg',
-    alt: 'Nepali children in the mountains of Darchula',
+    alt: 'hero.alt.mountainChildren',
     className: 'col-start-3 row-start-1 h-28 sm:h-32',
   },
   {
     src: '/hero/nepal-schoolgirls.jpg',
-    alt: 'Nepali schoolgirls talking in class',
+    alt: 'hero.alt.schoolgirls',
     className: 'col-start-1 row-start-2 h-28 sm:h-32',
   },
   {
     src: '/hero/nepal-kathmandu-street.jpg',
-    alt: 'People walking on a bustling Kathmandu street',
+    alt: 'hero.alt.kathmanduStreet',
     className: 'col-start-3 row-start-2 row-span-2 h-full min-h-[180px]',
   },
   {
     src: '/hero/nepal-durbar-square.jpg',
-    alt: 'Community at Kathmandu Durbar Square, Nepal',
+    alt: 'hero.alt.durbarSquare',
     className: 'col-start-1 row-start-3 h-28 sm:h-32',
   },
 ];
@@ -40,6 +41,7 @@ const heroImages = [
 const HeroSection = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const handleCreatePetition = () => {
     if (user) {
@@ -62,14 +64,13 @@ const HeroSection = () => {
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-8 items-center relative z-10">
         <div className="space-y-8">
           <h1 className="text-5xl sm:text-6xl lg:text-[4.5rem] font-extrabold text-gray-900 leading-[2.2] tracking-tight">
-            Make A Big<br />
-            Difference By<br />
-            <span className="text-[#10B981]">Small Effort</span>
+            {t('hero.makeBig')}<br />
+            {t('hero.differenceBy')}<br />
+            <span className="text-[#10B981]">{t('hero.smallEffort')}</span>
           </h1>
 
           <p className="text-gray-500 text-base lg:text-lg leading-relaxed max-w-lg">
-            Join thousands of citizens raising their voice for change. Start a petition,
-            gather support, and hold those in power accountable — one signature at a time.
+            {t('hero.description')}
           </p>
 
           <div className="flex flex-wrap items-center gap-4">
@@ -77,14 +78,14 @@ const HeroSection = () => {
               onClick={handleCreatePetition}
               className="bg-[#10B981] hover:bg-[#059669] text-white font-semibold h-12 px-8 text-base rounded-lg border-0 shadow-none gap-2"
             >
-              Start Petition
+              {t('hero.startPetition')}
               <Megaphone className="w-4 h-4" />
             </Button>
             <button
               onClick={() => navigate('/polls')}
               className="text-gray-700 hover:text-[#10B981] font-semibold text-sm transition-colors bg-transparent border-0 cursor-pointer underline-offset-4 hover:underline"
             >
-              Browse Petitions
+              {t('hero.browsePetitions')}
             </button>
           </div>
         </div>
@@ -98,7 +99,7 @@ const HeroSection = () => {
               >
                 <img
                   src={image.src}
-                  alt={image.alt}
+                  alt={t(image.alt)}
                   loading="eager"
                   className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
                 />

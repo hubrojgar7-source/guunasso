@@ -82,48 +82,48 @@ export const CreatePollForm: React.FC<CreatePollFormProps> = ({ onSubmit, isSubm
   };
 
   return (
-    <div className="space-y-8 bg-white p-6 sm:p-8 rounded-xl border border-gray-100 shadow-sm">
-      
+    <div className="space-y-8 bg-card p-6 sm:p-8 rounded-xl border border-border shadow-sm">
+
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-gray-900 border-b pb-2">1. Poll Information</h2>
+        <h2 className="text-lg font-bold text-foreground border-b border-border pb-2">1. Poll Information</h2>
         
         <div className="space-y-2">
-          <Label htmlFor="title">Poll Title <span className="text-red-500">*</span></Label>
+          <Label htmlFor="title" className="text-base">Poll Title <span className="text-red-500">*</span></Label>
           <Input 
             id="title" 
             placeholder="E.g., Which public park needs renovation first?" 
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="text-base py-6 rounded-lg"
+            className="text-lg py-7 px-5 rounded-xl"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="desc">Description / Context</Label>
+          <Label htmlFor="desc" className="text-base">Description / Context</Label>
           <Textarea 
             id="desc" 
             placeholder="Provide details to help citizens make an informed decision..." 
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="min-h-[100px] rounded-lg"
+            className="min-h-[140px] rounded-xl text-base p-4"
           />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="org">Organization Name <span className="text-red-500">*</span></Label>
+            <Label htmlFor="org" className="text-base">Organization Name <span className="text-red-500">*</span></Label>
             <Input 
               id="org" 
               placeholder="E.g., Kathmandu Metropolitan City" 
               value={organizationName}
               onChange={(e) => setOrganizationName(e.target.value)}
-              className="rounded-lg"
+              className="rounded-xl py-6 px-4 text-base"
             />
           </div>
           <div className="space-y-2">
-            <Label>Category</Label>
+            <Label className="text-base">Category</Label>
             <Select value={category} onValueChange={(val) => setCategory(val as PollCategory)}>
-              <SelectTrigger className="rounded-lg">
+              <SelectTrigger className="rounded-xl py-6 px-4 text-base">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -140,12 +140,12 @@ export const CreatePollForm: React.FC<CreatePollFormProps> = ({ onSubmit, isSubm
       </div>
 
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-gray-900 border-b pb-2">2. Voting Options</h2>
+        <h2 className="text-lg font-bold text-foreground border-b border-border pb-2">2. Voting Options</h2>
         
         <div className="space-y-2 mb-4">
-          <Label>Poll Type</Label>
+          <Label className="text-base">Poll Type</Label>
           <Select value={pollType} onValueChange={handleTypeChange}>
-            <SelectTrigger className="rounded-lg w-full md:w-1/2">
+            <SelectTrigger className="rounded-xl py-6 px-4 text-base w-full md:w-1/2">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -156,7 +156,7 @@ export const CreatePollForm: React.FC<CreatePollFormProps> = ({ onSubmit, isSubm
           </Select>
         </div>
 
-        <div className="space-y-3 bg-gray-50 p-4 rounded-xl">
+        <div className="space-y-3 bg-muted/50 p-6 rounded-xl">
           {options.map((opt, idx) => (
             <div key={idx} className="flex items-center gap-2">
               <Input 
@@ -164,16 +164,16 @@ export const CreatePollForm: React.FC<CreatePollFormProps> = ({ onSubmit, isSubm
                 value={opt}
                 onChange={(e) => handleOptionChange(idx, e.target.value)}
                 disabled={pollType === 'yesno'}
-                className="bg-white rounded-lg"
+                className="bg-white rounded-xl py-6 px-4 text-base"
               />
               {pollType !== 'yesno' && (
                 <Button 
                   variant="ghost" 
                   size="icon" 
                   onClick={() => handleRemoveOption(idx)}
-                  className="text-red-500 hover:text-red-600 hover:bg-red-50 shrink-0"
+                  className="text-red-500 hover:text-red-600 hover:bg-red-50 shrink-0 w-12 h-12"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-5 h-5" />
                 </Button>
               )}
             </div>
@@ -183,9 +183,9 @@ export const CreatePollForm: React.FC<CreatePollFormProps> = ({ onSubmit, isSubm
             <Button 
               variant="outline" 
               onClick={handleAddOption}
-              className="mt-2 w-full border-dashed border-2 rounded-lg text-[#10B981] border-[#10B981]/30 hover:bg-[#10B981]/5"
+              className="mt-2 w-full border-dashed border-2 rounded-xl text-primary border-primary/30 hover:bg-primary/5 py-6 text-base"
             >
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-5 h-5 mr-2" />
               Add Option
             </Button>
           )}
@@ -193,34 +193,34 @@ export const CreatePollForm: React.FC<CreatePollFormProps> = ({ onSubmit, isSubm
       </div>
 
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-gray-900 border-b pb-2">3. Schedule & Targeting</h2>
+        <h2 className="text-lg font-bold text-foreground border-b border-border pb-2">3. Schedule & Targeting</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label>Start Date</Label>
+            <Label className="text-base">Start Date</Label>
             <Input 
               type="date" 
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="rounded-lg"
+              className="rounded-xl py-6 px-4 text-base"
             />
           </div>
           <div className="space-y-2">
-            <Label>End Date</Label>
+            <Label className="text-base">End Date</Label>
             <Input 
               type="date" 
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="rounded-lg"
+              className="rounded-xl py-6 px-4 text-base"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label>Location Scope</Label>
+            <Label className="text-base">Location Scope</Label>
             <Select value={locationScope} onValueChange={(val) => setLocationScope(val as LocationScope)}>
-              <SelectTrigger className="rounded-lg">
+              <SelectTrigger className="rounded-xl py-6 px-4 text-base">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -234,31 +234,31 @@ export const CreatePollForm: React.FC<CreatePollFormProps> = ({ onSubmit, isSubm
           
           {locationScope !== 'nationwide' && (
             <div className="space-y-2">
-              <Label>Specific Location Name</Label>
+              <Label className="text-base">Specific Location Name</Label>
               <Input 
                 placeholder={`E.g., Bagmati ${locationScope}`}
                 value={locationName}
                 onChange={(e) => setLocationName(e.target.value)}
-                className="rounded-lg"
+                className="rounded-xl py-6 px-4 text-base"
               />
             </div>
           )}
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t mt-8">
-        <Button 
-          variant="outline" 
+      <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-border mt-8">
+        <Button
+          variant="outline"
           onClick={() => handleSubmit('draft')}
           disabled={isSubmitting}
-          className="rounded-lg flex-1 py-6 text-base font-semibold"
+          className="rounded-xl flex-1 py-7 text-lg font-semibold"
         >
           Save as Draft
         </Button>
-        <Button 
+        <Button
           onClick={() => handleSubmit('active')}
           disabled={isSubmitting}
-          className="rounded-lg flex-1 bg-[#10B981] hover:bg-[#059669] text-white py-6 text-base font-bold shadow-none"
+          className="rounded-xl flex-1 bg-primary hover:bg-primary/90 text-primary-foreground py-7 text-lg font-bold shadow-none"
         >
           {isSubmitting ? 'Publishing...' : 'Publish Poll'}
         </Button>

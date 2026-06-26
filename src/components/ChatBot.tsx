@@ -3,6 +3,7 @@ import { MessageCircle, X, Send, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader } from '@/components/ui/card';
 import { getChatCompletion } from '@/services/groqService';
+import { useTranslation } from 'react-i18next';
 
 interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
@@ -22,6 +23,7 @@ const ChatBot = () => {
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (messages.length === 0) {
@@ -141,7 +143,7 @@ const ChatBot = () => {
               </div>
 
               <div className="absolute -top-8 -left-4 bg-white rounded-lg px-2 py-1 shadow-lg border animate-fade-in">
-                <div className="text-xs font-medium text-gray-800">सोध्नुहोस्?</div>
+                <div className="text-xs font-medium text-gray-800">{t('dashboard.ask')}</div>
                 <div className="absolute bottom-0 left-4 transform translate-y-full">
                   <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white"></div>
                 </div>
@@ -201,7 +203,7 @@ const ChatBot = () => {
 
               <div>
                 <p className="font-medium text-emerald-800">गुनासोमा स्वागत छ!</p>
-                <p className="text-sm text-emerald-600">सरकारी योजना, बजेट र नीतिहरूको बारेमा सोध्नुहोस्</p>
+                <p className="text-sm text-emerald-600">{t('dashboard.ask')}</p>
               </div>
             </div>
           </div>
@@ -259,7 +261,7 @@ const ChatBot = () => {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="सरकारी सेवाको बारेमा सोध्नुहोस्..."
+                placeholder={t('dashboard.ask')}
                 className="flex-1 bg-transparent text-sm outline-none placeholder-gray-500 py-1"
                 disabled={isLoading}
               />

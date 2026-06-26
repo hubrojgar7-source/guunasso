@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell } from 'recharts';
+import { useTranslation } from 'react-i18next';
 
 const ministryData = [
   { name: 'Education', budget: 1079, color: '#3B82F6' },
@@ -14,13 +15,14 @@ const ministryData = [
 ];
 
 export const CropYieldChart = () => {
+  const { t } = useTranslation();
   return (
     <Card className="bg-white border border-gray-200/50 rounded-2xl overflow-hidden shadow-sm h-full flex flex-col">
       <CardHeader className="pb-3 px-4 pt-4">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-lg font-semibold text-zinc-900">Ministry Budget (Rs. Bn)</CardTitle>
-            <p className="text-xs text-muted-foreground mt-1">Fiscal Year 2024/25 Allocation</p>
+            <CardTitle className="text-lg font-semibold text-zinc-900">{t('dashboard.minBudget')}</CardTitle>
+            <p className="text-xs text-muted-foreground mt-1">{t('dashboard.fiscalYear')}</p>
           </div>
         </div>
       </CardHeader>

@@ -216,6 +216,149 @@ const resources = {
       'products.disneyBag': 'Disney Princess Pink Bag IB',
       'products.bathroomEssentials': 'Bathroom Essentials',
       'products.appleWatches': 'Apple Smartwatches',
+
+      // ─── Header / Nav ──────────────────────────────────────────────────
+      'nav.home': 'Home',
+      'nav.petitions': 'Petitions',
+      'nav.campaign': 'Campaign',
+      'nav.aboutUs': 'About us',
+      'nav.contact': 'Contact',
+      'header.dashboard': 'Dashboard',
+      'header.campaignBtn': 'Campaign',
+
+      // ─── Hero ──────────────────────────────────────────────────────────
+      'hero.makeBig': 'Make A Big',
+      'hero.differenceBy': 'Difference By',
+      'hero.smallEffort': 'Small Effort',
+      'hero.description': 'Join thousands of citizens raising their voice for change. Start a petition, gather support, and hold those in power accountable — one signature at a time.',
+      'hero.startPetition': 'Start Petition',
+      'hero.browsePetitions': 'Browse Petitions',
+      'hero.alt.schoolBoys': 'Nepali school children in a classroom',
+      'hero.alt.villageChildren': 'Nepali children in a rural village',
+      'hero.alt.mountainChildren': 'Nepali children in the mountains of Darchula',
+      'hero.alt.schoolgirls': 'Nepali schoolgirls talking in class',
+      'hero.alt.kathmanduStreet': 'People walking on a bustling Kathmandu street',
+      'hero.alt.durbarSquare': 'Community at Kathmandu Durbar Square, Nepal',
+
+      // ─── Partners ──────────────────────────────────────────────────────
+      'partners.text': 'Over 100k Citizens From 77 Districts Use Our Platform',
+
+      // ─── Campaigns ─────────────────────────────────────────────────────
+      'campaigns.title': 'Our Recent Campaign',
+      'campaigns.goal': 'Goal',
+      'campaigns.signatures': 'signatures',
+      'campaigns.daysLeft': 'days left',
+      'campaigns.signNow': 'Sign Now',
+      'campaigns.1.title': 'Clean drinking water for rural schools in Karnali',
+      'campaigns.1.description': 'Thousands of students lack access to safe drinking water. Sign to demand immediate action.',
+      'campaigns.2.title': 'Fix potholes on Kathmandu ring road sections',
+      'campaigns.2.description': 'Daily commuters face dangerous road conditions. Help us reach the municipality.',
+      'campaigns.3.title': 'Free health checkups for elderly in remote villages',
+      'campaigns.3.description': 'Support our petition for mobile health camps in underserved communities.',
+
+      // ─── Testimonials ──────────────────────────────────────────────────
+      'testimonials.title': 'Testimonial from',
+      'testimonials.gunasoUser': 'Gunaso User',
+      'testimonials.1.quote': '"गुनासो.com helped our community get the attention of local officials. Within weeks, our road repair petition gained over 3,000 signatures and the municipality responded."',
+      'testimonials.1.name': 'Wade Warren',
+      'testimonials.1.role': 'Community Leader, Pokhara',
+      'testimonials.2.quote': '"I started a petition about school infrastructure in my district. The platform made it easy to share and track progress. Real change is possible when voices unite."',
+      'testimonials.2.name': 'Sita Sharma',
+      'testimonials.2.role': 'Teacher, Biratnagar',
+      'testimonials.3.quote': '"As a youth activist, this platform gave me the tools to organize and amplify our demands. The transparency in vote counting builds trust among supporters."',
+      'testimonials.3.name': 'Rajesh Thapa',
+      'testimonials.3.role': 'Youth Activist, Kathmandu',
+
+      // ─── Blog ──────────────────────────────────────────────────────────
+      'blog.title': 'Read Our Latest Blog',
+      'blog.comments': 'comments',
+      'blog.1.title': 'How to Start a Petition That Gets Results',
+      'blog.1.category': 'Guide',
+      'blog.1.author': 'Sanjok Gharti',
+      'blog.2.title': '5 Petitions That Changed Nepal This Year',
+      'blog.2.category': 'Impact',
+      'blog.2.author': 'Sita Sharma',
+      'blog.3.title': 'Your Rights as a Citizen: Speaking Up Matters',
+      'blog.3.category': 'Rights',
+      'blog.3.author': 'Rajesh Thapa',
+
+      // ─── CTA Banner ────────────────────────────────────────────────────
+      'cta.title1': 'Speaking Today',
+      'cta.title2': 'Changing Tomorrow',
+      'cta.description': 'Every signature counts. Join the movement for accountability, transparency, and real change in your community.',
+      'cta.browsePetitions': 'Browse Petitions',
+      'cta.startPetition': 'Start Petition',
+
+      // ─── Footer ────────────────────────────────────────────────────────
+      'footer.description': 'Empowering citizens to raise their voice, start petitions, and drive meaningful change in their communities across Nepal.',
+      'footer.navigate': 'Navigate',
+      'footer.howItWorks': 'How it works',
+      'footer.browsePetitions': 'Browse petitions',
+      'footer.startCampaign': 'Start a campaign',
+      'footer.successStories': 'Success stories',
+      'footer.aboutUs': 'About us',
+      'footer.whoWeAre': 'Who we are',
+      'footer.ourMission': 'Our mission',
+      'footer.blog': 'Blog',
+      'footer.faqs': 'FAQs',
+      'footer.contactUs': 'Contact Us',
+      'footer.infoEmail': 'info@gunaso.com',
+      'footer.phone': '+977 9868597841',
+      'footer.address': 'Kathmandu, Nepal',
+      'footer.copyright': '© Copyright 2026 गुनासो.com. All Rights Reserved.',
+
+      // ─── Dashboard Sidebar ─────────────────────────────────────────────
+      'sidebar.petition': 'Petition',
+      'sidebar.polls': 'Polls',
+      'sidebar.busFare': 'Bus Fare',
+      'sidebar.support': 'Support',
+      'sidebar.supportDesc': 'Support our campaign for public grievance hearing and good governance.',
+      'sidebar.contactUs': 'Contact Us',
+
+      // ─── Dashboard Page ────────────────────────────────────────────────
+      'dashboard.todayOverview': "Today's Overview",
+      'dashboard.summaryToday': 'Summary of today\'s platform activity',
+      'dashboard.viewReport': 'View Report',
+      'dashboard.expenditure': 'Expenditure',
+      'dashboard.revenue': 'Revenue',
+      'dashboard.thisWeek': 'This Week',
+      'dashboard.thisYear': 'This Year',
+      'dashboard.thisMonth': 'This Month',
+      'dashboard.recurrent': 'Recurrent',
+      'dashboard.capital': 'Capital',
+      'dashboard.financing': 'Financing',
+      'dashboard.grants': 'Grants',
+      'dashboard.otherReceipts': 'Other Receipts',
+      'dashboard.reality': 'Reality',
+      'dashboard.target': 'Target',
+      'dashboard.minBudget': 'Ministry Budget (Rs. Bn)',
+      'dashboard.fiscalYear': 'Fiscal Year 2024/25 Allocation',
+      'dashboard.budgetCategories': 'Budget Categories',
+      'dashboard.socialSecurity': 'Social Security',
+      'dashboard.debtRepayment': 'Debt Repayment',
+      'dashboard.other': 'Other',
+      'dashboard.total': 'Total',
+      'dashboard.ask': 'सोध्नुहोस्?',
+      'dashboard.complaintsToday': 'Complaints Today',
+      'dashboard.resolvedToday': 'Resolved Today',
+      'dashboard.activePetitions': 'Active Petitions',
+      'dashboard.totalSignatures': 'Total Signatures',
+
+      // ─── Dashboard page titles ──────────────────────────────────────────
+      'pageTitle.dashboard': 'Dashboard',
+      'pageTitle.settings': 'Settings',
+      'pageTitle.feed': 'Feed',
+      'pageTitle.drSummarizer': 'Dr Summarizer',
+      'pageTitle.data': 'Market Data',
+      'pageTitle.pricing': 'Pricing',
+      'pageTitle.help': 'Help Center',
+      'pageTitle.complaints': 'Complaints',
+      'pageTitle.petition': 'Petition / मागपत्र',
+      'pageTitle.busFare': 'Bus Fare',
+      'pageTitle.polls': 'Polls / मतदान',
+      'pageTitle.messaging': 'Messaging',
+      'pageTitle.weather': 'Weather',
+      'pageTitle.transactions': 'Transactions',
     }
   },
   ne: {
@@ -426,6 +569,149 @@ const resources = {
       'products.disneyBag': 'डिज्नी प्रिन्सेस गुलाबी झोला',
       'products.bathroomEssentials': 'बाथरुम आवश्यकताहरू',
       'products.appleWatches': 'एप्पल स्मार्टघडीहरू',
+
+      // ─── Header / Nav ──────────────────────────────────────────────────
+      'nav.home': 'गृहपृष्ठ',
+      'nav.petitions': 'मागपत्रहरू',
+      'nav.campaign': 'अभियान',
+      'nav.aboutUs': 'हाम्रो बारेमा',
+      'nav.contact': 'सम्पर्क',
+      'header.dashboard': 'ड्यासबोर्ड',
+      'header.campaignBtn': 'अभियान',
+
+      // ─── Hero ──────────────────────────────────────────────────────────
+      'hero.makeBig': 'ठूलो परिवर्तन',
+      'hero.differenceBy': 'गर्नुहोस् सानो',
+      'hero.smallEffort': 'प्रयासले',
+      'hero.description': 'परिवर्तनको लागि आवाज उठाउने हजारौं नागरिकहरूमा सामेल हुनुहोस्। मागपत्र सुरु गर्नुहोस्, समर्थन जुटाउनुहोस्, र जवाफदेही बनाउनुहोस् — एक हस्ताक्षरले।',
+      'hero.startPetition': 'मागपत्र सुरु गर्नुहोस्',
+      'hero.browsePetitions': 'मागपत्र हेर्नुहोस्',
+      'hero.alt.schoolBoys': 'कक्षाकोठामा नेपाली विद्यार्थीहरू',
+      'hero.alt.villageChildren': 'गाउँमा नेपाली बालबालिकाहरू',
+      'hero.alt.mountainChildren': 'दार्चुलाका पहाडमा नेपाली बालबालिकाहरू',
+      'hero.alt.schoolgirls': 'कक्षामा कुरा गर्दै नेपाली विद्यार्थीहरू',
+      'hero.alt.kathmanduStreet': 'व्यस्त काठमाडौं सडकमा मानिसहरू',
+      'hero.alt.durbarSquare': 'काठमाडौं दरबार स्क्वायरमा समुदाय, नेपाल',
+
+      // ─── Partners ──────────────────────────────────────────────────────
+      'partners.text': '७७ जिल्लाका १ लाख भन्दा बढी नागरिकले हाम्रो प्लेटफर्म प्रयोग गर्छन्',
+
+      // ─── Campaigns ─────────────────────────────────────────────────────
+      'campaigns.title': 'हाम्रो हालको अभियान',
+      'campaigns.goal': 'लक्ष्य',
+      'campaigns.signatures': 'हस्ताक्षर',
+      'campaigns.daysLeft': 'दिन बाँकी',
+      'campaigns.signNow': 'हस्ताक्षर गर्नुहोस्',
+      'campaigns.1.title': 'कर्णालीका ग्रामीण विद्यालयहरूको लागि सफा पिउने पानी',
+      'campaigns.1.description': 'हजारौं विद्यार्थीहरूसँग सुरक्षित पिउने पानीको पहुँच छैन। तत्काल कारबाहीको माग गर्न हस्ताक्षर गर्नुहोस्।',
+      'campaigns.2.title': 'काठमाडौं रिङरोड खण्डहरूको खाल्डो मर्मत',
+      'campaigns.2.description': 'दैनिक यात्रुहरू खतरनाक सडक अवस्थाको सामना गर्छन्। नगरपालिकासम्म पुग्न हामीलाई सहयोग गर्नुहोस्।',
+      'campaigns.3.title': 'दुर्गम गाउँहरूमा वृद्धवृद्धाको लागि नि:शुल्क स्वास्थ्य जाँच',
+      'campaigns.3.description': 'सेवा नपुगेका समुदायहरूमा मोबाइल स्वास्थ्य शिविरको लागि हाम्रो मागपत्रलाई समर्थन गर्नुहोस्।',
+
+      // ─── Testimonials ──────────────────────────────────────────────────
+      'testimonials.title': 'प्रशंसापत्र',
+      'testimonials.gunasoUser': 'गुनासो प्रयोगकर्ता',
+      'testimonials.1.quote': '"गुनासो.कमले हाम्रो समुदायलाई स्थानीय अधिकारीहरूको ध्यान आकर्षित गर्न मद्दत गर्यो। केही हप्तामा, हाम्रो सडक मर्मत मागपत्रले ३,००० भन्दा बढी हस्ताक्षर प्राप्त गर्यो र नगरपालिकाले प्रतिक्रिया दियो।"',
+      'testimonials.1.name': 'वेड वारेन',
+      'testimonials.1.role': 'समुदाय नेता, पोखरा',
+      'testimonials.2.quote': '"मैले आफ्नो जिल्लामा विद्यालय पूर्वाधारको बारेमा मागपत्र सुरु गरें। प्लेटफर्मले साझेदारी र प्रगति ट्र्याक गर्न सजिलो बनायो। आवाज एकताबद्ध हुँदा वास्तविक परिवर्तन सम्भव छ।"',
+      'testimonials.2.name': 'सीता शर्मा',
+      'testimonials.2.role': 'शिक्षिका, विराटनगर',
+      'testimonials.3.quote': '"एक युवा कार्यकर्ताको रूपमा, यो प्लेटफर्मले हाम्रा मागहरू संगठित र प्रवर्द्धन गर्न उपकरण दियो। मत गणनामा पारदर्शिताले समर्थकहरूमा विश्वास बढाउँछ।"',
+      'testimonials.3.name': 'राजेश थापा',
+      'testimonials.3.role': 'युवा कार्यकर्ता, काठमाडौं',
+
+      // ─── Blog ──────────────────────────────────────────────────────────
+      'blog.title': 'हाम्रो पछिल्लो ब्लग पढ्नुहोस्',
+      'blog.comments': 'टिप्पणीहरू',
+      'blog.1.title': 'परिणाम दिने मागपत्र कसरी सुरु गर्ने',
+      'blog.1.category': 'गाइड',
+      'blog.1.author': 'सञ्जोक घर्ती',
+      'blog.2.title': 'यस वर्ष नेपाल परिवर्तन गर्ने ५ मागपत्रहरू',
+      'blog.2.category': 'प्रभाव',
+      'blog.2.author': 'सीता शर्मा',
+      'blog.3.title': 'नागरिकको रूपमा तपाईंको अधिकार: बोल्नु महत्त्वपूर्ण छ',
+      'blog.3.category': 'अधिकार',
+      'blog.3.author': 'राजेश थापा',
+
+      // ─── CTA Banner ────────────────────────────────────────────────────
+      'cta.title1': 'आज बोल्दै',
+      'cta.title2': 'भोलि परिवर्तन',
+      'cta.description': 'प्रत्येक हस्ताक्षर मायने राख्छ। जवाफदेही, पारदर्शिता, र तपाईंको समुदायमा वास्तविक परिवर्तनको लागि आन्दोलनमा सामेल हुनुहोस्।',
+      'cta.browsePetitions': 'मागपत्र हेर्नुहोस्',
+      'cta.startPetition': 'मागपत्र सुरु गर्नुहोस्',
+
+      // ─── Footer ────────────────────────────────────────────────────────
+      'footer.description': 'नेपालभरका समुदायहरूमा आवाज उठाउन, मागपत्र सुरु गर्न, र अर्थपूर्ण परिवर्तन ल्याउन नागरिकहरूलाई सशक्त बनाउँदै।',
+      'footer.navigate': 'नेभिगेट',
+      'footer.howItWorks': 'यसले कसरी काम गर्छ',
+      'footer.browsePetitions': 'मागपत्र हेर्नुहोस्',
+      'footer.startCampaign': 'अभियान सुरु गर्नुहोस्',
+      'footer.successStories': 'सफलताका कथाहरू',
+      'footer.aboutUs': 'हाम्रो बारेमा',
+      'footer.whoWeAre': 'हामी को हौं',
+      'footer.ourMission': 'हाम्रो मिशन',
+      'footer.blog': 'ब्लग',
+      'footer.faqs': 'प्रायः सोधिने प्रश्नहरू',
+      'footer.contactUs': 'सम्पर्क गर्नुहोस्',
+      'footer.infoEmail': 'info@gunaso.com',
+      'footer.phone': '+९७७ ९८६८५९७८४१',
+      'footer.address': 'काठमाडौं, नेपाल',
+      'footer.copyright': '© प्रतिलिपि अधिकार २०२६ गुनासो.कम। सर्वाधिकार सुरक्षित।',
+
+      // ─── Dashboard Sidebar ─────────────────────────────────────────────
+      'sidebar.petition': 'मागपत्र',
+      'sidebar.polls': 'मतदान',
+      'sidebar.busFare': 'बस भाडा',
+      'sidebar.support': 'सहयोग / Support',
+      'sidebar.supportDesc': 'सार्वजनिक गुनासो सुनुवाई र सुशासनको लागि हाम्रो अभियानलाई समर्थन गर्नुहोस्।',
+      'sidebar.contactUs': 'हामीलाई सम्पर्क गर्नुहोस्',
+
+      // ─── Dashboard Page ────────────────────────────────────────────────
+      'dashboard.todayOverview': 'आजको सारांश',
+      'dashboard.summaryToday': 'आजको प्लेटफर्म गतिविधिको सारांश',
+      'dashboard.viewReport': 'प्रतिवेदन हेर्नुहोस्',
+      'dashboard.expenditure': 'खर्च',
+      'dashboard.revenue': 'राजस्व',
+      'dashboard.thisWeek': 'यो हप्ता',
+      'dashboard.thisYear': 'यो वर्ष',
+      'dashboard.thisMonth': 'यो महिना',
+      'dashboard.recurrent': 'पुनरावर्ती',
+      'dashboard.capital': 'पुँजीगत',
+      'dashboard.financing': 'वित्तपोषण',
+      'dashboard.grants': 'अनुदान',
+      'dashboard.otherReceipts': 'अन्य प्राप्ति',
+      'dashboard.reality': 'वास्तविक',
+      'dashboard.target': 'लक्ष्य',
+      'dashboard.minBudget': 'मन्त्रालय बजेट (रु. अर्ब)',
+      'dashboard.fiscalYear': 'आर्थिक वर्ष २०८१/८२ विनियोजन',
+      'dashboard.budgetCategories': 'बजेट श्रेणीहरू',
+      'dashboard.socialSecurity': 'सामाजिक सुरक्षा',
+      'dashboard.debtRepayment': 'ऋण भुक्तानी',
+      'dashboard.other': 'अन्य',
+      'dashboard.total': 'जम्मा',
+      'dashboard.ask': 'सोध्नुहोस्?',
+      'dashboard.complaintsToday': 'आजको गुनासो',
+      'dashboard.resolvedToday': 'आज समाधान',
+      'dashboard.activePetitions': 'सक्रिय मागपत्र',
+      'dashboard.totalSignatures': 'कुल हस्ताक्षर',
+
+      // ─── Dashboard page titles ──────────────────────────────────────────
+      'pageTitle.dashboard': 'ड्यासबोर्ड',
+      'pageTitle.settings': 'सेटिङ्स',
+      'pageTitle.feed': 'फिड',
+      'pageTitle.drSummarizer': 'Dr Summarizer',
+      'pageTitle.data': 'बजार डाटा',
+      'pageTitle.pricing': 'मूल्य निर्धारण',
+      'pageTitle.help': 'मद्दत केन्द्र',
+      'pageTitle.complaints': 'गुनासोहरू',
+      'pageTitle.petition': 'मागपत्र',
+      'pageTitle.busFare': 'बस भाडा',
+      'pageTitle.polls': 'मतदान',
+      'pageTitle.messaging': 'सन्देश',
+      'pageTitle.weather': 'मौसम',
+      'pageTitle.transactions': 'कारोबार',
     }
   }
 };
@@ -441,10 +727,17 @@ i18n
       escapeValue: false, // not needed for React
     },
     detection: {
-      order: ['localStorage', 'navigator'],
+      order: ['localStorage'],
       caches: ['localStorage'],
+      lookupLocalStorage: 'i18nextLng',
     }
   });
+
+// Ensure English is the default if nothing is stored
+const stored = localStorage.getItem('i18nextLng');
+if (!stored || stored === 'undefined') {
+  localStorage.setItem('i18nextLng', 'en');
+}
 
 // Helper functions for number formatting
 export const formatNumber = (number: number, language: string): string => {

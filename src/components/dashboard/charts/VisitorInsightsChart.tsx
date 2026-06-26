@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, Tooltip } from 'recharts';
+import { useTranslation } from 'react-i18next';
 
 type FilterType = 'week' | 'month' | 'year';
 
@@ -37,12 +38,6 @@ const yearData = [
   { label: 'Dec', recurrent: 24323, capital: 6937, financing: 0 },
 ];
 
-const filterOptions: { key: FilterType; label: string }[] = [
-  { key: 'week',  label: 'This Week'  },
-  { key: 'month', label: 'This Month' },
-  { key: 'year',  label: 'This Year'  },
-];
-
 const dataMap: Record<FilterType, typeof weekData> = {
   week: weekData,
   month: monthData,
@@ -50,14 +45,21 @@ const dataMap: Record<FilterType, typeof weekData> = {
 };
 
 export const VisitorInsightsChart = () => {
+  const { t } = useTranslation();
   const [filter, setFilter] = useState<FilterType>('week');
   const activeData = dataMap[filter];
+
+  const filterOptions: { key: FilterType; label: string }[] = [
+    { key: 'week',  label: t('dashboard.thisWeek')  },
+    { key: 'month', label: t('dashboard.thisMonth') },
+    { key: 'year',  label: t('dashboard.thisYear')  },
+  ];
 
   return (
     <Card className="bg-white border border-gray-200/50 rounded-2xl overflow-hidden shadow-sm h-full">
       <CardHeader className="pb-2 px-4 pt-4">
         <div className="flex items-center justify-between flex-wrap gap-2">
-          <CardTitle className="text-lg font-semibold text-zinc-900">Expenditure</CardTitle>
+          <CardTitle className="text-lg font-semibold text-zinc-900">{t('dashboard.expenditure')}</CardTitle>
           <select 
             value={filter}
             onChange={(e) => setFilter(e.target.value as FilterType)}
@@ -106,7 +108,7 @@ export const VisitorInsightsChart = () => {
               stroke="#3b82f6"
               strokeWidth={2.5}
               dot={{ fill: '#3b82f6', strokeWidth: 2, r: 3 }}
-              name="Recurrent"
+              name={t('dashboard.recurrent')}
             />
             <Line
               type="monotone"
@@ -114,7 +116,7 @@ export const VisitorInsightsChart = () => {
               stroke="#f59e0b"
               strokeWidth={2.5}
               dot={{ fill: '#f59e0b', strokeWidth: 2, r: 3 }}
-              name="Capital"
+              name={t('dashboard.capital')}
             />
             <Line
               type="monotone"
@@ -122,7 +124,7 @@ export const VisitorInsightsChart = () => {
               stroke="#10b981"
               strokeWidth={2.5}
               dot={{ fill: '#10b981', strokeWidth: 2, r: 3 }}
-              name="Financing"
+              name={t('dashboard.financing')}
             />
             <Legend
               formatter={(value) => value}

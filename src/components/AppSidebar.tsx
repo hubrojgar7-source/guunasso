@@ -45,13 +45,13 @@ export const AppSidebar = () => {
         showFor: ['farmer', 'user', 'admin'],
       },
       {
-        title: 'Petition',
+        title: t('sidebar.petition'),
         url: '/dashboard/petition',
         icon: ScrollText,
         showFor: ['farmer', 'user', 'admin'],
       },
       {
-        title: 'Polls',
+        title: t('sidebar.polls'),
         url: '/dashboard/polls',
         icon: Vote,
         showFor: ['farmer', 'user', 'admin'],
@@ -63,7 +63,7 @@ export const AppSidebar = () => {
         showFor: ['farmer', 'user'],
       },
       {
-        title: 'Bus Fare',
+        title: t('sidebar.busFare'),
         url: '/dashboard/bus-fare',
         icon: Bus,
         showFor: ['farmer', 'user', 'admin'],
@@ -173,21 +173,21 @@ export const AppSidebar = () => {
           </nav>
 
           <div className={`p-4 mt-4 ${isCollapsed ? 'hidden' : 'block'}`}>
-            <div className="bg-[#10B981] rounded-xl p-5 text-white">
+              <div className="bg-[#10B981] rounded-xl p-5 text-white">
               <div className="flex items-center gap-2 mb-3">
                 <HelpCircle className="w-5 h-5 text-white/90" />
                 <span className="text-sm font-semibold">
-                  सहयोग / Support
+                  {t('sidebar.support')}
                 </span>
               </div>
               <p className="text-sm text-white/80 mb-4 leading-relaxed">
-                सार्वजनिक गुनासो सुनुवाई र सुशासनको लागि हाम्रो अभियानलाई समर्थन गर्नुहोस्।
+                {t('sidebar.supportDesc')}
               </p>
               <Button
                 className="w-full bg-white text-[#10B981] hover:bg-gray-50 rounded-lg text-sm font-semibold h-10 border-0 shadow-none"
                 onClick={handleContactUs}
               >
-                हामीलाई सम्पर्क गर्नुहोस्
+                {t('sidebar.contactUs')}
               </Button>
             </div>
           </div>

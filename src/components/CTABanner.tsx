@@ -3,10 +3,12 @@ import { Button } from '@/components/ui/button';
 import { Megaphone } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 const CTABanner = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const handleCreate = () => {
     if (user) {
@@ -28,11 +30,10 @@ const CTABanner = () => {
 
       <div className="max-w-3xl mx-auto text-center relative z-10">
         <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 leading-tight">
-          Speaking Today, Changing Tomorrow
+          {t('cta.title1')}, {t('cta.title2')}
         </h2>
         <p className="text-white/80 text-base mb-8 max-w-xl mx-auto">
-          Every signature counts. Join the movement for accountability, transparency,
-          and real change in your community.
+          {t('cta.description')}
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
@@ -41,13 +42,13 @@ const CTABanner = () => {
             onClick={() => navigate('/polls')}
             className="border-white text-white bg-transparent hover:bg-white/10 h-12 px-8 rounded-lg font-semibold text-sm shadow-none"
           >
-            Browse Petitions
+            {t('cta.browsePetitions')}
           </Button>
           <Button
             onClick={handleCreate}
             className="bg-white text-[#10B981] hover:bg-gray-50 h-12 px-8 rounded-lg font-semibold text-sm border-0 shadow-none gap-2"
           >
-            Start Petition
+            {t('cta.startPetition')}
             <Megaphone className="w-4 h-4" />
           </Button>
         </div>

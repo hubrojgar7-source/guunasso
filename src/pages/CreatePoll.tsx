@@ -24,17 +24,17 @@ const CreatePoll = () => {
   };
 
   return (
-    <div className="py-20 px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto space-y-6">
-        <Button variant="ghost" className="mb-2 pl-0 hover:bg-transparent" onClick={() => navigate('/dashboard/polls')}>
-          <ArrowLeft className="w-4 h-4 mr-2" /> Back to Polls
+    <div className="p-6">
+      <div className="space-y-6">
+        <Button variant="ghost" className="mb-2 pl-0 hover:bg-transparent text-base py-3" onClick={() => navigate('/dashboard/polls')}>
+          <ArrowLeft className="w-5 h-5 mr-2" /> Back to Polls
         </Button>
 
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
-            Create a <span className="text-[#10B981]">New Poll</span>
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Create a New Poll
           </h1>
-          <p className="text-gray-500 mb-8">
+          <p className="text-base text-muted-foreground mb-8">
             Engage citizens by asking for their input on important community matters.
           </p>
 

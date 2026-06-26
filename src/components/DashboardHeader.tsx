@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuthContext } from '@/lib/AuthProvider';
 import { useNotifications } from '@/hooks/useNotifications';
 import NotificationPanel from '@/components/NotificationPanel';
+import { useTranslation } from 'react-i18next';
 
 const DashboardHeader: React.FC = () => {
   const location = useLocation();
@@ -13,6 +14,7 @@ const DashboardHeader: React.FC = () => {
   const { unreadCount } = useNotifications();
   const [showNotifications, setShowNotifications] = useState(false);
   const bellRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   const displayName = user?.displayName || user?.email?.split('@')[0] || 'Guest';
 
@@ -31,21 +33,21 @@ const DashboardHeader: React.FC = () => {
 
   const getPageTitle = () => {
     const path = location.pathname;
-    if (path === '/dashboard') return 'Dashboard';
-    if (path.includes('/settings')) return 'Settings';
-    if (path.includes('/feed')) return 'Feed';
-    if (path.includes('/dr-summarizer')) return 'Dr Summarizer';
-    if (path.includes('/data')) return 'Market Data';
-    if (path.includes('/pricing')) return 'Pricing';
-    if (path.includes('/help')) return 'Help Center';
-    if (path.includes('/complaints')) return 'Complaints';
-    if (path.includes('/petition')) return 'Petition / मागपत्र';
-    if (path.includes('/bus-fare')) return 'Bus Fare';
-    if (path.includes('/polls')) return 'Polls / मतदान';
-    if (path.includes('/messaging')) return 'Messaging';
-    if (path.includes('/weather')) return 'Weather';
-    if (path.includes('/transactions')) return 'Transactions';
-    return 'Dashboard';
+    if (path === '/dashboard') return t('pageTitle.dashboard');
+    if (path.includes('/settings')) return t('pageTitle.settings');
+    if (path.includes('/feed')) return t('pageTitle.feed');
+    if (path.includes('/dr-summarizer')) return t('pageTitle.drSummarizer');
+    if (path.includes('/data')) return t('pageTitle.data');
+    if (path.includes('/pricing')) return t('pageTitle.pricing');
+    if (path.includes('/help')) return t('pageTitle.help');
+    if (path.includes('/complaints')) return t('pageTitle.complaints');
+    if (path.includes('/petition')) return t('pageTitle.petition');
+    if (path.includes('/bus-fare')) return t('pageTitle.busFare');
+    if (path.includes('/polls')) return t('pageTitle.polls');
+    if (path.includes('/messaging')) return t('pageTitle.messaging');
+    if (path.includes('/weather')) return t('pageTitle.weather');
+    if (path.includes('/transactions')) return t('pageTitle.transactions');
+    return t('pageTitle.dashboard');
   };
 
   useEffect(() => {

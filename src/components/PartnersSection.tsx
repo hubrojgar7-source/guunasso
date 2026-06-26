@@ -1,15 +1,16 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const partners = ['Slack', 'Netflix', 'Google', 'Airbnb', 'Uber'];
 
 const PartnersSection = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="py-14 px-6 lg:px-8 bg-white border-y border-gray-100">
       <div className="max-w-7xl mx-auto text-center">
         <p className="text-gray-600 text-sm sm:text-base mb-10 max-w-2xl mx-auto">
-          Over{' '}
-          <span className="text-[#10B981] font-bold">100k Citizens</span> From{' '}
-          <span className="text-[#10B981] font-bold">77 Districts</span> Use Our Platform
+          {t('partners.text')}
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-10 lg:gap-16">

@@ -2,10 +2,13 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 const Header = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const handleScrollTo = (id: string) => {
     const element = document.getElementById(id);
@@ -15,11 +18,11 @@ const Header = () => {
   };
 
   const navLinks = [
-    { label: 'Home', action: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
-    { label: 'Petitions', action: () => navigate('/polls') },
-    { label: 'Campaign', action: () => handleScrollTo('campaigns') },
-    { label: 'About us', action: () => navigate('/team') },
-    { label: 'Contact', action: () => navigate('/help') },
+    { label: t('nav.home'), action: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
+    { label: t('nav.petitions'), action: () => navigate('/polls') },
+    { label: t('nav.campaign'), action: () => handleScrollTo('campaigns') },
+    { label: t('nav.aboutUs'), action: () => navigate('/team') },
+    { label: t('nav.contact'), action: () => navigate('/help') },
   ];
 
   return (
@@ -52,13 +55,17 @@ const Header = () => {
           ))}
         </nav>
 
-        <Button
-          variant="outline"
-          className="border-[#10B981] text-[#10B981] hover:bg-[#10B981]/5 h-10 px-6 rounded-lg font-semibold text-sm shadow-none"
-          onClick={() => (user ? navigate('/dashboard') : navigate('/login'))}
-        >
-          {user ? 'Dashboard' : 'Campaign'}
-        </Button>
+        <div className="flex items-center gap-4">
+          <LanguageSwitcher />
+
+          <Button
+            variant="outline"
+            className="border-[#10B981] text-[#10B981] hover:bg-[#10B981]/5 h-10 px-6 rounded-lg font-semibold text-sm shadow-none"
+            onClick={() => (user ? navigate('/dashboard') : navigate('/login'))}
+          >
+            {user ? t('header.dashboard') : t('header.campaignBtn')}
+          </Button>
+        </div>
       </div>
     </header>
   );

@@ -84,14 +84,14 @@ export const TargetVsRealityChart = () => {
             <Bar 
               dataKey="revenue" 
               fill="#10b981" 
-              name="Revenue"
+              name={t('dashboard.target')}
               radius={[2, 2, 0, 0]}
               barSize={15}
             />
             <Bar 
               dataKey="expenditure" 
               fill="#fbbf24" 
-              name="Expenditure"
+              name={t('dashboard.reality')}
               radius={[2, 2, 0, 0]}
               barSize={15}
             />

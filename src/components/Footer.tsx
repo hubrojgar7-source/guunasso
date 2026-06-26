@@ -1,22 +1,24 @@
 ﻿import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Footer = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const navigateLinks = [
-    { label: 'How it works', href: '#how-it-works' },
-    { label: 'Browse petitions', href: '/polls' },
-    { label: 'Start a campaign', href: '/dashboard/polls/create' },
-    { label: 'Success stories', href: '/success-stories' },
+    { labelKey: 'footer.howItWorks', href: '#how-it-works' },
+    { labelKey: 'footer.browsePetitions', href: '/polls' },
+    { labelKey: 'footer.startCampaign', href: '/dashboard/polls/create' },
+    { labelKey: 'footer.successStories', href: '/success-stories' },
   ];
 
   const aboutLinks = [
-    { label: 'Who we are', href: '/team' },
-    { label: 'Our mission', href: '/social-impact' },
-    { label: 'Blog', href: '/blog' },
-    { label: 'FAQs', href: '/help' },
+    { labelKey: 'footer.whoWeAre', href: '/team' },
+    { labelKey: 'footer.ourMission', href: '/social-impact' },
+    { labelKey: 'footer.blog', href: '/blog' },
+    { labelKey: 'footer.faqs', href: '/help' },
   ];
 
   const handleLink = (href: string) => {
@@ -42,8 +44,7 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed mb-5">
-              Empowering citizens to raise their voice, start petitions, and drive
-              meaningful change in their communities across Nepal.
+              {t('footer.description')}
             </p>
             <div className="flex gap-3">
               {[
@@ -66,15 +67,15 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-bold text-gray-900 mb-4 text-sm">Navigate</h3>
+            <h3 className="font-bold text-gray-900 mb-4 text-sm">{t('footer.navigate')}</h3>
             <ul className="space-y-3">
               {navigateLinks.map((link) => (
-                <li key={link.label}>
+                <li key={link.labelKey}>
                   <button
                     onClick={() => handleLink(link.href)}
                     className="text-gray-500 hover:text-[#10B981] text-sm transition-colors bg-transparent border-0 cursor-pointer p-0"
                   >
-                    {link.label}
+                    {t(link.labelKey)}
                   </button>
                 </li>
               ))}
@@ -82,15 +83,15 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-bold text-gray-900 mb-4 text-sm">About us</h3>
+            <h3 className="font-bold text-gray-900 mb-4 text-sm">{t('footer.aboutUs')}</h3>
             <ul className="space-y-3">
               {aboutLinks.map((link) => (
-                <li key={link.label}>
+                <li key={link.labelKey}>
                   <button
                     onClick={() => handleLink(link.href)}
                     className="text-gray-500 hover:text-[#10B981] text-sm transition-colors bg-transparent border-0 cursor-pointer p-0"
                   >
-                    {link.label}
+                    {t(link.labelKey)}
                   </button>
                 </li>
               ))}
@@ -98,21 +99,21 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-bold text-gray-900 mb-4 text-sm">Contact Us</h3>
+            <h3 className="font-bold text-gray-900 mb-4 text-sm">{t('footer.contactUs')}</h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <Mail className="w-4 h-4 text-[#10B981] mt-0.5 flex-shrink-0" />
                 <a href="mailto:info@gunaso.com" className="text-gray-500 text-sm hover:text-[#10B981] transition-colors">
-                  info@gunaso.com
+                  {t('footer.infoEmail')}
                 </a>
               </li>
               <li className="flex items-start gap-3">
                 <Phone className="w-4 h-4 text-[#10B981] mt-0.5 flex-shrink-0" />
-                <span className="text-gray-500 text-sm">+977 9868597841</span>
+                <span className="text-gray-500 text-sm">{t('footer.phone')}</span>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-[#10B981] mt-0.5 flex-shrink-0" />
-                <span className="text-gray-500 text-sm">Kathmandu, Nepal</span>
+                <span className="text-gray-500 text-sm">{t('footer.address')}</span>
               </li>
             </ul>
           </div>
@@ -120,7 +121,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-200 pt-6 text-center">
           <p className="text-gray-400 text-sm">
-            © Copyright {new Date().getFullYear()} गुनासो.com. All Rights Reserved.
+            {t('footer.copyright')}
           </p>
         </div>
       </div>
