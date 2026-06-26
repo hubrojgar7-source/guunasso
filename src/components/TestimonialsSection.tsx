@@ -7,21 +7,21 @@ const testimonials = [
       'गुनासो.com helped our community get the attention of local officials. Within weeks, our road repair petition gained over 3,000 signatures and the municipality responded.',
     name: 'Wade Warren',
     role: 'Community Leader, Pokhara',
-    image: 'https://images.unsplash.com/photo-1529156069898-bc53e868cbb?w=800&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop',
   },
   {
     quote:
       'I started a petition about school infrastructure in my district. The platform made it easy to share and track progress. Real change is possible when voices unite.',
     name: 'Sita Sharma',
     role: 'Teacher, Biratnagar',
-    image: 'https://images.unsplash.com/photo-1559027615-cd4628905647?w=800&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&h=600&fit=crop',
   },
   {
     quote:
       'As a youth activist, this platform gave me the tools to organize and amplify our demands. The transparency in vote counting builds trust among supporters.',
     name: 'Rajesh Thapa',
     role: 'Youth Activist, Kathmandu',
-    image: 'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=800&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1580130775562-0ef92da028bc?w=800&h=600&fit=crop',
   },
 ];
 

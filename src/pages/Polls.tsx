@@ -5,20 +5,16 @@ import { Button } from '@/components/ui/button';
 import { getPolls, type Poll, type PollCategory, type LocationScope } from '@/lib/polls';
 import { PollCard } from '@/components/polls/PollCard';
 import { PollFilters } from '@/components/polls/PollFilters';
-import { useUserProfile } from '@/hooks/useUserProfile';
 
 const Polls = () => {
   const navigate = useNavigate();
-  const { profile } = useUserProfile();
-  
+
   const [polls, setPolls] = useState<Poll[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const [statusFilter, setStatusFilter] = useState<'active' | 'ended' | 'all'>('all');
   const [categoryFilter, setCategoryFilter] = useState<PollCategory | 'all'>('all');
   const [locationFilter, setLocationFilter] = useState<LocationScope | 'all'>('all');
-
-  const canCreatePoll = profile?.userType === 'farmer' || profile?.userType === 'admin' || profile?.userType === 'organization';
 
   useEffect(() => {
     fetchPolls();
@@ -56,15 +52,13 @@ const Polls = () => {
           locationFilter={locationFilter}
           setLocationFilter={setLocationFilter}
         />
-        {canCreatePoll && (
-          <Button
-            onClick={() => navigate('/dashboard/polls/create')}
-            className="flex items-center gap-2 h-11 px-6 flex-shrink-0 ml-4"
-          >
-            <Plus className="w-5 h-5" />
-            Create Poll
-          </Button>
-        )}
+        <Button
+          onClick={() => navigate('/dashboard/polls/create')}
+          className="flex items-center gap-2 h-11 px-6 flex-shrink-0 ml-4"
+        >
+          <Plus className="w-5 h-5" />
+          Create Poll
+        </Button>
       </div>
 
       {isLoading ? (
@@ -85,9 +79,9 @@ const Polls = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {polls.map((poll) => (
-            <PollCard 
-              key={poll.id} 
-              poll={poll} 
+            <PollCard
+              key={poll.id}
+              poll={poll}
               onClick={(id) => navigate(`/dashboard/polls/${id}`)}
               onDeleted={handlePollDeleted}
             />

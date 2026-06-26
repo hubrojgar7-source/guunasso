@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { MapPin, ArrowRightLeft, AlertCircle, Search, Navigation, AlertTriangle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { MapPin, ArrowRightLeft, AlertCircle, Search, Navigation, AlertTriangle, Sparkles, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { db } from '@/lib/firebase';
+import { db, auth } from '@/lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { auth } from '@/lib/firebase';
+import { analyzeRisk } from '@/lib/riskDetection';
+import type { RiskLevel } from '@/lib/riskDetection';
+import { fileToBase64 } from '@/lib/storage';
 import RouteMap from '@/components/RouteMap';
 
 function toRad(deg: number) { return deg * (Math.PI / 180); }
@@ -121,16 +123,18 @@ const FarePanel = ({ from, to, fromCoords, toCoords }: { from: string; to: strin
 };
 
 const BusFare = () => {
+  const navigate = useNavigate();
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [searched, setSearched] = useState(false);
   const [complainOpen, setComplainOpen] = useState(false);
   const [compTitle, setCompTitle] = useState('');
   const [compDesc, setCompDesc] = useState('');
-  const [compCategory, setCompCategory] = useState('other');
-  const [compPriority, setCompPriority] = useState('medium');
   const [compBusNumber, setCompBusNumber] = useState('');
   const [compSubmitting, setCompSubmitting] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [compImages, setCompImages] = useState<File[]>([]);
+  const [compVideos, setCompVideos] = useState<File[]>([]);
 
   const swapLocations = () => {
     setFrom(to);
@@ -148,31 +152,56 @@ const BusFare = () => {
     e.preventDefault();
     if (!compTitle.trim() || !compDesc.trim()) return;
     setCompSubmitting(true);
+    setAnalyzing(true);
     try {
-      await addDoc(collection(db, 'complaints'), {
+      // AI analysis with minimum 2 second animation
+      const [risk] = await Promise.all([
+        analyzeRisk(compTitle.trim(), compDesc.trim()),
+        new Promise<void>(resolve => setTimeout(resolve, 2000)),
+      ]);
+      const priority = risk.level as RiskLevel;
+      let category = 'other';
+      if (risk.keywords.length > 0) {
+        const k = risk.keywords[0].toLowerCase();
+        if (['financial', 'money', 'payment', 'fare', 'price', 'cost', 'expensive', 'overcharge'].some(w => k.includes(w))) category = 'financial';
+        else if (['infrastructure', 'road', 'bridge', 'station', 'stop', 'terminal'].some(w => k.includes(w))) category = 'infrastructure';
+        else if (['service', 'driver', 'behavior', 'conduct', 'rude', 'delay', 'late'].some(w => k.includes(w))) category = 'service';
+      }
+      const mediaUrls: string[] = [];
+      for (const file of compImages) mediaUrls.push(await fileToBase64(file));
+      for (const file of compVideos) mediaUrls.push(await fileToBase64(file));
+      const complaintData: Record<string, any> = {
         userId: auth.currentUser?.uid || 'anonymous',
         userName: auth.currentUser?.displayName || 'Anonymous',
         userEmail: auth.currentUser?.email || '',
         title: compTitle.trim(),
-        category: compCategory,
-        priority: compPriority,
+        category,
+        priority,
         status: 'pending',
         location: `${from} → ${to}`,
         busNumber: compBusNumber.trim() || '',
         description: compDesc.trim(),
+        riskLabel: risk.label,
+        riskLevel: risk.level,
+        riskColor: risk.color,
+        riskKeywords: risk.keywords,
         createdAt: serverTimestamp(),
         replies: [],
-      });
+      };
+      if (mediaUrls.length > 0) complaintData.mediaUrls = mediaUrls;
+      await addDoc(collection(db, 'complaints'), complaintData);
       setComplainOpen(false);
       setCompTitle('');
       setCompDesc('');
       setCompBusNumber('');
-      setCompCategory('other');
-      setCompPriority('medium');
+      setCompImages([]);
+      setCompVideos([]);
+      navigate('/dashboard/complaints');
     } catch (err) {
       console.error('Complaint failed:', err);
     } finally {
       setCompSubmitting(false);
+      setAnalyzing(false);
     }
   };
 
@@ -278,6 +307,19 @@ const BusFare = () => {
           <DialogHeader>
             <DialogTitle>File a Complaint</DialogTitle>
           </DialogHeader>
+
+          {analyzing ? (
+            <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
+              <div className="relative">
+                <Loader2 className="w-12 h-12 animate-spin text-primary" />
+                <Sparkles className="w-5 h-5 text-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+              </div>
+              <div>
+                <p className="text-lg font-semibold">Our AI is analyzing your post</p>
+                <p className="text-sm text-muted-foreground mt-1">Determining risk level and category...</p>
+              </div>
+            </div>
+          ) : (
           <form onSubmit={handleComplaintSubmit} className="space-y-4">
             <div>
               <label className="text-sm font-medium text-foreground mb-1 block">Route</label>
@@ -292,40 +334,61 @@ const BusFare = () => {
               <Input value={compBusNumber} onChange={e => setCompBusNumber(e.target.value)} placeholder="e.g. Ba 2 Kha 1234" />
             </div>
             <div>
-              <label className="text-sm font-medium text-foreground mb-1 block">Category</label>
-              <Select value={compCategory} onValueChange={setCompCategory}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="financial">Financial</SelectItem>
-                  <SelectItem value="infrastructure">Infrastructure</SelectItem>
-                  <SelectItem value="technical">Technical</SelectItem>
-                  <SelectItem value="agriculture">Agriculture</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-foreground mb-1 block">Priority</label>
-              <Select value={compPriority} onValueChange={setCompPriority}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="low">Low</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="high">High</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
               <label className="text-sm font-medium text-foreground mb-1 block">Description</label>
               <Textarea value={compDesc} onChange={e => setCompDesc(e.target.value)} placeholder="Describe what happened..." rows={3} required />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground mb-1 block">Attach Images & Videos</label>
+              <div className="flex gap-3">
+                <div className="flex-1">
+                  <label className="flex items-center justify-center gap-2 h-12 px-4 rounded-xl border-2 border-dashed border-muted-foreground/30 bg-muted/30 cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-colors text-sm text-muted-foreground">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      className="hidden"
+                      onChange={e => { const files = e.target.files; if (files) setCompImages(Array.from(files)); }}
+                    />
+                    {compImages.length > 0 ? `${compImages.length} image(s) selected` : 'Choose Images'}
+                  </label>
+                </div>
+                <div className="flex-1">
+                  <label className="flex items-center justify-center gap-2 h-12 px-4 rounded-xl border-2 border-dashed border-muted-foreground/30 bg-muted/30 cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-colors text-sm text-muted-foreground">
+                    <input
+                      type="file"
+                      accept="video/*"
+                      className="hidden"
+                      onChange={e => { const files = e.target.files; if (files) setCompVideos(Array.from(files)); }}
+                    />
+                    {compVideos.length > 0 ? `${compVideos.length} video(s) selected` : 'Choose Videos'}
+                  </label>
+                </div>
+              </div>
+              {(compImages.length > 0 || compVideos.length > 0) && (
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {compImages.map((f, i) => (
+                    <div key={i} className="flex items-center gap-1.5 bg-muted px-2.5 py-1 rounded-lg text-xs text-muted-foreground">
+                      <span className="truncate max-w-[100px]">{f.name}</span>
+                      <button type="button" onClick={() => setCompImages(prev => prev.filter((_, j) => j !== i))} className="text-destructive hover:text-destructive/80 ml-1">&times;</button>
+                    </div>
+                  ))}
+                  {compVideos.map((f, i) => (
+                    <div key={i} className="flex items-center gap-1.5 bg-muted px-2.5 py-1 rounded-lg text-xs text-muted-foreground">
+                      <span className="truncate max-w-[100px]">{f.name}</span>
+                      <button type="button" onClick={() => setCompVideos(prev => prev.filter((_, j) => j !== i))} className="text-destructive hover:text-destructive/80 ml-1">&times;</button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setComplainOpen(false)}>Cancel</Button>
               <Button type="submit" disabled={compSubmitting || !compTitle.trim() || !compDesc.trim()}>
-                {compSubmitting ? 'Submitting...' : 'Submit Complaint'}
+                {compSubmitting ? 'Analyzing...' : 'Submit Complaint'}
               </Button>
             </DialogFooter>
           </form>
+          )}
         </DialogContent>
       </Dialog>
 

@@ -7,72 +7,121 @@ interface RiskKeyword {
 }
 
 const riskKeywords: RiskKeyword[] = [
+  // --- HIGH RISK: national issues, highways, big infrastructure, disasters, crime ---
   {
-    words: ['accident', 'death', 'died', 'kill', 'murder', 'fatal', 'casualty'],
+    words: ['highway', 'expressway', 'national highway', 'flyover', 'motorway', 'national project'],
     level: 'high', weight: 3,
   },
   {
-    words: ['injury', 'injured', 'hurt', 'wound', 'bleed', 'broken bone'],
+    words: ['corruption', 'bribe', 'bribery', 'extortion', 'embezzlement', 'fraud', 'scam', 'misappropriation'],
     level: 'high', weight: 3,
   },
   {
-    words: ['emergency', 'urgent', 'critical', 'immediate', 'asap', 'life-threatening'],
+    words: ['flood', 'landslide', 'earthquake', 'collapse', 'explosion', 'disaster', 'havoc', 'devastating'],
     level: 'high', weight: 3,
   },
   {
-    words: ['violence', 'assault', 'threat', 'abuse', 'attack', 'fight', 'battery'],
+    words: ['accident', 'death', 'died', 'kill', 'murder', 'fatal', 'casualty', 'massacre'],
     level: 'high', weight: 3,
   },
   {
-    words: ['corruption', 'bribe', 'bribery', 'extortion', 'embezzlement', 'fraud'],
+    words: ['violence', 'assault', 'threat', 'abuse', 'attack', 'riot', 'communal', 'terror'],
     level: 'high', weight: 3,
   },
   {
-    words: ['flood', 'landslide', 'earthquake', 'collapse', 'fire', 'explosion', 'disaster'],
+    words: ['rape', 'sexual', 'harassment', 'molest', 'trafficking', 'kidnap', 'abduction'],
     level: 'high', weight: 3,
   },
   {
-    words: ['rape', 'sexual', 'harassment', 'molest', 'traffic', 'kidnap'],
+    words: ['poison', 'toxic', 'hazardous', 'radiation', 'chemical spill', 'contamination', 'epidemic', 'pandemic', 'outbreak'],
     level: 'high', weight: 3,
   },
   {
-    words: ['contaminated', 'poison', 'toxic', 'hazardous', 'radiation', 'chemical spill'],
+    words: ['human rights', 'constitutional', 'supreme court', 'high court', 'legislation', 'policy failure'],
     level: 'high', weight: 3,
   },
   {
-    words: ['bridge', 'road', 'building', 'infrastructure', 'construction', 'damage', 'crack'],
+    words: ['dam collapse', 'bridge collapse', 'building collapse', 'structural failure'],
+    level: 'high', weight: 3,
+  },
+
+  // --- MEDIUM RISK: small roads, electricity poles, local infrastructure ---
+  {
+    words: ['road', 'street', 'lane', 'pothole', 'pavement', 'footpath', 'culvert', 'road repair'],
     level: 'medium', weight: 2,
   },
   {
-    words: ['delay', 'late', 'pending', 'stuck', 'slow', 'waiting', 'backlog'],
-    level: 'medium', weight: 1,
-  },
-  {
-    words: ['shortage', 'lack', 'insufficient', 'scarce', 'deficit', 'not enough'],
+    words: ['electricity', 'power', 'pole', 'transformer', 'power line', 'power cut', 'load shedding', 'voltage', 'blackout'],
     level: 'medium', weight: 2,
   },
   {
-    words: ['quality', 'repair', 'maintenance', 'broken', 'damaged', 'fault', 'defect'],
+    words: ['water supply', 'drain', 'sewage', 'drainage', 'pipe', 'water pipe', 'blockage'],
     level: 'medium', weight: 1,
   },
   {
-    words: ['dispute', 'conflict', 'argument', 'quarrel', 'disagreement', 'complaint'],
+    words: ['bridge', 'local bridge', 'overpass', 'underpass', 'crossing'],
+    level: 'medium', weight: 2,
+  },
+  {
+    words: ['public transport', 'bus', 'bus stop', 'bus shelter', 'route', 'traffic', 'congestion', 'signal'],
     level: 'medium', weight: 1,
   },
   {
-    words: ['electricity', 'power cut', 'load shedding', 'water supply', 'drain', 'sewage'],
+    words: ['school', 'college', 'hospital', 'health post', 'clinic', 'public building'],
+    level: 'medium', weight: 2,
+  },
+  {
+    words: ['garbage', 'waste', 'dump', 'sanitation', 'cleaning', 'cleanliness', 'public toilet'],
     level: 'medium', weight: 1,
   },
   {
-    words: ['suggestion', 'inquiry', 'request', 'feedback', 'opinion', 'proposal'],
+    words: ['encroachment', 'illegal construction', 'zoning', 'land dispute', 'property dispute'],
+    level: 'medium', weight: 2,
+  },
+  {
+    words: ['repair', 'maintenance', 'broken', 'damaged', 'fault', 'defect', 'deteriorating'],
+    level: 'medium', weight: 1,
+  },
+
+  // --- LOW RISK: tap water, simple house problems, small household issues ---
+  {
+    words: ['tap water', 'drinking water', 'water tap', 'faucet', 'leak', 'leaky'],
     level: 'low', weight: 1,
   },
   {
-    words: ['noise', 'garbage', 'waste', 'clean', 'cleaning', 'parking', 'street light', 'sanitation'],
+    words: ['plumbing', 'pipe leak', 'toilet', 'sink', 'bathroom', 'drain clog'],
     level: 'low', weight: 1,
   },
   {
-    words: ['document', 'certificate', 'application', 'form', 'registration', 'renewal'],
+    words: ['house', 'home', 'apartment', 'residential', 'neighbor', 'noise', 'loud music', 'barking'],
+    level: 'low', weight: 1,
+  },
+  {
+    words: ['street light', 'street lamp', 'lamp post', 'lighting'],
+    level: 'low', weight: 1,
+  },
+  {
+    words: ['parking', 'parking space', 'parking issue', 'vehicle'],
+    level: 'low', weight: 1,
+  },
+  {
+    words: ['suggestion', 'inquiry', 'request', 'feedback', 'opinion', 'proposal', 'question'],
+    level: 'low', weight: 1,
+  },
+  {
+    words: ['document', 'certificate', 'application', 'form', 'registration', 'renewal', 'license'],
+    level: 'low', weight: 1,
+  },
+  {
+    words: ['pet', 'stray dog', 'stray cat', 'animal', 'cow'],
+    level: 'low', weight: 1,
+  },
+  {
+    words: ['garden', 'park', 'playground', 'recreation', 'community center'],
+    level: 'low', weight: 1,
+  },
+  {
+    words: ['paint', 'plaster', 'fence', 'gate', 'roof', 'wall', 'door', 'window'],
     level: 'low', weight: 1,
   },
 ];
@@ -106,7 +155,7 @@ export function analyzeRisk(description: string): RiskAnalysis {
   const total = highScore + mediumScore + lowScore;
 
   if (total === 0) {
-    return { level: 'medium', confidence: 0, matchedKeywords: [] };
+    return { level: 'low', confidence: 0, matchedKeywords: [] };
   }
 
   if (highScore >= mediumScore && highScore >= lowScore) {

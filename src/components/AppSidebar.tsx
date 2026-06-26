@@ -3,11 +3,8 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
-  Star,
   BarChart3,
-  Rss,
   LineChart,
-  MessageSquare,
   Vote,
   FileText,
   HelpCircle,
@@ -54,6 +51,12 @@ export const AppSidebar = () => {
         showFor: ['farmer', 'user', 'admin'],
       },
       {
+        title: 'Polls',
+        url: '/dashboard/polls',
+        icon: Vote,
+        showFor: ['farmer', 'user', 'admin'],
+      },
+      {
         title: t('common.drSummarizer', 'Dr Summarizer'),
         url: '/dashboard/dr-summarizer',
         icon: FileText,
@@ -63,18 +66,6 @@ export const AppSidebar = () => {
         title: 'Bus Fare',
         url: '/dashboard/bus-fare',
         icon: Bus,
-        showFor: ['farmer', 'user', 'admin'],
-      },
-      {
-        title: 'Polls',
-        url: '/dashboard/polls',
-        icon: Vote,
-        showFor: ['farmer', 'user', 'admin'],
-      },
-      {
-        title: t('common.feed'),
-        url: '/dashboard/feed',
-        icon: Rss,
         showFor: ['farmer', 'user', 'admin'],
       },
       {

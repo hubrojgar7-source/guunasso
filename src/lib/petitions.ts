@@ -155,10 +155,9 @@ export const getPetitionById = async (petitionId: string): Promise<Petition | nu
 };
 
 export const signPetition = async (petitionId: string): Promise<void> => {
-  const user = auth.currentUser;
-  if (!user) throw new Error('Authentication required');
+  const userId = auth.currentUser?.uid || 'anon_' + Math.random().toString(36).substring(2, 10);
 
-  const existingSig = await getUserSignature(petitionId);
+  const existingSig = await getUserSignature(petitionId, userId);
   if (existingSig) throw new Error('You have already signed this petition');
 
   const petition = await getPetitionById(petitionId);
@@ -170,7 +169,7 @@ export const signPetition = async (petitionId: string): Promise<void> => {
   const sigRef = doc(collection(db, 'signatures'));
   batch.set(sigRef, {
     petitionId,
-    userId: user.uid,
+    userId,
     signedAt: serverTimestamp(),
   });
 
@@ -183,15 +182,15 @@ export const signPetition = async (petitionId: string): Promise<void> => {
   await batch.commit();
 };
 
-export const getUserSignature = async (petitionId: string): Promise<Signature | null> => {
-  const user = auth.currentUser;
-  if (!user) return null;
+export const getUserSignature = async (petitionId: string, customUserId?: string): Promise<Signature | null> => {
+  const userId = customUserId || auth.currentUser?.uid;
+  if (!userId) return null;
 
   try {
     const q = query(
       collection(db, 'signatures'),
       where('petitionId', '==', petitionId),
-      where('userId', '==', user.uid),
+      where('userId', '==', userId),
       limit(1)
     );
     const snap = await getDocs(q);

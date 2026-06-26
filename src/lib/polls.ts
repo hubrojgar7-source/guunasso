@@ -269,11 +269,10 @@ export const getPollById = async (pollId: string): Promise<Poll | null> => {
 // ─── Cast Vote ────────────────────────────────────────────────────────────────
 
 export const castVote = async (pollId: string, optionIds: string[]): Promise<void> => {
-  const user = auth.currentUser;
-  if (!user) throw new Error('Authentication required');
+  const userId = auth.currentUser?.uid || 'anon_' + Math.random().toString(36).substring(2, 10);
 
   // Check for duplicate vote
-  const existingVote = await getUserVote(pollId);
+  const existingVote = await getUserVote(pollId, userId);
   if (existingVote) throw new Error('You have already voted on this poll');
 
   const poll = await getPollById(pollId);
@@ -291,7 +290,7 @@ export const castVote = async (pollId: string, optionIds: string[]): Promise<voi
   batch.set(voteRef, {
     pollId,
     optionIds,
-    userId: user.uid,
+    userId,
     votedAt: serverTimestamp(),
   });
 
@@ -310,15 +309,15 @@ export const castVote = async (pollId: string, optionIds: string[]): Promise<voi
 
 // ─── Get User Vote ────────────────────────────────────────────────────────────
 
-export const getUserVote = async (pollId: string): Promise<Vote | null> => {
-  const user = auth.currentUser;
-  if (!user) return null;
+export const getUserVote = async (pollId: string, customUserId?: string): Promise<Vote | null> => {
+  const userId = customUserId || auth.currentUser?.uid;
+  if (!userId) return null;
 
   try {
     const q = query(
       collection(db, 'votes'),
       where('pollId', '==', pollId),
-      where('userId', '==', user.uid),
+      where('userId', '==', userId),
       limit(1)
     );
     const snap = await getDocs(q);

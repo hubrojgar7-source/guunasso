@@ -4,15 +4,11 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CreatePollForm } from '@/components/polls/CreatePollForm';
 import { createPoll } from '@/lib/polls';
-import { useUserProfile } from '@/hooks/useUserProfile';
 import { toast } from 'sonner';
 
 const CreatePoll = () => {
   const navigate = useNavigate();
-  const { profile, loading } = useUserProfile();
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const isAuthorized = profile?.userType === 'farmer' || profile?.userType === 'admin' || profile?.userType === 'organization';
 
   const handleSubmit = async (data: any) => {
     setIsSubmitting(true);
@@ -26,22 +22,6 @@ const CreatePoll = () => {
       setIsSubmitting(false);
     }
   };
-
-  if (loading) {
-    return <div className="p-10 text-center text-gray-500">Loading...</div>;
-  }
-
-  if (!isAuthorized) {
-    return (
-      <div className="p-10 text-center max-w-lg mx-auto mt-20 bg-white rounded-xl shadow-sm border border-gray-100">
-        <h2 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h2>
-        <p className="text-gray-600 mb-6">
-          Only verified organizations and administrators can create civic polls.
-        </p>
-        <Button onClick={() => navigate('/dashboard/polls')}>Return to Polls</Button>
-      </div>
-    );
-  }
 
   return (
     <div className="py-20 px-6 lg:px-8">
@@ -57,7 +37,7 @@ const CreatePoll = () => {
           <p className="text-gray-500 mb-8">
             Engage citizens by asking for their input on important community matters.
           </p>
-          
+
           <CreatePollForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
         </div>
       </div>

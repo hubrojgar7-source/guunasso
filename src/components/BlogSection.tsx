@@ -10,7 +10,7 @@ const blogPosts = [
     date: 'May 15, 2024',
     comments: 12,
     author: 'Sanjok Gharti',
-    image: 'https://images.unsplash.com/photo-1529156069898-bc53e868cbb?w=600&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1499678329028-3e7f5e5d3b3b?w=600&h=400&fit=crop',
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ const blogPosts = [
     date: 'May 10, 2024',
     comments: 8,
     author: 'Sita Sharma',
-    image: 'https://images.unsplash.com/photo-1559027615-cd4628905647?w=600&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=600&h=400&fit=crop',
   },
   {
     id: 3,
@@ -28,7 +28,7 @@ const blogPosts = [
     date: 'May 05, 2024',
     comments: 15,
     author: 'Rajesh Thapa',
-    image: 'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=600&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1580130775562-0ef92da028bc?w=600&h=400&fit=crop',
   },
 ];
 

@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Loader2, Share2, MapPin, CalendarDays } from 'lucide-react';
 import { getPollById, castVote, getUserVote, getPollResults, type Poll, type PollResults as PollResultsType } from '@/lib/polls';
-import { useAuthContext } from '@/lib/AuthProvider';
 import { toast } from 'sonner';
-import { useUserProfile } from '@/hooks/useUserProfile';
 
 const BAR_COLOR = 'bg-[#10B981]/30';
 const WINNER_COLOR = 'bg-[#10B981]';
@@ -12,8 +10,6 @@ const WINNER_COLOR = 'bg-[#10B981]';
 const PollDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { user } = useAuthContext();
-  const { profile } = useUserProfile();
 
   const [poll, setPoll] = useState<Poll | null>(null);
   const [results, setResults] = useState<PollResultsType | null>(null);
@@ -23,11 +19,9 @@ const PollDetail = () => {
   const [selectedOptionIds, setSelectedOptionIds] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const canCreatePoll = profile?.userType === 'farmer' || profile?.userType === 'admin' || profile?.userType === 'organization';
-
   useEffect(() => {
     if (id) loadData(id);
-  }, [id, user]);
+  }, [id]);
 
   const loadData = async (pollId: string) => {
     setIsLoading(true);
@@ -36,13 +30,13 @@ const PollDetail = () => {
       if (!p) { setIsLoading(false); return; }
       setPoll(p);
 
-      if (user) {
+      try {
         const userVote = await getUserVote(pollId);
         if (userVote) {
           setHasVoted(true);
           setUserVotedIds(userVote.optionIds);
         }
-      }
+      } catch {} // anonymous user, no existing vote
 
       const isEnded = p.status === 'ended' || new Date() > p.endDate;
       if (isEnded) {
@@ -127,11 +121,9 @@ const PollDetail = () => {
             <span className="inline-block text-xs font-semibold bg-[#10B981]/10 text-[#10B981] px-3 py-1 rounded-full capitalize">
               {poll.category}
             </span>
-            {canCreatePoll && (
-              <button onClick={() => navigate('/dashboard/polls/create')} className="text-sm text-gray-500 hover:text-[#10B981] flex items-center gap-1 transition-colors">
-                <Plus className="w-4 h-4" /> Create Poll
-              </button>
-            )}
+            <button onClick={() => navigate('/dashboard/polls/create')} className="text-sm text-gray-500 hover:text-[#10B981] flex items-center gap-1 transition-colors">
+              <Plus className="w-4 h-4" /> Create Poll
+            </button>
           </div>
 
           <div>
@@ -187,13 +179,6 @@ const PollDetail = () => {
               <p className="text-center text-sm text-gray-400 font-medium pt-2">
                 {isEnded ? 'This poll has ended.' : 'You have already voted.'} &nbsp;·&nbsp; {total.toLocaleString()} total votes
               </p>
-            </div>
-          ) : !user ? (
-            <div className="bg-white rounded-xl border border-gray-100 p-10 text-center shadow-sm">
-              <p className="text-gray-500 mb-4">Please sign in to participate in this poll.</p>
-              <button onClick={() => navigate('/login')} className="bg-[#10B981] hover:bg-[#059669] text-white px-8 py-2.5 rounded-lg font-semibold transition-colors">
-                Sign In to Vote
-              </button>
             </div>
           ) : isEnded ? (
             <div className="bg-white rounded-xl border border-gray-100 p-10 text-center shadow-sm">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import {
@@ -98,6 +98,7 @@ const Complaints = () => {
   const [newImages, setNewImages] = useState<File[]>([]);
   const [newVideos, setNewVideos] = useState<File[]>([]);
   const [submitting, setSubmitting] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
 
   const [adminResponse, setAdminResponse] = useState('');
   const [adminStatus, setAdminStatus] = useState<'pending' | 'in_progress' | 'resolved'>('in_progress');
@@ -108,7 +109,6 @@ const Complaints = () => {
   const isAdmin = profile?.userType === 'admin';
 
   useEffect(() => {
-    if (profileLoading || !profile) return;
     setLoading(true);
     const complaintsQuery = query(collection(db, 'complaints'));
     const unsubscribe = onSnapshot(complaintsQuery, (snapshot) => {
@@ -127,7 +127,7 @@ const Complaints = () => {
       setLoading(false);
     });
     return () => unsubscribe();
-  }, [profile, profileLoading]);
+  }, []);
 
   useEffect(() => {
     if (selectedComplaint) {
@@ -135,12 +135,6 @@ const Complaints = () => {
       if (updated) setSelectedComplaint(updated);
     }
   }, [complaints, selectedComplaint]);
-
-  // --- AI Analysis (runs when description changes) ---
-  const aiAnalysis = useMemo(() => {
-    if (!newDescription.trim()) return null;
-    return analyzeRisk(newDescription);
-  }, [newDescription]);
 
   const riskLevelIcon: Record<RiskLevel, React.ReactNode> = {
     high: <AlertTriangle className="w-3.5 h-3.5" />,
@@ -157,11 +151,17 @@ const Complaints = () => {
   // --- Create Complaint ---
   const handleCreateComplaint = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!profile) return;
     if (!newTitle.trim()) { toast.error("Please enter a title"); return; }
     if (!newDescription.trim()) { toast.error("Please enter a description"); return; }
 
+    // Phase 1: AI analysis with 2-second animation
+    setAnalyzing(true);
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    const analysis = analyzeRisk(newDescription);
+    const finalRiskLevel = analysis.level;
+    setAnalyzing(false);
     setSubmitting(true);
+
     try {
       const mediaUrls: string[] = [];
       for (const file of newImages) {
@@ -172,11 +172,11 @@ const Complaints = () => {
       }
 
       const complaintData: Record<string, any> = {
-        userId: profile.id,
-        userName: profile.displayName || 'Anonymous User',
+        userId: profile?.id || 'anonymous',
+        userName: profile?.displayName || 'Anonymous User',
         userEmail: auth.currentUser?.email || '',
         title: newTitle.trim(),
-        riskLevel: newRiskLevel,
+        riskLevel: finalRiskLevel,
         status: 'pending',
         location: newLocation.trim(),
         description: newDescription.trim(),
@@ -213,14 +213,15 @@ const Complaints = () => {
   };
 
   // --- Vote ---
+  const getVoterId = () => auth.currentUser?.uid || 'anon_' + Math.random().toString(36).substring(2, 10);
+
   const handleVote = async (complaintId: string, voteType: 'up' | 'down') => {
-    const user = auth.currentUser;
-    if (!user) { toast.error("Please sign in to vote"); return; }
+    const voterId = getVoterId();
     setVotingId(complaintId);
     try {
       const complaint = complaints.find(c => c.id === complaintId);
       if (!complaint) return;
-      const existing = complaint.voters?.find(v => v.userId === user.uid);
+      const existing = complaint.voters?.find(v => v.userId === voterId);
       const complaintRef = doc(db, 'complaints', complaintId);
 
       let upChange = 0;
@@ -231,7 +232,7 @@ const Complaints = () => {
           upChange = voteType === 'up' ? -1 : 0;
           downChange = voteType === 'down' ? -1 : 0;
           await updateDoc(complaintRef, {
-            voters: arrayRemove({ userId: user.uid, vote: voteType }),
+            voters: arrayRemove({ userId: voterId, vote: voteType }),
             [`${voteType}votes`]: increment(-1),
           });
         } else {
@@ -239,12 +240,12 @@ const Complaints = () => {
           downChange = voteType === 'down' ? 1 : -1;
           const oldType = existing.vote;
           const updates: any = {
-            voters: arrayRemove({ userId: user.uid, vote: oldType }),
+            voters: arrayRemove({ userId: voterId, vote: oldType }),
             [`${oldType}votes`]: increment(-1),
           };
           await updateDoc(complaintRef, updates);
           await updateDoc(complaintRef, {
-            voters: arrayUnion({ userId: user.uid, vote: voteType }),
+            voters: arrayUnion({ userId: voterId, vote: voteType }),
             [`${voteType}votes`]: increment(1),
           });
         }
@@ -252,7 +253,7 @@ const Complaints = () => {
         upChange = voteType === 'up' ? 1 : 0;
         downChange = voteType === 'down' ? 1 : 0;
         await updateDoc(complaintRef, {
-          voters: arrayUnion({ userId: user.uid, vote: voteType }),
+          voters: arrayUnion({ userId: voterId, vote: voteType }),
           [`${voteType}votes`]: increment(1),
         });
       }
@@ -331,6 +332,30 @@ const Complaints = () => {
     }
   };
 
+  const handleExportVoteData = () => {
+    const headers = ['ID', 'Title', 'Risk Level', 'Upvotes', 'Downvotes', 'Net Score', 'Status', 'Location', 'Date'];
+    const rows = complaints.map(c => [
+      c.id,
+      `"${c.title.replace(/"/g, '""')}"`,
+      c.riskLevel,
+      c.upvotes || 0,
+      c.downvotes || 0,
+      (c.upvotes || 0) - (c.downvotes || 0),
+      c.status,
+      `"${(c.location || '').replace(/"/g, '""')}"`,
+      formatDate(c.createdAt),
+    ]);
+    const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'complaint_votes.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success('Vote data downloaded');
+  };
+
   const stats = {
     total: complaints.length,
     pending: complaints.filter(c => c.status === 'pending').length,
@@ -383,10 +408,16 @@ const Complaints = () => {
             </div>
           ))}
         </div>
-        <Button onClick={() => setIsCreateOpen(true)} className="h-11 px-6 flex-shrink-0">
-          <Plus className="w-5 h-5 mr-1" />
-          File a Complaint
-        </Button>
+        <div className="flex gap-3">
+          <Button onClick={handleExportVoteData} variant="outline" className="h-11 px-4 flex-shrink-0">
+            <ChevronDown className="w-5 h-5 mr-1" />
+            Download Votes
+          </Button>
+          <Button onClick={() => setIsCreateOpen(true)} className="h-11 px-6 flex-shrink-0">
+            <Plus className="w-5 h-5 mr-1" />
+            File a Complaint
+          </Button>
+        </div>
       </div>
 
       {loading ? (
@@ -554,6 +585,26 @@ const Complaints = () => {
           </DialogHeader>
 
           <form onSubmit={handleCreateComplaint} className="space-y-5 pt-4">
+            {analyzing ? (
+              <div className="flex flex-col items-center justify-center py-16 space-y-6">
+                <div className="relative">
+                  <div className="w-24 h-24 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Sparkles className="w-10 h-10 text-primary" />
+                  </div>
+                </div>
+                <div className="text-center space-y-2">
+                  <h3 className="text-lg font-bold text-foreground">Our AI is analyzing your post</h3>
+                  <p className="text-sm text-muted-foreground">Scanning keywords and categorizing risk level...</p>
+                </div>
+                <div className="flex gap-2">
+                  {[0, 1, 2].map(i => (
+                    <div key={i} className="w-2.5 h-2.5 rounded-full bg-primary animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <>
             <div className="space-y-2">
               <Label htmlFor="title">Complaint Title *</Label>
               <Input
@@ -567,7 +618,7 @@ const Complaints = () => {
             </div>
 
             <div className="space-y-2">
-              <Label>Risk Level * (you choose first)</Label>
+              <Label>Risk Level * (select first, AI will confirm)</Label>
               <div className="grid grid-cols-3 gap-3">
                 {(['high', 'medium', 'low'] as RiskLevel[]).map(level => (
                   <button
@@ -588,52 +639,6 @@ const Complaints = () => {
                 ))}
               </div>
             </div>
-
-            {/* AI Analysis */}
-            {aiAnalysis && (
-              <div className={`p-4 rounded-xl border ${
-                aiAnalysis.level === 'high' ? 'bg-red-50 border-red-200' :
-                aiAnalysis.level === 'medium' ? 'bg-amber-50 border-amber-200' :
-                'bg-green-50 border-green-200'
-              }`}>
-                <div className="flex items-center gap-2 mb-2">
-                  <Sparkles className="w-4 h-4 text-primary" />
-                  <span className="text-sm font-semibold text-foreground">AI Risk Analysis</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground">Detected:</span>
-                  <Badge className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${riskColors[aiAnalysis.level]}`}>
-                    {riskLevelIcon[aiAnalysis.level]}
-                    <span className="ml-1">{riskLabel[aiAnalysis.level]}</span>
-                  </Badge>
-                  <span className="text-xs text-muted-foreground">({aiAnalysis.confidence}% confidence)</span>
-                  {aiAnalysis.level !== newRiskLevel && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="h-7 text-xs ml-auto"
-                      onClick={() => setNewRiskLevel(aiAnalysis.level)}
-                    >
-                      Use AI suggestion
-                    </Button>
-                  )}
-                </div>
-                {aiAnalysis.matchedKeywords.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 mt-2">
-                    {aiAnalysis.matchedKeywords.map((kw, i) => (
-                      <span key={i} className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
-                        kw.level === 'high' ? 'bg-red-100 text-red-700' :
-                        kw.level === 'medium' ? 'bg-amber-100 text-amber-700' :
-                        'bg-green-100 text-green-700'
-                      }`}>
-                        {kw.word}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
 
             <div className="space-y-2">
               <Label htmlFor="location">Location</Label>
@@ -718,6 +723,8 @@ const Complaints = () => {
                 {submitting ? <><Loader2 className="w-5 h-5 animate-spin mr-1" /> Submitting...</> : <><Send className="w-5 h-5 mr-1" /> Submit</>}
               </Button>
             </DialogFooter>
+            </>
+            )}
           </form>
         </DialogContent>
       </Dialog>
