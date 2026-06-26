@@ -28,6 +28,7 @@ const Petition = () => {
   const [selectedPetition, setSelectedPetition] = useState<PetitionType | null>(null);
   const [showSignaturePad, setShowSignaturePad] = useState(false);
   const [newImages, setNewImages] = useState<File[]>([]);
+  const [creating, setCreating] = useState(false);
 
   // Signature pad state
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -122,6 +123,7 @@ const Petition = () => {
       setPetitions(prev => prev.map(p =>
         p.id === id ? { ...p, totalSignatures: p.totalSignatures + 1 } : p
       ));
+      setSelectedPetition(prev => prev && prev.id === id ? { ...prev, totalSignatures: prev.totalSignatures + 1 } : prev);
       toast({ title: 'हस्ताक्षर गरियो / Signed!', description: 'तपाईंले यो मागपत्रमा हस्ताक्षर गर्नुभयो।' });
       setShowSignaturePad(false);
       setHasDrawn(false);
@@ -156,6 +158,8 @@ const Petition = () => {
 
   const handleCreate = async () => {
     if (!formData.title || !formData.description || !formData.category) return;
+    if (creating) return;
+    setCreating(true);
     try {
       const mediaUrls: string[] = [];
       for (const file of newImages) {
@@ -169,6 +173,8 @@ const Petition = () => {
       fetchPetitions();
     } catch (err: any) {
       toast({ title: 'Error', description: err.message || 'Failed to create', variant: 'destructive' });
+    } finally {
+      setCreating(false);
     }
   };
 
@@ -270,7 +276,7 @@ const Petition = () => {
                   </div>
                 )}
               </div>
-              <Button onClick={handleCreate} className="w-full h-12">सिर्जना गर्नुहोस् / Create</Button>
+              <Button onClick={handleCreate} className="w-full h-12" disabled={creating}>{creating ? 'सिर्जना गर्दै... / Creating...' : 'सिर्जना गर्नुहोस् / Create'}</Button>
             </div>
           </DialogContent>
         </Dialog>
