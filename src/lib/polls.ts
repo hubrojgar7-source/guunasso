@@ -136,6 +136,24 @@ export const createPoll = async (data: CreatePollData): Promise<string> => {
   });
 
   await batch.commit();
+
+  // Broadcast notification for published polls
+  if (data.status === 'published') {
+    try {
+      const { broadcastNotification } = await import('./notifications');
+      await broadcastNotification({
+        actorId: user.uid,
+        actorName: user.displayName || 'Anonymous',
+        type: 'poll',
+        title: 'New Poll Available',
+        message: `"${data.title}" — ${data.organizationName}`,
+        link: `/dashboard/polls/${pollRef.id}`,
+      });
+    } catch (e) {
+      // notification failure is non-critical
+    }
+  }
+
   return pollRef.id;
 };
 

@@ -42,9 +42,15 @@ export const AppSidebar = () => {
         showFor: ['farmer', 'user', 'admin'],
       },
       {
-        title: t('common.feed'),
-        url: '/dashboard/feed',
-        icon: Rss,
+        title: t('common.complaints', 'Complaints'),
+        url: '/dashboard/complaints',
+        icon: ShieldAlert,
+        showFor: ['farmer', 'user', 'admin'],
+      },
+      {
+        title: 'Petition',
+        url: '/dashboard/petition',
+        icon: ScrollText,
         showFor: ['farmer', 'user', 'admin'],
       },
       {
@@ -54,34 +60,28 @@ export const AppSidebar = () => {
         showFor: ['farmer', 'user'],
       },
       {
-        title: t('common.data'),
-        url: '/dashboard/data',
-        icon: LineChart,
-        showFor: ['farmer'],
-      },
-{
-        title: 'Polls',
-        url: '/dashboard/polls',
-        icon: Vote,
-        showFor: ['farmer', 'user', 'admin'],
-      },
-      {
-        title: t('common.complaints', 'Complaints'),
-        url: '/dashboard/complaints',
-        icon: ShieldAlert,
-        showFor: ['farmer', 'user', 'admin'],
-      },
-      {
         title: 'Bus Fare',
         url: '/dashboard/bus-fare',
         icon: Bus,
         showFor: ['farmer', 'user', 'admin'],
       },
       {
-        title: 'Petition',
-        url: '/dashboard/petition',
-        icon: ScrollText,
+        title: 'Polls',
+        url: '/dashboard/polls',
+        icon: Vote,
         showFor: ['farmer', 'user', 'admin'],
+      },
+      {
+        title: t('common.feed'),
+        url: '/dashboard/feed',
+        icon: Rss,
+        showFor: ['farmer', 'user', 'admin'],
+      },
+      {
+        title: t('common.data'),
+        url: '/dashboard/data',
+        icon: LineChart,
+        showFor: ['farmer'],
       },
       {
         title: t('common.help'),

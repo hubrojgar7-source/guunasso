@@ -1,14 +1,18 @@
-
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ChevronDown, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuthContext } from '@/lib/AuthProvider';
+import { useNotifications } from '@/hooks/useNotifications';
+import NotificationPanel from '@/components/NotificationPanel';
 
 const DashboardHeader: React.FC = () => {
   const location = useLocation();
   const { user } = useAuthContext();
+  const { unreadCount } = useNotifications();
+  const [showNotifications, setShowNotifications] = useState(false);
+  const bellRef = useRef<HTMLDivElement>(null);
 
   const displayName = user?.displayName || user?.email?.split('@')[0] || 'Guest';
 
@@ -44,6 +48,18 @@ const DashboardHeader: React.FC = () => {
     return 'Dashboard';
   };
 
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (bellRef.current && !bellRef.current.contains(e.target as Node)) {
+        setShowNotifications(false);
+      }
+    };
+    if (showNotifications) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [showNotifications]);
+
   return (
     <header className="w-full h-16 px-6 border-b border-gray-100 flex items-center justify-between bg-white">
       <div className="flex items-center">
@@ -52,11 +68,22 @@ const DashboardHeader: React.FC = () => {
 
       <div className="flex-1" />
 
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" className="relative p-2 hover:bg-gray-50">
-          <Bell size={18} className="text-gray-600" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#10B981] rounded-full" />
-        </Button>
+      <div className="flex items-center gap-4" ref={bellRef}>
+        <div className="relative">
+          <Button
+            variant="ghost"
+            className="relative p-2 hover:bg-gray-50"
+            onClick={() => setShowNotifications((prev) => !prev)}
+          >
+            <Bell size={18} className="text-gray-600" />
+            {unreadCount > 0 && (
+              <span className="absolute top-1.5 right-1.5 min-w-[18px] h-[18px] flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full px-1">
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            )}
+          </Button>
+          {showNotifications && <NotificationPanel onClose={() => setShowNotifications(false)} />}
+        </div>
 
         <div className="flex items-center gap-3">
           <Avatar className="h-9 w-9">

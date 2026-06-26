@@ -10,6 +10,7 @@ const DashboardLayout = () => {
   const location = useLocation();
   const isWeather = location.pathname.includes('/weather');
   const isPolls = location.pathname.includes('/polls');
+  const isBusFare = location.pathname.includes('/bus-fare');
   const { isCollapsed } = useSidebar();
   
   return (
@@ -32,8 +33,8 @@ const DashboardLayout = () => {
         </main>
       </div>
 
-      {/* ChatBot Component */}
-      <ChatBot />
+      {/* ChatBot Component - hidden on Bus Fare page */}
+      {!isBusFare && <ChatBot />}
     </div>
   );
 };

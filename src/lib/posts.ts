@@ -177,6 +177,25 @@ export const createPost = async (
     });
     
     console.log('Post created successfully with ID:', docRef.id);
+
+    // Broadcast notification
+    try {
+      const { broadcastNotification } = await import('./notifications');
+      const excerpt = postData.content.length > 100
+        ? postData.content.substring(0, 100) + '...'
+        : postData.content;
+      await broadcastNotification({
+        actorId: user.uid,
+        actorName: postData.authorName || 'Anonymous',
+        type: 'feed',
+        title: 'New Feed Post',
+        message: excerpt,
+        link: '/dashboard/feed',
+      });
+    } catch (e) {
+      // notification failure is non-critical
+    }
+
     return docRef.id;
   } catch (error) {
     console.error("Error creating post:", error);

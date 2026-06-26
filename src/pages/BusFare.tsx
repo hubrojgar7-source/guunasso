@@ -1,18 +1,42 @@
 import React, { useState } from 'react';
-import { Bus, MapPin, ArrowRightLeft, Clock, IndianRupee, AlertCircle, Search, Users, Navigation } from 'lucide-react';
+import { MapPin, ArrowRightLeft, AlertCircle, Search, Navigation, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import KathmanduValleyMap from '@/components/KathmanduValleyMap';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { db } from '@/lib/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { auth } from '@/lib/firebase';
+import RouteMap from '@/components/RouteMap';
 
-interface BusRoute {
-  id: string;
-  from: string;
-  to: string;
-  fare: number;
-  duration: string;
-  busType: string;
-  operator: string;
-  departure: string;
-  seats: number;
+function toRad(deg: number) { return deg * (Math.PI / 180); }
+
+function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number) {
+  const R = 6371;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+const busTypes = [
+  { label: 'Ordinary public bus', key: 'ordinary' as const },
+  { label: 'Deluxe public bus', key: 'deluxe' as const },
+  { label: 'Tourist bus', key: 'tourist' as const },
+  { label: 'VIP/Sofa tourist bus', key: 'vip' as const },
+];
+
+function estimateFares(distanceKm: number) {
+  const roadKm = distanceKm * 1.4;
+  return {
+    ordinary: [Math.round(roadKm * 4), Math.round(roadKm * 5.5)],
+    deluxe: [Math.round(roadKm * 5.5), Math.round(roadKm * 7.5)],
+    tourist: [Math.round(roadKm * 7.5), Math.round(roadKm * 10)],
+    vip: [Math.round(roadKm * 10), Math.round(roadKm * 13)],
+  };
 }
 
 const cities = [
@@ -21,29 +45,92 @@ const cities = [
   'Baglung', 'Dhangadhi', 'Mahendranagar', 'Birgunj', 'Palpa'
 ];
 
-const allRoutes: BusRoute[] = [
-  { id: '1', from: 'Kathmandu', to: 'Pokhara', fare: 800, duration: '7 hrs', busType: 'Deluxe', operator: 'Sajha Yatayat', departure: '6:00 AM', seats: 12 },
-  { id: '2', from: 'Kathmandu', to: 'Pokhara', fare: 1200, duration: '6 hrs', busType: 'AC VIP', operator: 'Greenline', departure: '7:00 AM', seats: 8 },
-  { id: '3', from: 'Kathmandu', to: 'Bharatpur', fare: 500, duration: '4 hrs', busType: 'Standard', operator: 'Sajha Yatayat', departure: '8:00 AM', seats: 15 },
-  { id: '4', from: 'Pokhara', to: 'Kathmandu', fare: 800, duration: '7 hrs', busType: 'Deluxe', operator: 'Swallow', departure: '6:30 AM', seats: 10 },
-  { id: '5', from: 'Pokhara', to: 'Butwal', fare: 600, duration: '5 hrs', busType: 'Standard', operator: 'Nepal Yatayat', departure: '7:00 AM', seats: 18 },
-  { id: '6', from: 'Kathmandu', to: 'Biratnagar', fare: 1500, duration: '10 hrs', busType: 'AC Luxury', operator: 'Pathao', departure: '8:00 PM', seats: 6 },
-  { id: '7', from: 'Kathmandu', to: 'Nepalgunj', fare: 1400, duration: '12 hrs', busType: 'Deluxe', operator: 'Karnali Yatayat', departure: '7:00 PM', seats: 10 },
-  { id: '8', from: 'Bharatpur', to: 'Pokhara', fare: 550, duration: '4 hrs', busType: 'Standard', operator: 'Chitwan Travels', departure: '6:00 AM', seats: 14 },
-  { id: '9', from: 'Kathmandu', to: 'Janakpur', fare: 700, duration: '6 hrs', busType: 'Deluxe', operator: 'Janakpur Yatayat', departure: '6:00 AM', seats: 11 },
-  { id: '10', from: 'Butwal', to: 'Kathmandu', fare: 900, duration: '8 hrs', busType: 'AC VIP', operator: 'Greenline', departure: '7:00 PM', seats: 7 },
-  { id: '11', from: 'Biratnagar', to: 'Kathmandu', fare: 1500, duration: '10 hrs', busType: 'AC Luxury', operator: 'Pathao', departure: '8:00 PM', seats: 5 },
-  { id: '12', from: 'Kathmandu', to: 'Chitwan', fare: 600, duration: '5 hrs', busType: 'Standard', operator: 'Sajha Yatayat', departure: '7:00 AM', seats: 16 },
-  { id: '13', from: 'Pokhara', to: 'Baglung', fare: 400, duration: '4 hrs', busType: 'Standard', operator: 'Gandaki Yatayat', departure: '6:00 AM', seats: 20 },
-  { id: '14', from: 'Nepalgunj', to: 'Dhangadhi', fare: 500, duration: '5 hrs', busType: 'Standard', operator: 'Sudur Yatayat', departure: '6:00 AM', seats: 18 },
-  { id: '15', from: 'Kathmandu', to: 'Hetauda', fare: 400, duration: '3 hrs', busType: 'Standard', operator: 'Bagmati Travels', departure: '8:00 AM', seats: 20 },
-];
+const cityCoordinates: Record<string, [number, number]> = {
+  Kathmandu: [27.7172, 85.3240],
+  Pokhara: [28.2096, 83.9856],
+  Bharatpur: [27.6833, 84.4333],
+  Chitwan: [27.5290, 84.3540],
+  Butwal: [27.7000, 83.4500],
+  Nepalgunj: [28.0500, 81.6167],
+  Biratnagar: [26.4547, 87.2797],
+  Janakpur: [26.7288, 85.9250],
+  Dharan: [26.8129, 87.2836],
+  Hetauda: [27.4283, 85.0322],
+  Baglung: [28.2667, 83.5833],
+  Dhangadhi: [28.6833, 80.6000],
+  Mahendranagar: [28.9667, 80.1667],
+  Birgunj: [27.0143, 84.8720],
+  Palpa: [27.8667, 83.5500],
+};
+
+const FarePanel = ({ from, to, fromCoords, toCoords }: { from: string; to: string; fromCoords: [number, number] | null; toCoords: [number, number] | null }) => {
+  if (!fromCoords || !toCoords) return null;
+  const distance = haversineKm(fromCoords[0], fromCoords[1], toCoords[0], toCoords[1]);
+  const fares = estimateFares(distance);
+
+  return (
+    <div className="bg-gradient-to-br from-primary/5 via-card to-primary/5 rounded-xl border-2 border-primary/10 p-6">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="p-2.5 bg-primary/10 rounded-xl">
+          <Navigation className="w-5 h-5 text-primary" />
+        </div>
+        <div>
+          <h3 className="text-lg font-bold text-foreground">Estimated Fares</h3>
+          <p className="text-sm text-muted-foreground flex items-center gap-1.5">
+            <MapPin className="w-3.5 h-3.5" />
+            {from} → {to}
+          </p>
+        </div>
+      </div>
+
+      <div className="space-y-1 mb-5">
+        {busTypes.map((bt) => {
+          const [lo, hi] = fares[bt.key];
+          return (
+            <div key={bt.key} className="flex items-center justify-between py-3 px-4 rounded-xl bg-card border border-border/60 hover:border-primary/20 hover:bg-primary/[0.02] transition-colors">
+              <span className="text-sm font-medium text-foreground">{bt.label}</span>
+              <span className="text-base font-bold text-primary whitespace-nowrap">
+                Rs. {lo} – {hi}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="bg-muted/50 rounded-xl p-4 border border-border/60">
+        <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Trip Details</h4>
+        <div className="space-y-2.5">
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">Straight-line distance</span>
+            <span className="text-sm font-semibold text-foreground">{distance.toFixed(0)} km</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">Estimated road distance</span>
+            <span className="text-sm font-semibold text-foreground">{(distance * 1.4).toFixed(0)} km</span>
+          </div>
+          <div className="flex items-center justify-between pt-2.5 border-t border-border/60">
+            <span className="text-sm text-muted-foreground">Estimated travel time</span>
+            <span className="text-sm font-semibold text-foreground">
+              {distance > 0 ? `${Math.round(distance / 45 * 1.4 * 10) / 10} hrs` : '—'}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const BusFare = () => {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
-  const [results, setResults] = useState<BusRoute[]>([]);
   const [searched, setSearched] = useState(false);
+  const [complainOpen, setComplainOpen] = useState(false);
+  const [compTitle, setCompTitle] = useState('');
+  const [compDesc, setCompDesc] = useState('');
+  const [compCategory, setCompCategory] = useState('other');
+  const [compPriority, setCompPriority] = useState('medium');
+  const [compBusNumber, setCompBusNumber] = useState('');
+  const [compSubmitting, setCompSubmitting] = useState(false);
 
   const swapLocations = () => {
     setFrom(to);
@@ -54,12 +141,39 @@ const BusFare = () => {
     e.preventDefault();
     if (!from || !to) return;
     if (from === to) return;
-
-    const filtered = allRoutes.filter(
-      r => r.from.toLowerCase() === from.toLowerCase() && r.to.toLowerCase() === to.toLowerCase()
-    );
-    setResults(filtered);
     setSearched(true);
+  };
+
+  const handleComplaintSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!compTitle.trim() || !compDesc.trim()) return;
+    setCompSubmitting(true);
+    try {
+      await addDoc(collection(db, 'complaints'), {
+        userId: auth.currentUser?.uid || 'anonymous',
+        userName: auth.currentUser?.displayName || 'Anonymous',
+        userEmail: auth.currentUser?.email || '',
+        title: compTitle.trim(),
+        category: compCategory,
+        priority: compPriority,
+        status: 'pending',
+        location: `${from} → ${to}`,
+        busNumber: compBusNumber.trim() || '',
+        description: compDesc.trim(),
+        createdAt: serverTimestamp(),
+        replies: [],
+      });
+      setComplainOpen(false);
+      setCompTitle('');
+      setCompDesc('');
+      setCompBusNumber('');
+      setCompCategory('other');
+      setCompPriority('medium');
+    } catch (err) {
+      console.error('Complaint failed:', err);
+    } finally {
+      setCompSubmitting(false);
+    }
   };
 
   return (
@@ -113,69 +227,109 @@ const BusFare = () => {
         </Button>
       </form>
 
-      {searched && (
-        <div className="space-y-4 mb-6">
-          <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
-            <Bus className="w-5 h-5 text-primary" />
-            {results.length > 0
-              ? `${results.length} bus${results.length > 1 ? 'es' : ''} found from ${from} to ${to}`
-              : `No direct buses found from ${from} to ${to}`}
-          </h2>
-
-          {results.length === 0 ? (
-            <div className="border rounded-xl p-10 text-center bg-card">
-              <AlertCircle className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
-              <h3 className="text-lg font-bold text-foreground mb-1">No routes available</h3>
-              <p className="text-muted-foreground text-sm">Try different cities or check back later for new routes.</p>
+      <div className="mb-6">
+        <h2 className="text-xl font-bold text-foreground flex items-center gap-2 mb-4">
+          <Navigation className="w-5 h-5 text-primary" />
+          {from && to && from !== to ? `Route: ${from} → ${to}` : 'Nepal Map'}
+        </h2>
+        <div className="flex gap-6">
+          <div className={`transition-all duration-700 min-w-0 ${searched && from && to && from !== to ? 'w-[calc(100%-20rem)]' : 'w-full'}`}>
+            <RouteMap
+              from={from && to && from !== to ? from : null}
+              to={from && to && from !== to ? to : null}
+              fromCoords={from && to && from !== to && cityCoordinates[from] ? cityCoordinates[from] : null}
+              toCoords={from && to && from !== to && cityCoordinates[to] ? cityCoordinates[to] : null}
+              showRoute={searched}
+            />
+          </div>
+          <div className={`overflow-hidden transition-all duration-700 ${searched && from && to && from !== to && cityCoordinates[from] && cityCoordinates[to] ? 'w-80 opacity-100' : 'w-0 opacity-0'}`}>
+            <div className="w-80">
+              <FarePanel
+                from={from || ''}
+                to={to || ''}
+                fromCoords={from && cityCoordinates[from] ? cityCoordinates[from] : null}
+                toCoords={to && cityCoordinates[to] ? cityCoordinates[to] : null}
+              />
             </div>
-          ) : (
-            <div className="grid gap-4">
-              {results.map((route) => (
-                <div key={route.id} className="bg-card rounded-xl border p-6 hover:shadow-md transition-shadow">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Bus className="w-6 h-6 text-primary" />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-                          <span>{route.from}</span>
-                          <ArrowRightLeft className="w-4 h-4 text-muted-foreground" />
-                          <span>{route.to}</span>
-                        </div>
-                        <div className="flex items-center gap-3 text-xs text-muted-foreground mt-1">
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-3.5 h-3.5" /> {route.duration}
-                          </span>
-                          <span>{route.departure}</span>
-                          <span className="bg-muted px-2 py-0.5 rounded">{route.busType}</span>
-                        </div>
-                      </div>
-                    </div>
+          </div>
+        </div>
+      </div>
 
-                    <div className="flex items-center gap-6 md:text-right">
-                      <div>
-                        <p className="text-xs text-muted-foreground font-medium">Fare</p>
-                        <p className="text-2xl font-bold text-primary">Rs. {route.fare}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground font-medium">Operator</p>
-                        <p className="text-sm font-semibold text-foreground">{route.operator}</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-xs text-muted-foreground font-medium">Seats</p>
-                        <p className="text-sm font-semibold text-foreground flex items-center gap-1">
-                          <Users className="w-3.5 h-3.5" /> {route.seats}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+      {from && to && from !== to && (
+        <div className="mb-6 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30 border-2 border-red-200 dark:border-red-800 rounded-xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <div className="p-3 bg-red-100 dark:bg-red-900/40 rounded-xl">
+              <AlertTriangle className="w-7 h-7 text-red-600 dark:text-red-400" />
             </div>
-          )}
+            <div>
+              <p className="text-lg font-bold text-foreground">Did someone ask for more money than this?</p>
+              <p className="text-sm text-muted-foreground mt-1">Report overcharging on the <span className="font-semibold text-foreground">{from} → {to}</span> route</p>
+            </div>
+          </div>
+          <Button variant="destructive" size="lg" onClick={() => setComplainOpen(true)} className="flex items-center gap-2 flex-shrink-0 w-full sm:w-auto shadow-sm">
+            <AlertTriangle className="w-5 h-5" />
+            File a Complaint
+          </Button>
         </div>
       )}
+
+      <Dialog open={complainOpen} onOpenChange={setComplainOpen}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>File a Complaint</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleComplaintSubmit} className="space-y-4">
+            <div>
+              <label className="text-sm font-medium text-foreground mb-1 block">Route</label>
+              <Input value={`${from} → ${to}`} disabled className="bg-muted" />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-foreground mb-1 block">Title</label>
+              <Input value={compTitle} onChange={e => setCompTitle(e.target.value)} placeholder="e.g. Overcharged by bus driver" required />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-foreground mb-1 block">Bus Number (optional)</label>
+              <Input value={compBusNumber} onChange={e => setCompBusNumber(e.target.value)} placeholder="e.g. Ba 2 Kha 1234" />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-foreground mb-1 block">Category</label>
+              <Select value={compCategory} onValueChange={setCompCategory}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="financial">Financial</SelectItem>
+                  <SelectItem value="infrastructure">Infrastructure</SelectItem>
+                  <SelectItem value="technical">Technical</SelectItem>
+                  <SelectItem value="agriculture">Agriculture</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-foreground mb-1 block">Priority</label>
+              <Select value={compPriority} onValueChange={setCompPriority}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="low">Low</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="high">High</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-foreground mb-1 block">Description</label>
+              <Textarea value={compDesc} onChange={e => setCompDesc(e.target.value)} placeholder="Describe what happened..." rows={3} required />
+            </div>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setComplainOpen(false)}>Cancel</Button>
+              <Button type="submit" disabled={compSubmitting || !compTitle.trim() || !compDesc.trim()}>
+                {compSubmitting ? 'Submitting...' : 'Submit Complaint'}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+
 
       {!searched && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 flex items-start gap-3 mb-6">
@@ -187,21 +341,6 @@ const BusFare = () => {
         </div>
       )}
 
-      <div className="mb-6">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="p-2.5 bg-primary/10 rounded-lg">
-            <Navigation className="w-5 h-5 text-primary" />
-          </div>
-          <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-              Kathmandu <span className="text-primary">Valley</span>
-            </h2>
-            <p className="text-sm text-muted-foreground">Click stations to set start and end, then see the fare</p>
-          </div>
-        </div>
-
-        <KathmanduValleyMap />
-      </div>
     </div>
   );
 };
