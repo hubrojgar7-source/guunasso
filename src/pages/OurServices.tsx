@@ -6,7 +6,6 @@ import {
   CloudSunRain, 
   Tractor, 
   BarChart3,
-  Store,
   AlertTriangle,
   Leaf,
   GraduationCap
@@ -170,41 +169,6 @@ const OurServices = () => {
             </CardContent>
           </Card>
 
-          {/* Marketplace */}
-          <Card className="border border-gray-200 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-            <CardHeader className="bg-gradient-to-r from-cyan-50 to-blue-50 pb-6">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="p-3 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl">
-                  <Store className="h-6 w-6 text-white" />
-                </div>
-                <CardTitle className="text-xl">Farmer Marketplace</CardTitle>
-              </div>
-              <CardDescription className="text-base">
-                Direct selling platform connecting farmers and buyers
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-6">
-              <ul className="space-y-3">
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-cyan-500 rounded-full mt-2"></div>
-                  <span>List and sell your crops directly</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-cyan-500 rounded-full mt-2"></div>
-                  <span>Access to verified buyers and sellers</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-cyan-500 rounded-full mt-2"></div>
-                  <span>Secure payment processing</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-cyan-500 rounded-full mt-2"></div>
-                  <span>Reviews and quality assurance</span>
-                </li>
-              </ul>
-              <Button className="w-full mt-6 bg-gradient-to-r from-cyan-500 to-blue-600">Learn More</Button>
-            </CardContent>
-          </Card>
 
           {/* Disease Detection */}
           <Card className="border border-gray-200 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
@@ -247,7 +211,7 @@ const OurServices = () => {
         <div className="bg-gradient-to-r from-blue-500 to-blue-700 rounded-3xl p-12 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Ready to transform your farm?</h2>
           <p className="text-xl text-blue-100 max-w-3xl mx-auto mb-8">
-            Join thousands of Nepali farmers who are increasing their yields and profits with Krishak AI
+            Join thousands of Nepali farmers who are increasing their yields and profits with गुनासो.com
           </p>
           <Button size="lg" variant="secondary" className="px-8 py-6 text-lg font-bold">
             Get Started Today

@@ -3,7 +3,6 @@ import {
   CloudRain,
   Wheat,
   BarChart2,
-  ShoppingCart,
   LineChart
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -53,11 +52,7 @@ const DifferenceSection = () => {
       title: "Yield Prediction Tools",
       description: "Advanced analytics to forecast harvest yields and optimize crop planning for maximum productivity."
     },
-    {
-      icon: ShoppingCart,
-      title: "Marketplace Direct Access",
-      description: "Sell your produce directly to consumers and businesses, eliminating middlemen and increasing profits."
-    },
+
     {
       icon: LineChart,
       title: "Farm Performance Tracking",
@@ -66,14 +61,14 @@ const DifferenceSection = () => {
   ];
 
   return (
-    <section className="py-20 px-8 bg-blue-50 relative">
+    <section id="why-speakup" className="py-20 px-8 bg-blue-50 relative">
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-            Why Choose Krishak AI?
+            Why Choose गुनासो.com?
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Krishak AI combines cutting-edge technology with deep agricultural expertise to help Nepali
+            गुनासो.com combines cutting-edge technology with deep agricultural expertise to help Nepali
             farmers increase yields, reduce costs, and farm more sustainably.
           </p>
         </div>

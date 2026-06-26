@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { FileText, TrendingUp, Users, User } from 'lucide-react';
 
 const CustomReportSection = () => {

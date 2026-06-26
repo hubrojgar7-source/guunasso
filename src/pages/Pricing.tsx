@@ -42,7 +42,6 @@ const Pricing = () => {
         'Real-time weather alerts',
         'Advanced pest & disease analytics',
         'Yield prediction tools',
-        'Marketplace priority listing',
         '24-hour support response time'
       ],
       popular: true

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { auth } from '../lib/firebase';
 import { getCurrentUserProfile, UserProfile } from '../lib/users';
 import { useAuthContext } from '../lib/AuthProvider';

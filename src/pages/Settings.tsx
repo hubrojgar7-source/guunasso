@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
@@ -43,7 +43,7 @@ const Settings = () => {
   const [userData, setUserData] = useState({
     firstName: 'Sanjok',
     lastName: 'Personal',
-    email: 'sanjok@krishak.ai',
+    email: 'sanjok@गुनासो.com',
     phone: '+977 980-0000000'
   });
   const [activeWorkspace, setActiveWorkspace] = useState('personal');
@@ -51,7 +51,7 @@ const Settings = () => {
   const accountOverview = {
     workspaceName: 'Sanjok Personal',
     owner: 'Sanjok Tandukar',
-    email: 'sanjok@krishak.ai',
+    email: 'sanjok@गुनासो.com',
     currentPlan: 'Commercial Farmer',
     planStatus: 'Active',
     renewalDate: 'March 28, 2025',
@@ -75,7 +75,7 @@ const Settings = () => {
 
   const workspaceOptions = [
     { value: 'personal', label: 'Sanjok Personal' },
-    { value: 'team', label: 'Krishak AI Workspace' },
+    { value: 'team', label: 'गुनासो.com Workspace' },
     { value: 'lab', label: 'Research Sandbox' },
   ];
 
@@ -767,13 +767,13 @@ const Settings = () => {
                     id="workspace-name" 
                     type="text" 
                     className="w-full p-2 border border-border rounded-md bg-background"
-                    defaultValue="Krishak AI Team"
+                    defaultValue="गुनासो.com Team"
                   />
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="workspace-url" className="text-sm font-medium">Workspace URL</label>
                   <div className="flex items-center">
-                    <span className="bg-muted px-3 py-2 rounded-l-md border border-border border-r-0 text-muted-foreground">krishakai.com/</span>
+                    <span className="bg-muted px-3 py-2 rounded-l-md border border-border border-r-0 text-muted-foreground">गुनासो.com/</span>
                     <input 
                       id="workspace-url" 
                       type="text" 

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ShoppingBag, Package, CheckCircle, Users } from 'lucide-react';
+import { Wallet, Landmark, Receipt, CreditCard } from 'lucide-react';
 import { VisitorInsightsChart } from './charts/VisitorInsightsChart';
 import { useTranslation } from 'react-i18next';
 import { formatCurrency, formatNumber } from '@/lib/formatters';
@@ -11,41 +11,41 @@ export const SalesSummarySection = () => {
   
   const salesData = [
     {
-      title: 'dashboard.totalSales',
-      value: 1000,
-      isCurrency: true,
+      title: 'Revenue',
+      value: 24323,
+      isCurrency: false,
       change: 5,
-      icon: ShoppingBag,
+      icon: Wallet,
       bgColor: "bg-pink-100",
       iconColor: "text-white",
       circleBg: "bg-pink-400"
     },
     {
-      title: 'dashboard.totalOrder',
-      value: 300,
+      title: 'Grants',
+      value: 6937,
       isCurrency: false,
-      change: 5,
-      icon: Package,
+      change: 2,
+      icon: Landmark,
       bgColor: "bg-orange-100",
       iconColor: "text-white",
       circleBg: "bg-orange-300"
     },
     {
-      title: 'dashboard.productSold',
-      value: 5,
+      title: 'Other Receipts',
+      value: 120,
       isCurrency: false,
-      change: 12,
-      icon: CheckCircle,
+      change: 8,
+      icon: Receipt,
       bgColor: "bg-green-100",
       iconColor: "text-white",
       circleBg: "bg-green-400"
     },
     {
-      title: 'dashboard.newCustomers',
-      value: 8,
+      title: 'Treasury Exp.',
+      value: 39600,
       isCurrency: false,
-      change: 0.5,
-      icon: Users,
+      change: 1,
+      icon: CreditCard,
       bgColor: "bg-purple-100",
       iconColor: "text-white",
       circleBg: "bg-purple-400"
@@ -58,12 +58,12 @@ export const SalesSummarySection = () => {
       <Card className="bg-white border border-gray-200/50 rounded-lg overflow-hidden shadow-sm h-full w-full relative">
         <CardHeader className="pb-0 px-3 pt-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg font-bold text-zinc-900">{t('dashboard.todaySales')}</CardTitle>
+            <CardTitle className="text-lg font-bold text-zinc-900">Today's Financials</CardTitle>
             <button className="text-xs text-gray-600 border border-gray-100 rounded-md px-2 py-0.5 bg-gray-50 hover:bg-gray-100">
-              {t('dashboard.export')}
+              Export Report
             </button>
           </div>
-          <p className="text-xs text-gray-600 mb-2">{t('dashboard.salesSummary')}</p>
+          <p className="text-xs text-gray-600 mb-2">Summary of daily revenue and expenditure</p>
         </CardHeader>
         <CardContent className="absolute bottom-6 left-0 right-0 px-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">

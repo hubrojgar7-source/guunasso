@@ -1,32 +1,23 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
-import IntegrationsSection from '@/components/IntegrationsSection';
-import DifferenceSection from '@/components/DifferenceSection';
-import DiscoverSection from '@/components/DiscoverSection';
-import HowItWorksSection from '@/components/HowItWorksSection';
-import DashboardSection from '@/components/DashboardSection';
-import StatsSection from '@/components/StatsSection';
-import MobileAppSection from '@/components/MobileAppSection';
+import PartnersSection from '@/components/PartnersSection';
+import CampaignsSection from '@/components/CampaignsSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
-import Footer from '@/components/Footer';
 import BlogSection from '@/components/BlogSection';
+import CTABanner from '@/components/CTABanner';
+import Footer from '@/components/Footer';
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-white">
       <Header />
       <HeroSection />
-      <DifferenceSection />
-      <DiscoverSection />
-      <HowItWorksSection />
-      <IntegrationsSection />
-      <DashboardSection />
-      <StatsSection />
-      <MobileAppSection />
+      <PartnersSection />
+      <CampaignsSection />
       <TestimonialsSection />
       <BlogSection />
+      <CTABanner />
       <Footer />
     </div>
   );

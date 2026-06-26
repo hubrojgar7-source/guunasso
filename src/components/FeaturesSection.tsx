@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cloud, BarChart3, ShoppingCart, Bot, Leaf, TrendingUp } from 'lucide-react';
+import { Cloud, BarChart3, Bot, Leaf, TrendingUp } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const FeaturesSection = () => {
@@ -14,11 +14,7 @@ const FeaturesSection = () => {
       title: "Crop Analytics",
       description: "Advanced analytics to track crop health, yield predictions, and growth patterns."
     },
-    {
-      icon: ShoppingCart,
-      title: "Marketplace",
-      description: "Buy and sell agricultural products directly with other farmers and suppliers."
-    },
+
     {
       icon: Bot,
       title: "AI Assistant",

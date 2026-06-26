@@ -1,4 +1,4 @@
-import axios from 'axios';
+﻿import axios from 'axios';
 
 // Plant disease detection API endpoint
 const PLANT_DISEASE_API_URL = 'https://plant-disease-detection-api.herokuapp.com/predict';

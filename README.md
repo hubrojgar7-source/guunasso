@@ -12,7 +12,6 @@ Krishak AI is an all-in-one platform that helps farmers manage their agricultura
 - Pest & disease detection
 - Soil analysis reports
 - Community forum access
-- Marketplace for agricultural products
 
 ## Getting Started
 

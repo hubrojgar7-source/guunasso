@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Headphones, TrendingUp, Monitor, Globe, Heart, PieChart } from 'lucide-react';
 
 const ProcessSection = () => {

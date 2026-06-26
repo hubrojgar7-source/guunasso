@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heart, Loader2, ShoppingCart, X } from 'lucide-react';
 import { WishlistItem, getWishlist, removeFromWishlist } from '@/lib/wishlist';

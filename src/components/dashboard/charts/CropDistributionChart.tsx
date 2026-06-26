@@ -43,6 +43,14 @@ export const CropDistributionChart = () => {
   // Check if there's any non-zero data
   const hasData = translatedData.some(item => item.value > 0);
   
+  const [filter, setFilter] = useState<'week' | 'month' | 'year'>('month');
+
+  const filterOptions: { key: 'week' | 'month' | 'year'; label: string }[] = [
+    { key: 'week',  label: 'This Week'  },
+    { key: 'month', label: 'This Month' },
+    { key: 'year',  label: 'This Year'  },
+  ];
+
   if (loading) {
     return (
       <Card className="bg-white border border-gray-200/50 rounded-2xl overflow-hidden shadow-sm h-full flex flex-col">
@@ -59,12 +67,16 @@ export const CropDistributionChart = () => {
   return (
     <Card className="bg-white border border-gray-200/50 rounded-2xl overflow-hidden shadow-sm h-full flex flex-col">
       <CardHeader className="pb-2 px-4 pt-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-2">
           <CardTitle className="text-lg font-semibold text-zinc-900">{t('chart.cropDistribution')}</CardTitle>
-          <select className="text-sm border border-gray-100 rounded-md px-3 py-1 bg-gray-50">
-            <option>{t('time.thisMonth')}</option>
-            <option>{t('time.lastMonth')}</option>
-            <option>{t('time.thisQuarter')}</option>
+          <select 
+            value={filter}
+            onChange={(e) => setFilter(e.target.value as 'week' | 'month' | 'year')}
+            className="text-sm border border-gray-100 rounded-md px-3 py-1 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            {filterOptions.map(({ key, label }) => (
+              <option key={key} value={key}>{label}</option>
+            ))}
           </select>
         </div>
       </CardHeader>

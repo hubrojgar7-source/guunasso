@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
@@ -17,7 +17,7 @@ const DashboardSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
-            Krishak AI helps farmers grow
+            गुनासो.com helps farmers grow
           </h2>
           <p className="text-gray-600 max-w-3xl mx-auto text-lg">
             Our platform provides farmers with the essential tools and insights needed to create 
@@ -43,7 +43,7 @@ const DashboardSection = () => {
         <div className="max-w-6xl mx-auto">
           <img 
             src="/dashboard.png" 
-            alt="Krishak AI Dashboard Interface"
+            alt="गुनासो.com Dashboard Interface"
             className="w-full h-auto rounded-xl shadow-xl"
           />
         </div>

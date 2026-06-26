@@ -5,8 +5,6 @@ import { CropDistributionChart } from './charts/CropDistributionChart';
 import { CustomerSatisfactionChart } from './charts/CustomerSatisfactionChart';
 import { TotalRevenueChart } from './charts/TotalRevenueChart';
 import { TargetVsRealityChart } from './charts/TargetVsRealityChart';
-import { TrafficSourcesChart } from './charts/TrafficSourcesChart';
-import { TopProductsChart } from './charts/TopProductsChart';
 
 export const ChartsSection = () => {
   return (
@@ -34,15 +32,6 @@ export const ChartsSection = () => {
         </div>
       </div>
 
-      {/* Third Row - Traffic Sources and Top Products */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
-        <div className="h-[450px] w-full bg-white rounded-lg shadow-sm border border-gray-100">
-          <TrafficSourcesChart />
-        </div>
-        <div className="h-[450px] w-full bg-white rounded-lg shadow-sm border border-gray-100">
-          <TopProductsChart />
-        </div>
-      </div>
     </div>
   );
 };

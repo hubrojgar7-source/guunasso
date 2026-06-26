@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Twitter, Facebook, Instagram, Github } from 'lucide-react';
 
 const TeamSection = () => {

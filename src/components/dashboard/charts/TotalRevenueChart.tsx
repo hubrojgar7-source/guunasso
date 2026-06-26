@@ -11,13 +11,13 @@ export const TotalRevenueChart = () => {
   const { t } = useTranslation();
   const [revenueData, setRevenueData] = useState<RevenueData[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     const loadChartData = async () => {
       try {
         // Try to get user-specific data from Firestore
         const userData = await getSpecificChartData<RevenueData>('revenueData');
-        
+
         if (userData && userData.length > 0) {
           setRevenueData(userData);
         } else {
@@ -32,16 +32,24 @@ export const TotalRevenueChart = () => {
         setLoading(false);
       }
     };
-    
+
     loadChartData();
   }, []);
-  
+
   // Translate days for chart
   const translatedData = revenueData.map(item => ({
     ...item,
     translatedDay: translateDay(item.day)
   }));
-  
+
+  const [filter, setFilter] = useState<'week' | 'month' | 'year'>('week');
+
+  const filterOptions: { key: 'week' | 'month' | 'year'; label: string }[] = [
+    { key: 'week',  label: 'This Week'  },
+    { key: 'month', label: 'This Month' },
+    { key: 'year',  label: 'This Year'  },
+  ];
+
   if (loading) {
     return (
       <Card className="bg-white border border-gray-200/50 rounded-2xl overflow-hidden shadow-sm h-full flex flex-col">
@@ -54,46 +62,50 @@ export const TotalRevenueChart = () => {
       </Card>
     );
   }
-  
+
   return (
     <Card className="bg-white border border-gray-200/50 rounded-2xl overflow-hidden shadow-sm h-full flex flex-col">
       <CardHeader className="pb-2 px-4 pt-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-2">
           <CardTitle className="text-lg font-semibold text-zinc-900">{t('chart.totalRevenue')}</CardTitle>
-          <select className="text-sm border border-gray-100 rounded-md px-3 py-1 bg-gray-50">
-            <option>{t('time.thisWeek')}</option>
-            <option>{t('time.lastWeek')}</option>
-            <option>{t('time.thisMonth')}</option>
+          <select 
+            value={filter}
+            onChange={(e) => setFilter(e.target.value as 'week' | 'month' | 'year')}
+            className="text-sm border border-gray-100 rounded-md px-3 py-1 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            {filterOptions.map(({ key, label }) => (
+              <option key={key} value={key}>{label}</option>
+            ))}
           </select>
         </div>
       </CardHeader>
       <CardContent className="px-2 pb-4 flex-1 flex flex-col">
-        <ResponsiveContainer width="99%" height={300}>
-          <BarChart 
-            data={translatedData} 
+        <ResponsiveContainer width="99%" height={260}>
+          <BarChart
+            data={translatedData}
             barCategoryGap={20}
             margin={{ top: 10, right: 10, bottom: 20, left: 0 }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis 
-              dataKey="translatedDay" 
-              axisLine={false} 
-              tickLine={false} 
+            <XAxis
+              dataKey="translatedDay"
+              axisLine={false}
+              tickLine={false}
               className="text-sm text-gray-600"
               tick={{ fontSize: 12 }}
               dy={10}
             />
-            <YAxis 
-              axisLine={false} 
-              tickLine={false} 
+            <YAxis
+              axisLine={false}
+              tickLine={false}
               className="text-sm text-gray-600"
               tick={{ fontSize: 12 }}
               tickFormatter={kFormatter}
               width={30}
             />
-            <Tooltip 
-              contentStyle={{ 
-                backgroundColor: 'white', 
+            <Tooltip
+              contentStyle={{
+                backgroundColor: 'white',
                 border: '1px solid #e5e7eb',
                 borderRadius: '8px',
                 boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
@@ -104,32 +116,34 @@ export const TotalRevenueChart = () => {
                 return entry ? entry.translatedDay : '';
               }}
             />
-            <Legend 
+            <Legend
               wrapperStyle={{ paddingTop: '15px' }}
               iconType="circle"
               verticalAlign="bottom"
               height={40}
               formatter={(value) => {
-                if (value === 'onlineSales') return t('chart.onlineSales');
-                if (value === 'offlineSales') return t('chart.offlineSales');
+                if (value === 'taxRevenue') return 'Tax Revenue';
+                if (value === 'nonTaxRevenue') return 'Non-Tax Revenue';
                 return value;
               }}
             />
-            <Bar 
-              dataKey="onlineSales" 
-              fill="#3b82f6" 
-              name="onlineSales"
+            <Bar
+              dataKey="taxRevenue"
+              fill="#3b82f6"
+              name="taxRevenue"
               radius={[2, 2, 0, 0]}
               barSize={15}
             />
-            <Bar 
-              dataKey="offlineSales" 
-              fill="#10b981" 
-              name="offlineSales"
+            <Bar
+              dataKey="nonTaxRevenue"
+              fill="#10b981"
+              name="nonTaxRevenue"
               radius={[2, 2, 0, 0]}
               barSize={15}
             />
           </BarChart>
+
+
         </ResponsiveContainer>
       </CardContent>
     </Card>

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Sprout, CloudRain, Tractor, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -58,7 +58,7 @@ const DiscoverSection = () => {
           {/* Left Content */}
           <div>
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-8">
-              Krishak AI: Made for Nepali Farmers
+              गुनासो.com: Made for Nepali Farmers
             </h2>
 
             <div className="space-y-8">
@@ -76,7 +76,7 @@ const DiscoverSection = () => {
 
             <div className="mt-10">
               <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg rounded-lg">
-                Try Krishak AI Free
+                Try गुनासो.com Free
               </Button>
             </div>
           </div>

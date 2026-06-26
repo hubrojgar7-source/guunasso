@@ -1,4 +1,4 @@
-import axios from 'axios';
+﻿import axios from 'axios';
 import { generateTreatmentRecommendations } from './openRouterService';
 
 // Kindwise API configuration - Use PlantNet API instead

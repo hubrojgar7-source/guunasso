@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Database, RefreshCw, Users, BarChart3, TrendingUp, User } from 'lucide-react';
 
 const CollaborateSection = () => {

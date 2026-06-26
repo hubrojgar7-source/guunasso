@@ -58,23 +58,6 @@ const Help = () => {
       ]
     },
     {
-      category: "Marketplace",
-      items: [
-        {
-          question: "How do I list my crops for sale?",
-          answer: "Go to the Marketplace section and click 'List Product'. Add photos, descriptions, pricing, and availability. Your listing will be reviewed and published within 4 hours."
-        },
-        {
-          question: "What are the transaction fees?",
-          answer: "We charge a 3% transaction fee on successful sales. This fee includes payment processing, buyer protection, and platform maintenance."
-        },
-        {
-          question: "How do I handle shipping and delivery?",
-          answer: "You can choose to handle shipping yourself or use our partner logistics network. Local deliveries can be arranged directly with buyers through our messaging system."
-        }
-      ]
-    },
-    {
       category: "Payments & Billing",
       items: [
         {
@@ -112,45 +95,24 @@ const Help = () => {
 
   const tutorials = [
     {
-      title: "Getting Started with Krishak AI",
+      title: "Getting Started with गुनासो.com",
       duration: "5 min",
       type: "Video",
       description: "Complete walkthrough of setting up your account and first farm profile",
       level: "Beginner"
     },
     {
-      title: "Listing Your First Product",
-      duration: "8 min",
-      type: "Video",
-      description: "Step-by-step guide to creating effective product listings in the marketplace",
-      level: "Beginner"
-    },
-    {
-      title: "Understanding Analytics",
-      duration: "12 min",
-      type: "Video",
-      description: "Learn how to read your dashboard analytics and improve your sales",
-      level: "Intermediate"
-    },
-    {
-      title: "Advanced Marketing Strategies",
-      duration: "15 min",
-      type: "Video",
-      description: "Tips and tricks for maximizing your crop sales and building customer relationships",
-      level: "Advanced"
-    },
-    {
       title: "Mobile App Usage Guide",
       duration: "6 min",
       type: "Guide",
-      description: "How to use Krishak AI on your mobile device for field updates",
+      description: "How to use गुनासो.com on your mobile device for field updates",
       level: "Beginner"
     },
     {
       title: "Seasonal Planning Worksheet",
       duration: "3 min",
       type: "Download",
-      description: "PDF template for planning your crop seasons and marketplace strategy",
+      description: "PDF template for planning your crop seasons",
       level: "All Levels"
     }
   ];
@@ -251,7 +213,7 @@ const Help = () => {
                   Tutorials & Guides
                 </CardTitle>
                 <CardDescription>
-                  Step-by-step guides to help you get the most out of Krishak AI
+                  Step-by-step guides to help you get the most out of गुनासो.com
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -317,7 +279,7 @@ const Help = () => {
                     <Mail className="w-5 h-5 text-blue-600" />
                     <div>
                       <p className="font-medium">Email Support</p>
-                      <p className="text-sm text-muted-foreground">info@krishakai.com</p>
+                      <p className="text-sm text-muted-foreground">info@गुनासो.com</p>
                       <p className="text-xs text-muted-foreground">Response within 24 hours</p>
                     </div>
                   </div>
@@ -379,7 +341,7 @@ const Help = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="account">Account Issues</SelectItem>
-                        <SelectItem value="marketplace">Marketplace</SelectItem>
+
                         <SelectItem value="payments">Payments & Billing</SelectItem>
                         <SelectItem value="technical">Technical Support</SelectItem>
                         <SelectItem value="other">Other</SelectItem>

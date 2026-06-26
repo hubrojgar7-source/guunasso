@@ -5,7 +5,7 @@ const HowItWorksSection = () => {
   const steps = [
     {
       icon: Smartphone,
-      title: "Download Krishak AI",
+      title: "Download गुनासो.com",
       description: "Get started with a simple download that works even on basic smartphones with limited internet access."
     },
     {
@@ -16,19 +16,19 @@ const HowItWorksSection = () => {
     {
       icon: CloudSun,
       title: "Grow Better Crops!",
-      description: "Access AI-powered recommendations, weather forecasts, and connect with the marketplace for better profits."
+      description: "Access AI-powered recommendations and weather forecasts for better farming practices."
     }
   ];
 
   return (
-    <section className="py-20 px-8 bg-white text-gray-900">
+    <section id="how-it-works" className="py-20 px-8 bg-white text-gray-900">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
-            How Krishak AI Works
+            How गुनासो.com Works
           </h2>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto">
-            Get personalized agricultural insights, connect with markets, and improve your yield—
+            Get personalized agricultural insights and improve your yield—
             designed specifically for Nepali farmers.
           </p>
         </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Settings, Headphones, Cloud, Shield, CreditCard, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 

@@ -24,16 +24,6 @@ service firebase.storage {
       allow delete: if request.auth != null && request.auth.uid == userId;
     }
     
-    // Rules for product images in the marketplace
-    match /products/{userId}/{imageId} {
-      // Allow reading product images
-      allow read: if true;
-      
-      // Allow users to upload their own product images
-      allow create, update: if request.auth != null && request.auth.uid == userId;
-      
-      // Allow users to delete their own product images
-      allow delete: if request.auth != null && request.auth.uid == userId;
-    }
+
   }
 } 

@@ -1,11 +1,11 @@
-import { 
-  collection, 
-  doc, 
-  getDoc, 
-  getDocs, 
-  setDoc, 
-  query, 
-  where, 
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  query,
+  where,
   orderBy,
   serverTimestamp,
   updateDoc,
@@ -35,8 +35,8 @@ try {
 // Types for chart data
 export interface RevenueData {
   day: string;
-  onlineSales: number;
-  offlineSales: number;
+  taxRevenue: number;
+  nonTaxRevenue: number;
 }
 
 export interface CropDistributionData {
@@ -114,7 +114,7 @@ export const saveUserChartData = async (chartType: string, data: any): Promise<v
     }
   } catch (error) {
     console.error(`Error saving ${chartType} data:`, error);
-    
+
     // Store data in localStorage as fallback when offline
     try {
       const fallbackKey = `chart_data_${user.uid}_${chartType}`;
@@ -127,7 +127,7 @@ export const saveUserChartData = async (chartType: string, data: any): Promise<v
     } catch (localError) {
       console.error('Failed to save to localStorage:', localError);
     }
-    
+
     throw error;
   }
 };
@@ -147,8 +147,8 @@ export const getUserChartData = async (): Promise<UserChartData | null> => {
       const data = chartDoc.data() as UserChartData;
       return {
         ...data,
-        lastUpdated: data.lastUpdated instanceof Timestamp 
-          ? data.lastUpdated.toDate() 
+        lastUpdated: data.lastUpdated instanceof Timestamp
+          ? data.lastUpdated.toDate()
           : data.lastUpdated
       };
     } else {
@@ -161,14 +161,14 @@ export const getUserChartData = async (): Promise<UserChartData | null> => {
     }
   } catch (error) {
     console.error("Error getting chart data:", error);
-    
+
     // Try to retrieve from localStorage if offline
     const offlineData = checkOfflineData(user.uid);
     if (offlineData) {
       console.log("Retrieved chart data from local storage (offline mode)");
       return offlineData;
     }
-    
+
     throw error;
   }
 };
@@ -204,7 +204,7 @@ export const getSpecificChartData = async <T>(chartType: string): Promise<T[] | 
     }
   } catch (error) {
     console.error(`Error getting ${chartType} data:`, error);
-    
+
     // Try to retrieve from localStorage if offline
     try {
       const fallbackKey = `chart_data_${user.uid}_${chartType}`;
@@ -217,7 +217,7 @@ export const getSpecificChartData = async <T>(chartType: string): Promise<T[] | 
     } catch (localError) {
       console.error('Failed to retrieve from localStorage:', localError);
     }
-    
+
     throw error;
   }
 };
@@ -234,12 +234,12 @@ const checkOfflineData = (userId: string): UserChartData | null => {
       'trafficSourceData',
       'topProductData'
     ];
-    
+
     let hasOfflineData = false;
     const userData: UserChartData = {
       userId
     };
-    
+
     chartTypes.forEach(type => {
       const fallbackKey = `chart_data_${userId}_${type}`;
       const storedData = localStorage.getItem(fallbackKey);
@@ -249,7 +249,7 @@ const checkOfflineData = (userId: string): UserChartData | null => {
         hasOfflineData = true;
       }
     });
-    
+
     return hasOfflineData ? userData : null;
   } catch (error) {
     console.error('Error reading offline data:', error);
@@ -259,13 +259,13 @@ const checkOfflineData = (userId: string): UserChartData | null => {
 
 // Default data templates
 export const getDefaultRevenueData = (): RevenueData[] => [
-  { day: 'Monday', onlineSales: 12, offlineSales: 14 },
-  { day: 'Tuesday', onlineSales: 13, offlineSales: 11 },
-  { day: 'Wednesday', onlineSales: 10, offlineSales: 15 },
-  { day: 'Thursday', onlineSales: 14, offlineSales: 12 },
-  { day: 'Friday', onlineSales: 15, offlineSales: 13 },
-  { day: 'Saturday', onlineSales: 11, offlineSales: 10 },
-  { day: 'Sunday', onlineSales: 13, offlineSales: 12 }
+  { day: 'Monday',    taxRevenue: 42, nonTaxRevenue: 18 },
+  { day: 'Tuesday',   taxRevenue: 38, nonTaxRevenue: 15 },
+  { day: 'Wednesday', taxRevenue: 50, nonTaxRevenue: 22 },
+  { day: 'Thursday',  taxRevenue: 45, nonTaxRevenue: 19 },
+  { day: 'Friday',    taxRevenue: 53, nonTaxRevenue: 24 },
+  { day: 'Saturday',  taxRevenue: 30, nonTaxRevenue: 12 },
+  { day: 'Sunday',    taxRevenue: 35, nonTaxRevenue: 14 }
 ];
 
 export const getDefaultCropDistributionData = (): CropDistributionData[] => [

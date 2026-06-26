@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Twitter, Facebook, Instagram, Github, MapPin, Mail, PhoneCall } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -14,7 +14,7 @@ const Team = () => {
       social: {
         twitter: "#",
         linkedin: "#",
-        email: "rajesh@drkrishak.com"
+        email: "rajesh@गुनासो.com"
       }
     },
     {
@@ -25,7 +25,7 @@ const Team = () => {
       social: {
         twitter: "#",
         linkedin: "#",
-        email: "priya@drkrishak.com"
+        email: "priya@गुनासो.com"
       }
     },
     {
@@ -36,7 +36,7 @@ const Team = () => {
       social: {
         twitter: "#",
         linkedin: "#",
-        email: "arjun@drkrishak.com"
+        email: "arjun@गुनासो.com"
       }
     },
     {
@@ -47,7 +47,7 @@ const Team = () => {
       social: {
         twitter: "#",
         linkedin: "#",
-        email: "meera@drkrishak.com"
+        email: "meera@गुनासो.com"
       }
     },
     {
@@ -58,7 +58,7 @@ const Team = () => {
       social: {
         twitter: "#",
         linkedin: "#",
-        email: "vikram@drkrishak.com"
+        email: "vikram@गुनासो.com"
       }
     },
     {
@@ -69,7 +69,7 @@ const Team = () => {
       social: {
         twitter: "#",
         linkedin: "#",
-        email: "anita@drkrishak.com"
+        email: "anita@गुनासो.com"
       }
     },
     {
@@ -80,7 +80,7 @@ const Team = () => {
       social: {
         twitter: "#",
         linkedin: "#",
-        email: "rohit@drkrishak.com"
+        email: "rohit@गुनासो.com"
       }
     },
     {
@@ -91,7 +91,7 @@ const Team = () => {
       social: {
         twitter: "#",
         linkedin: "#",
-        email: "kavitha@drkrishak.com"
+        email: "kavitha@गुनासो.com"
       }
     }
   ];
@@ -208,7 +208,7 @@ const Team = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="flex items-center justify-center space-x-3">
               <Mail className="h-6 w-6 text-blue-600" />
-              <a href="mailto:info@krishakai.com" className="text-gray-700 hover:text-blue-600 transition-colors">info@krishakai.com</a>
+              <a href="mailto:info@गुनासो.com" className="text-gray-700 hover:text-blue-600 transition-colors">info@गुनासो.com</a>
             </div>
             <div className="flex items-center justify-center space-x-3">
               <PhoneCall className="h-6 w-6 text-blue-600" />

@@ -30,18 +30,29 @@ export const CropYieldChart = () => {
     translatedDay: t(item.day)
   }));
 
+  const [filter, setFilter] = React.useState<'week' | 'month' | 'year'>('year');
+
+  const filterOptions: { key: 'week' | 'month' | 'year'; label: string }[] = [
+    { key: 'week',  label: 'This Week'  },
+    { key: 'month', label: 'This Month' },
+    { key: 'year',  label: 'This Year'  },
+  ];
+
   return (
     <Card className="bg-white border border-gray-200/50 rounded-2xl overflow-hidden shadow-sm h-full flex flex-col">
       <CardHeader className="pb-3 px-4 pt-4">
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="text-lg font-semibold text-zinc-900">{t('chart.cropYield')}</CardTitle>
-            <div className="flex items-center space-x-4 mt-2">
-              <button className="px-3 py-1 text-sm bg-gray-50 rounded-lg border border-gray-100">{t('dashboard.12Months')}</button>
-              <button className="px-3 py-1 text-sm text-gray-600">{t('dashboard.6Months')}</button>
-              <button className="px-3 py-1 text-sm text-gray-600">{t('dashboard.30Days')}</button>
-              <button className="px-3 py-1 text-sm text-gray-600">{t('dashboard.7Days')}</button>
-            </div>
+            <select 
+              value={filter}
+              onChange={(e) => setFilter(e.target.value as 'week' | 'month' | 'year')}
+              className="mt-2 text-sm border border-gray-100 rounded-md px-3 py-1 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {filterOptions.map(({ key, label }) => (
+                <option key={key} value={key}>{label}</option>
+              ))}
+            </select>
           </div>
           <Button variant="outline" size="sm" className="border-gray-100 bg-gray-50">
             <Download className="w-4 h-4 mr-2" />

@@ -2,9 +2,35 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow read/write access to all users in test mode
-    match /{document=**} {
-      allow read, write: if true;
+    // Posts rules
+    match /posts/{postId} {
+      allow read: if true; // Anyone can read posts
+      allow create: if request.auth != null; // Only authenticated users can create
+      allow update, delete: if request.auth != null && request.auth.uid == resource.data.authorId; // Only author can edit/delete
+    }
+
+    // Polls rules
+    match /polls/{pollId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null; // In a real app, restrict to orgs/admins
+      allow update, delete: if request.auth != null && request.auth.uid == resource.data.createdBy;
+      
+      match /options/{optionId} {
+        allow read: if request.auth != null;
+        allow write: if request.auth != null; // For vote increments
+      }
+    }
+
+    // Votes rules
+    match /votes/{voteId} {
+      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+      allow update, delete: if false; // Votes cannot be changed or deleted
+    }
+
+    // Complaints rules
+    match /complaints/{complaintId} {
+      allow read, write: if request.auth != null;
     }
   }
 }
