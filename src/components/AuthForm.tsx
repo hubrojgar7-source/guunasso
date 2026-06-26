@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator"
 import { useAuth } from "@/hooks/useAuth"
 import { toast } from "sonner"
 import { useNavigate } from "react-router-dom"
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
+import { GoogleAuthProvider, signInWithPopup, signInAnonymously } from "firebase/auth"
 import { auth, db } from "@/lib/firebase"
 import { doc, setDoc } from "firebase/firestore"
 
@@ -22,7 +22,7 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
-  const [userType, setUserType] = useState<'farmer' | 'user'>('user')
+  const [userType, setUserType] = useState<'admin' | 'user'>('user')
   const [isLoading, setIsLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
   
@@ -178,14 +178,14 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                     <div className="flex items-center">
                       <input
                         type="radio"
-                        id="userType-farmer"
+                        id="userType-admin"
                         name="userType"
                         className="w-4 h-4 text-blue-600"
-                        checked={userType === 'farmer'}
-                        onChange={() => setUserType('farmer')}
+                        checked={userType === 'admin'}
+                        onChange={() => setUserType('admin')}
                       />
-                      <Label htmlFor="userType-farmer" className="ml-2 text-sm font-medium text-gray-700">
-                        Farmer
+                      <Label htmlFor="userType-admin" className="ml-2 text-sm font-medium text-gray-700">
+                        Admin
                       </Label>
                     </div>
                     <div className="flex items-center">
@@ -198,7 +198,7 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                         onChange={() => setUserType('user')}
                       />
                       <Label htmlFor="userType-user" className="ml-2 text-sm font-medium text-gray-700">
-                        Regular User
+                        User
                       </Label>
                     </div>
                   </div>
@@ -269,6 +269,23 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                   {isSignUp ? "Sign up with Google" : "Continue with Google"}
                 </>
               )}
+            </Button>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full h-12 border-gray-200 hover:bg-gray-50 font-medium rounded-lg bg-white"
+              onClick={async () => {
+                try {
+                  await signInAnonymously(auth);
+                  toast.success("Signed in as guest");
+                  navigate("/dashboard");
+                } catch (err: any) {
+                  toast.error(err.message || "Failed to sign in anonymously");
+                }
+              }}
+            >
+              Continue as Guest
             </Button>
 
             <div className="text-center text-sm text-gray-600">

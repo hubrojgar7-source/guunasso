@@ -31,7 +31,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import AdminLogin from "./pages/AdminLogin";
 import { AuthProvider, ProtectedRoute, PublicRoute } from "./lib/AuthProvider";
-import { FarmerRoute } from "./lib/RouteGuards";
+import { AdminRoute } from "./lib/RouteGuards";
 import { SidebarProvider } from "./context/SidebarContext";
 import Data from './pages/Data';
 import Messaging from './pages/Messaging';
@@ -70,7 +70,7 @@ const App = () => (
               <Route index element={<Dashboard />} />
               <Route path="feed" element={<Feed />} />
               <Route path="dr-summarizer" element={<DrSummarizer />} />
-              <Route path="data" element={<FarmerRoute><Data /></FarmerRoute>} />
+              <Route path="data" element={<AdminRoute><Data /></AdminRoute>} />
               <Route path="transactions" element={<Transactions />} />
               <Route path="transactions/:id" element={<TransactionDetails />} />
               <Route path="messaging" element={<Messaging />} />

@@ -22,7 +22,7 @@ export function useAuth() {
     return () => unsubscribe();
   }, []);
 
-  const signup = async (email: string, password: string, userType: 'farmer' | 'user') => {
+  const signup = async (email: string, password: string, userType: 'admin' | 'user') => {
     try {
       // Create the user with Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);

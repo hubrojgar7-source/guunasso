@@ -20,7 +20,7 @@ export interface UserProfile {
   displayName: string;
   photoURL: string;
   handle: string;
-  userType?: 'farmer' | 'user';  // Add userType field
+  userType?: 'admin' | 'user';  // Add userType field
   followers: string[]; // Array of user IDs who follow this user
   following: string[]; // Array of user IDs this user follows
   followersCount: number;

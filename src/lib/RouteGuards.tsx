@@ -4,7 +4,7 @@ import { useUserProfile } from '@/hooks/useUserProfile';
 import { useAuthContext } from './AuthProvider';
 
 // Role-based route protection component
-export const FarmerRoute: React.FC<{ 
+export const AdminRoute: React.FC<{ 
   children: React.ReactNode, 
   redirectTo?: string 
 }> = ({ 
@@ -24,8 +24,8 @@ export const FarmerRoute: React.FC<{
         return;
       }
       
-      // If user is not a farmer, redirect
-      if (profile && profile.userType !== 'farmer') {
+      // If user is not an admin, redirect
+      if (profile && profile.userType !== 'admin') {
         navigate(redirectTo);
       }
     }
@@ -35,6 +35,6 @@ export const FarmerRoute: React.FC<{
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
 
-  // Only render children if user is authenticated and is a farmer
-  return (user && profile && profile.userType === 'farmer') ? <>{children}</> : null;
+  // Only render children if user is authenticated and is an admin
+  return (user && profile && profile.userType === 'admin') ? <>{children}</> : null;
 }; 
